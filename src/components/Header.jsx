@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { navLinks } from "../constants";
 import { navbarVariants, mobileMenuVariants } from "../constants/motion";
 import { useResizeX, useScrollY } from "../hooks";
+import logoEn from "../assets/logoEn.png";
 
 const Header = () => {
   const [toggleMenu, setToggleMenu] = useState(false);
@@ -20,12 +21,15 @@ const Header = () => {
       initial={["default", { y: -100 }]}
       animate={[scrolled ? "active" : "default", "slide"]}
       transition={{ duration: 0.3 }}
-      className="fixed flex items-center h-[70px] z-[1000] w-full border border-solid border-transparent"
+      className="fixed flex items-center h-[70px] z-[1000] w-full border border-solid border-transparent shadow-md"
     >
       <nav className="container flex items-center justify-between gap-x-16">
-        <a href="/" className="text-2xl font-bold text-gray-10">
+        {/* <a href="/" className="text-2xl font-bold text-gray-10">
           Coursat.
-        </a>
+        </a> */}
+        <div className="h-[30px] w-[140px] items-center justify-center">
+          <img src={logoEn} height="35" />
+        </div>
         <div className="hidden lg:flex lg:justify-between w-full">
           <ul className="flex items-center gap-x-4">
             {navLinks.map((link) => {
@@ -40,10 +44,10 @@ const Header = () => {
           </ul>
           <div className="flex items-center gap-x-4">
             <button type="button" className="btn btn-outline">
-              Sign Up
+              Бүртгүүлэх
             </button>
             <button type="button" className="btn btn-primary">
-              Log In
+              Нэвтрэх
             </button>
           </div>
         </div>

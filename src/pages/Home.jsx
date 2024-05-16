@@ -8,20 +8,22 @@ import {
   Instructors,
   PopularCourses,
 } from "../sections";
+import GrantList from "../sections/GrantList";
 
 const Home = () => {
   return (
     <>
-      <Header />
-      <Hero />
-      <Statistics />
+      {/* <Header /> */}
+      {/* <Hero /> */}
+      <GrantList />
+      {/* <Statistics />
       <About />
       <PopularCourses />
       <Courses />
       <Instructors />
       <Blogs />
-      <CTA />
-      <Footer />
+      <CTA /> */}
+      {/* <Footer /> */}
     </>
   );
 };

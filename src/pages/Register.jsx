@@ -7,14 +7,13 @@ const boxStyle = {
   // borderRadius: 6,
   // border: "1px solid #40a9ff",
 };
-const Login = () => {
+const Register = () => {
   const onFinish = (values) => {
     console.log("Success:", values);
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
-
   return (
     <>
       <div className="bg-gray-100 flex h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
@@ -27,13 +26,36 @@ const Login = () => {
             /> */}
 
             <h2 className="my-3 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Нэвтрэх
+              Бүртгүүлэх
             </h2>
+            <Flex style={boxStyle} justify="center" align="center">
+              <Radio.Group
+                defaultValue="a"
+                // optionType="button"
+                // buttonStyle="solid"
+              >
+                <Radio.Button value="a">Байгууллага</Radio.Button>
+                <Radio.Button value="b">Бүлгээр</Radio.Button>
+              </Radio.Group>
+            </Flex>
+            <br />
             <Form
               layout="vertical"
               onFinish={onFinish}
               onFinishFailed={onFinishFailed}
             >
+              <Form.Item
+                label="Байгууллагын нэр"
+                name="name"
+                rules={[
+                  {
+                    required: true,
+                    message: "Please input your username!",
+                  },
+                ]}
+              >
+                <Input prefix={<UserOutlined />} size="large" placeholder="" />
+              </Form.Item>
               <Form.Item
                 label="И-мэйл"
                 name="email"
@@ -66,7 +88,7 @@ const Login = () => {
                   size="large"
                   style={{ width: "100%" }}
                 >
-                  Нэвтрэх
+                  Бүртгүүлэх
                 </Button>
               </Form.Item>
             </Form>
@@ -77,4 +99,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default Register;

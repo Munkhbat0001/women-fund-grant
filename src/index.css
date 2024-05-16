@@ -45,7 +45,7 @@
   }
 
   .btn {
-      @apply px-6 rounded-full w-fit h-14 font-medium text-lg transition-colors duration-300;
+      @apply px-6 rounded-full w-fit h-10 font-medium text-lg transition-colors duration-300;
   }
 
   .btn-primary {
@@ -112,7 +112,7 @@
   top: 7px;
   left: 0;
   transform: translate(8px);
-}
+} 
 
 .header__menu-icon span:nth-child(3) {
   top: 14px;
@@ -160,4 +160,8 @@
 [data-difficulty="advanced"] {
   --bg: #f3381d;
   --bg-alpha-35: rgba(242, 57, 28, 0.35);
+}
+
+.ant-select .ant-select-selection-placeholder {
+  flex: inherit;
 }
