@@ -18,7 +18,6 @@ const items = [
   {
     title: "Үйл ажиллагааны",
     description: "төлөвлөгөө",
-    // description: "Төсвийн санал",
   },
   {
     title: "Төсвийн санал",
@@ -66,11 +65,11 @@ const ProjectRequest = () => {
         <br />
         <div style={contentStyle}>
           <Row justify="center">
-            {/* <StepOne /> */}
-            {/* <StepTwo /> */}
-            {/* <StepThree /> */}
-            {/* <StepFour /> */}
-            <StepFive />
+            {current === 0 && <StepOne />}
+            {current === 1 && <StepTwo />}
+            {current === 2 && <StepThree />}
+            {current === 3 && <StepFour />}
+            {current === 4 && <StepFive />}
           </Row>
         </div>
         <br />

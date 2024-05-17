@@ -1,16 +1,33 @@
-import React from "react";
+import React, { useContext, useState } from "react";
 import { Button, Checkbox, Form, Input, Flex, Row, Col, Radio } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
-const boxStyle = {
-  width: "100%",
-  height: "100%",
-  // borderRadius: 6,
-  // border: "1px solid #40a9ff",
-};
+import { useAxios } from "../hooks";
+import { validator } from "../utils/validator";
+import { CUSTOMER_LOGIN } from "../utils/operation";
+import { CustomerContext } from "../context/CustomerContext";
+
 const Login = () => {
+  const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  const { loginUser } = useContext(CustomerContext);
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    setMessage("");
+
+    setLoading(true);
+    useAxios(CUSTOMER_LOGIN, values, { method: "POST" })
+      .then((res) => {
+        console.log("res: ", res);
+        loginUser(res);
+        localStorage.setItem("customer", JSON.stringify(res));
+      })
+      .catch((err) => {
+        setMessage(err);
+      })
+      .finally(() => setLoading(false));
   };
+
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
   };
@@ -36,25 +53,15 @@ const Login = () => {
             >
               <Form.Item
                 label="И-мэйл"
-                name="email"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your username!",
-                  },
-                ]}
+                name="loginName"
+                rules={validator().email().build()}
               >
                 <Input prefix={<MailOutlined />} size="large" />
               </Form.Item>
               <Form.Item
-                label="Password"
+                label="Нууц үг"
                 name="password"
-                rules={[
-                  {
-                    required: true,
-                    message: "Please input your password!",
-                  },
-                ]}
+                rules={validator().required("Нууц үгээ оруулна уу").build()}
               >
                 <Input.Password prefix={<LockOutlined />} size="large" />
               </Form.Item>

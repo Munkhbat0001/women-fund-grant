@@ -4,15 +4,49 @@ import { navLinks } from "../constants";
 import { navbarVariants, mobileMenuVariants } from "../constants/motion";
 import { useResizeX, useScrollY } from "../hooks";
 import logoEn from "../assets/logoEn.png";
+import { Avatar, Dropdown } from "antd";
+import { LoginOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
+import { useNavigate } from "react-router-dom";
+import { showConfirm } from "./modals/Confirmation";
 
-const Header = () => {
+const menulist = [
+  {
+    key: "1",
+    label: "Setting",
+    icon: <SafetyCertificateOutlined />,
+  },
+  {
+    key: "2",
+    label: "Гарах",
+    icon: <LoginOutlined />,
+  },
+];
+
+const Header = ({ user, loggedIn, logout }) => {
   const [toggleMenu, setToggleMenu] = useState(false);
   const resized = useResizeX(992);
   const scrolled = useScrollY(100);
+  const navigate = useNavigate();
+
+  const handleMenuClick = (e) => {
+    if (e.key === "1") {
+      navigate(`/personal`);
+    } else if (e.key === "2") {
+      showConfirm({ onOk: logout });
+    }
+  };
+
+  const items = {
+    items: menulist,
+    onClick: handleMenuClick,
+  };
 
   useEffect(() => {
     if (resized) setToggleMenu(false);
   }, [resized]);
+
+  const onRegisger = () => navigate(`/register`);
+  const onLogin = () => navigate(`/login`);
 
   return (
     <motion.header
@@ -42,14 +76,52 @@ const Header = () => {
               );
             })}
           </ul>
-          <div className="flex items-center gap-x-4">
-            <button type="button" className="btn btn-outline">
-              Бүртгүүлэх
-            </button>
-            <button type="button" className="btn btn-primary">
-              Нэвтрэх
-            </button>
-          </div>
+
+          {loggedIn === 1 && (
+            <div className="flex items-center gap-4">
+              {/* <img
+              className="w-10 h-10 rounded-full"
+              src="/docs/images/people/profile-picture-5.jpg"
+              alt=""
+            /> */}
+              <Dropdown menu={items}>
+                <Avatar
+                  style={{
+                    backgroundColor: "#00a2ae",
+                    verticalAlign: "middle",
+                  }}
+                  size="large"
+                  gap={4}
+                >
+                  {user.loginName.substring(0, 1).toUpperCase()}
+                </Avatar>
+              </Dropdown>
+              <div className="font-medium dark:text-white">
+                <div>
+                  {user.loginName.substring(0, user.loginName.indexOf("@"))}
+                </div>
+              </div>
+            </div>
+          )}
+
+          {loggedIn !== 1 && (
+            <div className="flex items-center gap-x-4">
+              <button
+                type="button"
+                className="btn btn-outline"
+                onClick={onRegisger}
+              >
+                Бүртгүүлэх
+              </button>
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={onLogin}
+              >
+                Нэвтрэх
+              </button>
+            </div>
+          )}
         </div>
         <div
           className={`header__menu-icon flex lg:hidden relative w-5 h-4 flex-shrink-0 cursor-pointer overflow-hidden ${

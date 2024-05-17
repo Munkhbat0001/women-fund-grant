@@ -1,137 +1,41 @@
 import React from "react";
+import CustomerTable from "../screens/listTailwind/CustomerTable";
+import { CUSTOMER_GRANT } from "../utils/operation";
 
 const GrantList = () => {
+  const columns = [
+    {
+      key: "1",
+      label: "Тэтгэлэг",
+      name: "title",
+      bold: true,
+    },
+    {
+      key: "2",
+      label: "Эхлэх огноо",
+      name: "beginDate",
+    },
+    {
+      key: "3",
+      label: "Дуусах огноо",
+      name: "endDate",
+    },
+    {
+      key: "4",
+      label: "Price",
+      name: "body",
+    },
+    {
+      key: "5",
+      label: "Action",
+      name: "action",
+    },
+  ];
+
   return (
     <>
       <div className="container pt-[150px] pb-[100px] ">
-        <div class="relative overflow-x-auto shadow-lg sm:rounded-lg">
-          <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-            {/* <caption class="p-5 text-lg font-semibold text-left rtl:text-right text-gray-900 bg-white dark:text-white dark:bg-gray-800">
-              Our products
-              <p class="mt-1 text-sm font-normal text-gray-500 dark:text-gray-400">
-                Browse a list of Flowbite products designed to help you work and
-                play, stay organized, get answers, keep in touch, grow your
-                business, and more.
-              </p>
-            </caption> */}
-            <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
-              <tr>
-                <th scope="col" class="px-6 py-3">
-                  Product name
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Color
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Category
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Price
-                </th>
-                <th scope="col" class="px-6 py-3">
-                  Action
-                </th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple MacBook Pro 17"
-                </th>
-                <td class="px-6 py-4">Silver</td>
-                <td class="px-6 py-4">Laptop</td>
-                <td class="px-6 py-4">$2999</td>
-                <td class="px-6 py-4">
-                  <a
-                    href="#"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-              </tr>
-              <tr class="odd:bg-white even:dark:bg-gray-800 border-b dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Microsoft Surface Pro
-                </th>
-                <td class="px-6 py-4">White</td>
-                <td class="px-6 py-4">Laptop PC</td>
-                <td class="px-6 py-4">$1999</td>
-                <td class="px-6 py-4">
-                  <a
-                    href="#"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-              </tr>
-              <tr class="odd:bg-white odd:dark:bg-gray-900 even:bg-gray-50 even:dark:bg-gray-800 border-b dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Magic Mouse 2
-                </th>
-                <td class="px-6 py-4">Black</td>
-                <td class="px-6 py-4">Accessories</td>
-                <td class="px-6 py-4">$99</td>
-                <td class="px-6 py-4">
-                  <a
-                    href="#"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-              </tr>
-              <tr class="odd:bg-white odd:dark:bg-gray-900  border-b dark:border-gray-700">
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Google Pixel Phone
-                </th>
-                <td class="px-6 py-4">Gray</td>
-                <td class="px-6 py-4">Phone</td>
-                <td class="px-6 py-4">$799</td>
-                <td class="px-6 py-4">
-                  <a
-                    href="#"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-              </tr>
-              <tr>
-                <th
-                  scope="row"
-                  class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white"
-                >
-                  Apple Watch 5
-                </th>
-                <td class="px-6 py-4">Red</td>
-                <td class="px-6 py-4">Wearables</td>
-                <td class="px-6 py-4">$999</td>
-                <td class="px-6 py-4">
-                  <a
-                    href="#"
-                    class="font-medium text-blue-600 dark:text-blue-500 hover:underline"
-                  >
-                    Edit
-                  </a>
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
+        <CustomerTable selectAPI={CUSTOMER_GRANT} columns={columns} />
       </div>
     </>
   );
