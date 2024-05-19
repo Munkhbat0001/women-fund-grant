@@ -161,7 +161,3 @@
   --bg: #f3381d;
   --bg-alpha-35: rgba(242, 57, 28, 0.35);
 }
-
-.ant-select .ant-select-selection-placeholder {
-  flex: inherit;
-}

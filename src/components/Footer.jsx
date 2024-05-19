@@ -5,21 +5,19 @@ import {
   RiLinkedinFill,
   RiTwitchFill,
 } from "react-icons/ri";
+import logoEn from "../assets/logoEn.png";
 
 const Footer = () => {
   return (
-    <footer className="py-[70px] bg-gray-10">
+    <footer className="py-[20px] bg-gray-10">
       <div className="container">
         <div>
           <div className="flex flex-col">
             <div className="flex items-start justify-between flex-wrap gap-8">
               <div className="footer-col">
-                <h2 className="text-h2 text-white">Coursat.</h2>
+                <h2 className="text-h3 text-white">Mongolian women's fund</h2>
                 <p className="text-base !leading-[normal] text-gray-80">
-                  Lorem, ipsum dolor sit amet consectetur adipisicing elit. Quod
-                  doloribus totam quia aliquid alias eius voluptate excepturi,
-                  minima numquam et hic provident pariatur culpa ullam, deserunt
-                  qui voluptates, debitis soluta!
+                  Lorem, ipsum dolor sit amet consectetur adipisicing elit.
                 </p>
                 <div className="flex items-center gap-x-4">
                   <a href="#" className="">
@@ -37,9 +35,15 @@ const Footer = () => {
                 </div>
               </div>
               <div className="footer-col">
-                <p className="footer-heading">Quick Links</p>
+                <p className="footer-heading">Бидний тухай</p>
                 <div className="flex flex-col gap-y-2">
                   <a href="#home" className="footer-link">
+                    Бидний тухай
+                  </a>
+                  {/* <a href="#home" className="footer-link">
+                    Төслүүд
+                  </a> */}
+                  {/* <a href="#home" className="footer-link">
                     Home
                   </a>
                   <a href="#about" className="footer-link">
@@ -53,24 +57,30 @@ const Footer = () => {
                   </a>
                   <a href="#blog" className="footer-link">
                     Blog
-                  </a>
+                  </a> */}
                 </div>
               </div>
               <div className="footer-col">
-                <p className="footer-heading">Contact information</p>
+                <p className="footer-heading">Холбоо барих</p>
                 <div className="flex flex-col gap-y-2">
-                  <a href="#" className="footer-link">
-                    Address: Jordan, Amman
-                  </a>
                   <a href="tel:+97699334546" className="footer-link">
-                    Phone: (+976) 99334546
+                    Phone: (+976) 77665544
                   </a>
                   <a href="mailto:coursat@gmail.com" className="footer-link">
-                    Email: gmunkhuu112@gmail.com
+                    Email: info@mones.org.mn
                   </a>
                 </div>
               </div>
               <div className="footer-col">
+                <p className="footer-heading">Хаяг</p>
+                <div className="text-base !leading-[normal] text-gray-80">
+                  {/* <a href="#" className="footer-link"> */}
+                  Address: 903, 9th floor, Centrum office, 1 khoroo, Sukhbaatar
+                  district, Ulaanbaatar, Mongolia
+                  {/* </a> */}
+                </div>
+              </div>
+              {/* <div className="footer-col">
                 <p className="footer-heading">Subscribe to our Newsletter</p>
                 <form className="flex flex-col gap-y-4">
                   <input
@@ -83,12 +93,13 @@ const Footer = () => {
                     Subscribe
                   </button>
                 </form>
-              </div>
+              </div> */}
             </div>
-            <div className="flex justify-between flex-wrap gap-4 p-10 mt-[70px] bg-gray-20 rounded-4xl">
+            <div className="flex justify-between flex-wrap gap-4 p-4 mt-[20px] bg-gray-20 rounded-4xl">
               <p className="text-lg text-gray-80">
-                &copy; 2024 <span className="text-primary-50">Coursat.</span>{" "}
-                All rights reserved
+                &copy; 2024{" "}
+                <span className="text-primary-50">Mongolian women's fund</span>{" "}
+                Бүх эрх хуулиар хамгаалагдсан
               </p>
               <div className="flex items-center gap-4">
                 <a href="#" className="footer-link">

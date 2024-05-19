@@ -75,15 +75,13 @@ const CustomerTable = (
         <Row justify="end">
           <Pagination
             size="small"
-            showSizeChanger
-            // onShowSizeChange={onChangePagination}
             defaultCurrent={1}
             current={pagination.current}
             pageSize={pagination.pageSize}
             total={pagination.total}
             onChange={onChangePagination}
             showTotal={(total) => `Нийт ${total}`}
-            pageSizeOptions={[10, 100, 500, 1000]}
+            pageSizeOptions={[10, 20, 30, 40]}
           />
         </Row>
       </div>

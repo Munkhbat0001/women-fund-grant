@@ -29,7 +29,7 @@ const items = [
 
 const ProjectRequest = () => {
   const { token } = theme.useToken();
-  const [current, setCurrent] = useState(4);
+  const [current, setCurrent] = useState(0);
   const next = () => {
     setCurrent(current + 1);
   };
@@ -38,8 +38,6 @@ const ProjectRequest = () => {
   };
 
   const contentStyle = {
-    lineHeight: "260px",
-    textAlign: "center",
     color: token.colorTextTertiary,
     backgroundColor: token.colorFillAlter,
     borderRadius: token.borderRadiusLG,

@@ -1,6 +1,7 @@
 import React from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
+import { validator } from "../../utils/validator";
 
 const StepTwo = () => {
   const [form] = Form.useForm();
@@ -57,26 +58,33 @@ const StepTwo = () => {
                     </Col>
                   </Row> */}
 
-                  <Form.Item label="Тайлбар" name={[field.name, "description"]}>
+                  <Form.Item
+                    label="Тайлбар"
+                    name={[field.name, "description"]}
+                    rules={validator().required().build()}
+                  >
                     <Input.TextArea />
                   </Form.Item>
                   <Form.Item
                     label="Хүлээгдэж буй үр дүн"
-                    name={[field.name, "result"]}
+                    name={[field.name, "resultWaiting"]}
+                    rules={validator().required().build()}
                   >
                     <Input.TextArea />
                   </Form.Item>
 
                   <Form.Item
                     label="Үр дүнг хэмжих шалгуур үзүүлэлт"
-                    name={[field.name, "description"]}
+                    name={[field.name, "resultMeasure"]}
+                    rules={validator().required().build()}
                   >
                     <Input.TextArea />
                   </Form.Item>
 
                   <Form.Item
                     label="Учирч болзошгүй саад бэрхшээл"
-                    name={[field.name, "description"]}
+                    name={[field.name, "problem"]}
+                    rules={validator().required().build()}
                   >
                     <Input.TextArea />
                   </Form.Item>
@@ -110,16 +118,40 @@ const StepTwo = () => {
                                   />
                                 }
                               >
-                                <Form.Item name={[subField.name, "second"]}>
+                                <Form.Item
+                                  name={[subField.name, "description"]}
+                                  rules={validator()
+                                    .required("Тайлбар оруулна уу")
+                                    .build()}
+                                >
+                                  <Input.TextArea placeholder="Тайлбар" />
+                                </Form.Item>
+                                <Form.Item
+                                  name={[subField.name, "resultWaiting"]}
+                                  rules={validator()
+                                    .required("Хүлээгдэж буй үр дүн оруулна уу")
+                                    .build()}
+                                >
                                   <Input.TextArea placeholder="Хүлээгдэж буй үр дүн" />
                                 </Form.Item>
-                                <Form.Item name={[subField.name, "second"]}>
-                                  <Input.TextArea placeholder="Хүлээгдэж буй үр дүн" />
-                                </Form.Item>
-                                <Form.Item name={[subField.name, "third"]}>
+                                <Form.Item
+                                  name={[subField.name, "resultMeasure"]}
+                                  rules={validator()
+                                    .required(
+                                      "Үр дүнг хэмжих шалгуур үзүүлэлт оруулна уу"
+                                    )
+                                    .build()}
+                                >
                                   <Input.TextArea placeholder="Үр дүнг хэмжих шалгуур үзүүлэлт" />
                                 </Form.Item>
-                                <Form.Item name={[subField.name, "forth"]}>
+                                <Form.Item
+                                  name={[subField.name, "problem"]}
+                                  rules={validator()
+                                    .required(
+                                      "Учирч болзошгүйсаад бэрхшээл оруулна уу"
+                                    )
+                                    .build()}
+                                >
                                   <Input.TextArea placeholder="Учирч болзошгүйсаад бэрхшээл" />
                                 </Form.Item>
                               </Card>

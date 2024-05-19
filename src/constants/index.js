@@ -33,25 +33,34 @@ import {
 
 export const navLinks = [
   {
-    id: "home",
-    title: "Home",
+    id: "grant",
+    title: "Тэтгэлэг",
+    link: "/",
   },
   {
-    id: "about",
-    title: "About",
+    id: "request",
+    title: "Төслүүд",
   },
-  {
-    id: "popular",
-    title: "Popular",
-  },
-  {
-    id: "instructors",
-    title: "Instructors",
-  },
-  {
-    id: "blog",
-    title: "Blog",
-  },
+  // {
+  //   id: "home",
+  //   title: "Home",
+  // },
+  // {
+  //   id: "about",
+  //   title: "About",
+  // },
+  // {
+  //   id: "popular",
+  //   title: "Popular",
+  // },
+  // {
+  //   id: "instructors",
+  //   title: "Instructors",
+  // },
+  // {
+  //   id: "blog",
+  //   title: "Blog",
+  // },
 ];
 
 export const statistics = [

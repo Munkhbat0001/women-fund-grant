@@ -2,7 +2,7 @@ const typeTemplate = "'${label}' талбарын утга буруу байна
 
 export const validationMessagesMn = {
   default: "'${label}' талбарын утга алдаатай байна",
-  required: "Оруулна уу ${label}",
+  required: "${label} оруулна уу ",
   enum: "'${name}' must be one of [${enum}]",
   email: "'${name}' must be one of [${enum}]",
   whitespace: "'${name}' cannot be empty",

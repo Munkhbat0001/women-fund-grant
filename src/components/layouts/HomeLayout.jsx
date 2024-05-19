@@ -11,7 +11,7 @@ const HomeLayout = () => {
 
   useEffect(() => {
     if (loggedIn == 0) return;
-    if (loggedIn === 2) navigate("/login");
+    // if (loggedIn === 2) navigate("/login");
   }, [loggedIn]);
 
   if (loggedIn == 0) return <Skeleton />;

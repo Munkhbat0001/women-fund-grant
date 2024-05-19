@@ -14,19 +14,38 @@ import {
   DatePicker,
 } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
+import { validator } from "../../utils/validator";
+import OSelect from "../../screens/form/OSelect";
+import OInputNumber from "../../screens/form/OInputNumber";
 
 const StepOne = () => {
+  const [form] = Form.useForm();
   return (
     <>
-      <Form layout="vertical" style={{ width: 600, justify: "center" }}>
+      <Form
+        form={form}
+        layout="vertical"
+        colon={false}
+        style={{ maxWidth: 600, justify: "center" }}
+      >
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
-            <Form.Item name="username" label="Төслийн нэр">
-              <Input placeholder="Төслийн нэр"></Input>
+            <Form.Item
+              name="projectName"
+              label="Төслийн нэр"
+              rules={validator().required().build()}
+            >
+              <Input placeholder="Төслийн нэр" />
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
           <Col flex="1 0 25%" className="column">
-            <Form.Item name="registerNumber" label="Үндэслэл">
+            <Form.Item
+              name="introduction"
+              label="Үндэслэл"
+              rules={validator().required().build()}
+            >
               <Input placeholder="Үндэслэл"></Input>
             </Form.Item>
           </Col>
@@ -34,66 +53,101 @@ const StepOne = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="username"
-              label="Тайлбар"
-              tooltip={{
-                title:
-                  "Төсөл хэрэгжүүлснээр охид, эмэгтэйчүүд, бэлгийн болон жендэрийн цөөнхөд тулгамдсан асуудлыг шийдвэрлэхэд ямар хувь нэмэр оруулах талаар 100 үгэнд багтаан бичнэ үү.",
-                icon: <InfoCircleOutlined />,
-              }}
+              name="benefit"
+              label="Төсөл хэрэгжүүлснээр охид, эмэгтэйчүүд, бэлгийн болон жендэрийн цөөнхөд тулгамдсан асуудлыг шийдвэрлэхэд ямар хувь нэмэр оруулах талаар 100 үгэнд багтаан бичнэ үү."
+              // tooltip={{
+              //   title:
+              //     "Төсөл хэрэгжүүлснээр охид, эмэгтэйчүүд, бэлгийн болон жендэрийн цөөнхөд тулгамдсан асуудлыг шийдвэрлэхэд ямар хувь нэмэр оруулах талаар 100 үгэнд багтаан бичнэ үү.",
+              //   icon: <InfoCircleOutlined />,
+              // }}
+              rules={validator().required().build()}
             >
-              <Input placeholder="Тайлбар"></Input>
+              <Input.TextArea placeholder="Тайлбар" />
             </Form.Item>
           </Col>
+        </Row>
+        <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="registerNumber"
+              name="resultId"
               label="Хүлээгдэж буй үр дүн"
               tooltip={{
                 title:
                   "Хүлээгдэж буй үр дүнтэй холбоотой тохирох үр дүнг сонгоно уу.",
                 icon: <InfoCircleOutlined />,
               }}
+              rules={validator().required().build()}
             >
-              <Input placeholder="Хүлээгдэж буй үр дүн"></Input>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item name="username" label="Төслийн зорилтот бүлэг">
-              <Input placeholder="Төслийн зорилтот бүлэг"></Input>
-            </Form.Item>
-          </Col>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item name="registerNumber" label="Шууд үр шим хүртэгчийн тоо">
-              <Input placeholder="Шууд үр шим хүртэгчийн тоо"></Input>
-            </Form.Item>
-          </Col>
-        </Row>
-        <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item name="username" label="Шууд бус үр шим хүртэгчийн тоо">
-              <Input placeholder="Шууд бус үр шим хүртэгчийн тоо"></Input>
+              <OSelect
+                placeholder="Хүлээгдэж буй үр дүн"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="registerNumber"
+              name="groupId"
+              label="Төслийн зорилтот бүлэг"
+              rules={validator().required().build()}
+            >
+              <OSelect
+                placeholder="Төслийн зорилтот бүлэг"
+                style={{ width: "100%" }}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={12}>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="directBenefitCount"
+              label="Шууд үр шим хүртэгчийн тоо"
+              rules={validator().required().build()}
+            >
+              <OInputNumber
+                placeholder="Шууд үр шим хүртэгчийн тоо"
+                style={{ width: "100%" }}
+                formatter={true}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="notDirectBenefitCount"
+              label="Шууд бус үр шим хүртэгчийн тоо"
+              rules={validator().required().build()}
+            >
+              <OInputNumber
+                placeholder="Шууд бус үр шим хүртэгчийн тоо"
+                style={{ width: "100%" }}
+                formatter={true}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="planText"
               label="Төсөл хэрэгжүүлэх арга зүй"
               tooltip={{
                 title:
                   "Төсөл хэрэгжүүлэх арга зүй, тогтвортой байдлын төлөвлөгөө (Төсөл хэрэгжүүлэх арга арга зүй, мониторинг, үнэлгээ, төслийн тогтвортой байдлыг хэрхэн хангах талаар 300 үгэнд багтаан бичнэ үү) ",
                 icon: <InfoCircleOutlined />,
               }}
+              rules={validator().required().build()}
             >
-              <Input placeholder="Төсөл хэрэгжүүлэх арга зүй"></Input>
+              <Input.TextArea placeholder="Төсөл хэрэгжүүлэх арга зүй" />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
-            <Form.Item name="beginDate" label="Төсөл хэрэгжиж эхлэх огноо">
+            <Form.Item
+              name="beginDate"
+              label="Төсөл хэрэгжиж эхлэх огноо"
+              rules={validator().required().build()}
+            >
               <DatePicker
                 placeholder="Төсөл хэрэгжиж эхлэх огноо"
                 style={{ width: "100%" }}
@@ -101,7 +155,11 @@ const StepOne = () => {
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
-            <Form.Item name="endDate" label="Төсөл хэрэгжиж дуусах огноо">
+            <Form.Item
+              name="endDate"
+              label="Төсөл хэрэгжиж дуусах огноо"
+              rules={validator().required().build()}
+            >
               <DatePicker
                 placeholder="Төсөл хэрэгжиж дуусах огноо"
                 style={{ width: "100%" }}
@@ -113,13 +171,30 @@ const StepOne = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="username"
+              name="requestAmount"
               label="МОНЭС-ээс хүсч буй тэтгэлгийн нийт дүн (төгрөгөөр)"
+              rules={validator().required().build()}
             >
-              <Input placeholder="МОНЭС-ээс хүсч буй тэтгэлгийн нийт дүн (төгрөгөөр)"></Input>
+              <OInputNumber
+                placeholder="МОНЭС-ээс хүсч буй тэтгэлгийн нийт дүн (төгрөгөөр)"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column"></Col>
+        </Row>
+        <Row justify="center">
+          <Row justify="end" style={{ width: 800 }}>
+            <Button
+              size="large"
+              type="primary"
+              onClick={() => {
+                form.submit();
+              }}
+            >
+              Үргэлжлүүлэх
+            </Button>
+          </Row>
         </Row>
       </Form>
     </>

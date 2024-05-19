@@ -1,72 +1,6 @@
 import React from "react";
 
 const TailwindTable = ({ columns = [], rows = [] }) => {
-  // columns = [
-  //   {
-  //     key: "1",
-  //     label: "Product name",
-  //     name: "name",
-  //     bold: true,
-  //   },
-  //   {
-  //     key: "2",
-  //     label: "Color",
-  //     name: "color",
-  //   },
-  //   {
-  //     key: "3",
-  //     label: "Category",
-  //     name: "category",
-  //   },
-  //   {
-  //     key: "4",
-  //     label: "Price",
-  //     name: "price",
-  //   },
-  //   {
-  //     key: "5",
-  //     label: "Action",
-  //     name: "action",
-  //   },
-  // ];
-  // rows = [
-  //   {
-  //     name: "Apple MacBook Pro 17",
-  //     color: "Silver",
-  //     category: "Laptop",
-  //     price: "$2999",
-  //     action: "Edit",
-  //   },
-  //   {
-  //     name: "Microsoft Surface Pro",
-  //     color: "White",
-  //     category: "Laptop PC",
-  //     price: "$1999",
-  //     action: "Edit",
-  //   },
-  //   {
-  //     name: "Magic Mouse 2",
-  //     color: "Black",
-  //     category: "Accessories",
-  //     price: "$99",
-  //     action: "Edit",
-  //   },
-  //   {
-  //     name: "Google Pixel Phone",
-  //     color: "Gray",
-  //     category: "Phone",
-  //     price: "$799",
-  //     action: "Edit",
-  //   },
-  //   {
-  //     name: "Apple Watch 5",
-  //     color: "Red",
-  //     category: "Wearables",
-  //     price: "$799",
-  //     action: "Edit",
-  //   },
-  // ];
-
   const classRow = {
     bold: "font-medium",
     textGray900: "text-gray-900",
@@ -93,11 +27,17 @@ const TailwindTable = ({ columns = [], rows = [] }) => {
             return (
               <tr key={row.name} className=" border-b dark:border-gray-700">
                 {columns.map((col) => {
-                  const cl = Object.values(classRow).join(" ");
-                  console.log("cl: ", cl);
+                  const cls = Object.values(classRow).join(" ");
+                  let render;
+                  if (col.render) {
+                    render = col.render(row[col.name], row);
+                  } else {
+                    render = row[col.name];
+                  }
+
                   return (
-                    <td key={col.key} className={`px-6 py-4 ${cl}`}>
-                      {row[col.name]}
+                    <td key={col.key} className={`px-6 py-4 ${cls}`}>
+                      {render}
                     </td>
                   );
                 })}

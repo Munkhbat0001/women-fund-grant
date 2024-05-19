@@ -12,6 +12,9 @@ import {
   Select,
 } from "antd";
 import OSelect from "../../screens/form/OSelect";
+import OInputNumber from "../../screens/form/OInputNumber";
+import { validator } from "../../utils/validator";
+
 const options = [];
 for (let i = 10; i < 36; i++) {
   options.push({
@@ -58,7 +61,11 @@ const StepFour = () => {
                     />
                   }
                 >
-                  <Form.Item label="Зорилт" name={[field.name, "description"]}>
+                  <Form.Item
+                    label="Зорилт"
+                    name={[field.name, "objectId"]}
+                    rules={validator().required().build()}
+                  >
                     <OSelect style={{ width: "100%" }} placeholder="сонгох" />
                   </Form.Item>
 
@@ -93,12 +100,26 @@ const StepFour = () => {
                               >
                                 <Row gutter={12}>
                                   <Col span={12}>
-                                    <Form.Item name={[subField.name, "second"]}>
-                                      <Input placeholder="Тоо, ширхэг" />
+                                    <Form.Item
+                                      name={[subField.name, "quantity"]}
+                                      rules={validator()
+                                        .required("Тоо, ширхэг оруулна уу")
+                                        .build()}
+                                    >
+                                      <OInputNumber
+                                        placeholder="Тоо, ширхэг"
+                                        formatter={true}
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                   <Col span={12}>
-                                    <Form.Item name={[subField.name, "second"]}>
+                                    <Form.Item
+                                      name={[subField.name, "measureUnit"]}
+                                      rules={validator()
+                                        .required("Хэмжих нэгж оруулна уу")
+                                        .build()}
+                                    >
                                       <OSelect
                                         placeholder="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт)"
                                         style={{ width: "100%" }}
@@ -108,37 +129,77 @@ const StepFour = () => {
                                 </Row>
                                 <Row gutter={12}>
                                   <Col span={12}>
-                                    <Form.Item name={[subField.name, "second"]}>
-                                      <Input placeholder="Нэгж үнэ" />
+                                    <Form.Item
+                                      name={[subField.name, "unitPrice"]}
+                                      rules={validator()
+                                        .required("Нэгж үнэ оруулна уу")
+                                        .build()}
+                                    >
+                                      <OInputNumber
+                                        placeholder="Нэгж үнэ"
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                   <Col span={12}>
                                     <Form.Item
-                                      name={[subField.name, "second2"]}
+                                      name={[subField.name, "totalPrice"]}
+                                      rules={validator()
+                                        .required("Нийт үнэ оруулна уу")
+                                        .build()}
                                     >
-                                      <Input placeholder="Нийт үнэ" />
+                                      <OInputNumber
+                                        placeholder="Нийт үнэ"
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                 </Row>
                                 <Row gutter={12}>
                                   <Col span={12}>
-                                    <Form.Item name={[subField.name, "second"]}>
-                                      <Input placeholder="Төсөл хэрэгжүүлэгч байгууллагаас" />
+                                    <Form.Item
+                                      name={[subField.name, "provider"]}
+                                      rules={validator()
+                                        .required(
+                                          "Төсөл хэрэгжүүлэгч байгууллагаас оруулна уу"
+                                        )
+                                        .build()}
+                                    >
+                                      <OInputNumber
+                                        placeholder="Төсөл хэрэгжүүлэгч байгууллагаас"
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                   <Col span={12}></Col>
                                 </Row>
                                 <Row gutter={12}>
                                   <Col span={12}>
-                                    <Form.Item name={[subField.name, "second"]}>
-                                      <Input placeholder="Бусад эх үүсвэрээс" />
+                                    <Form.Item
+                                      name={[subField.name, "mnFund"]}
+                                      rules={validator()
+                                        .required(
+                                          "Бусад эх үүсвэрээс оруулна уу"
+                                        )
+                                        .build()}
+                                    >
+                                      <OInputNumber
+                                        placeholder="Бусад эх үүсвэрээс"
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                   <Col span={12}>
                                     <Form.Item
-                                      name={[subField.name, "second2"]}
+                                      name={[subField.name, "other"]}
+                                      rules={validator()
+                                        .required("МОНЭС-аас оруулна уу")
+                                        .build()}
                                     >
-                                      <Input placeholder="МОНЭС-аас" />
+                                      <OInputNumber
+                                        placeholder="МОНЭС-аас"
+                                        style={{ width: "100%" }}
+                                      />
                                     </Form.Item>
                                   </Col>
                                 </Row>

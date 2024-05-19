@@ -2,6 +2,8 @@ import React from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
 import OSelect from "../../screens/form/OSelect";
+import OInputNumber from "../../screens/form/OInputNumber";
+import { validator } from "../../utils/validator";
 
 const StepThree = () => {
   const [form] = Form.useForm();
@@ -42,8 +44,12 @@ const StepThree = () => {
                     />
                   }
                 >
-                  <Form.Item label="Зорилт" name={[field.name, "description"]}>
-                    <OSelect style={{ width: "100%" }} />
+                  <Form.Item
+                    label="Зорилт"
+                    name={[field.name, "objectId"]}
+                    rules={validator().required().build()}
+                  >
+                    <OSelect style={{ width: "100%" }} placeholder="сонгох" />
                   </Form.Item>
 
                   {/* Nest Form.List */}
@@ -75,13 +81,36 @@ const StepThree = () => {
                                   />
                                 }
                               >
-                                <Form.Item name={[subField.name, "second"]}>
-                                  <Input.TextArea placeholder="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц" />
+                                <Form.Item
+                                  name={[subField.name, "requirement"]}
+                                  rules={validator()
+                                    .required(
+                                      "Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц оруулна уу"
+                                    )
+                                    .build()}
+                                >
+                                  <Input.TextArea
+                                    placeholder="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц"
+                                    style={{ width: "100%" }}
+                                  />
                                 </Form.Item>
-                                <Form.Item name={[subField.name, "second"]}>
-                                  <Input.TextArea placeholder="Хэрэгжүүлэх хугацаа" />
+                                <Form.Item
+                                  name={[subField.name, "termUnit"]}
+                                  rules={validator()
+                                    .required("Хэрэгжүүлэх хугацаа оруулна уу")
+                                    .build()}
+                                >
+                                  <OSelect
+                                    placeholder="Хэрэгжүүлэх хугацаа"
+                                    style={{ width: "100%" }}
+                                  />
                                 </Form.Item>
-                                <Form.Item name={[subField.name, "third"]}>
+                                <Form.Item
+                                  name={[subField.name, "ownerName"]}
+                                  rules={validator()
+                                    .required("Хариуцах эзэн оруулна уу")
+                                    .build()}
+                                >
                                   <Input.TextArea placeholder="Хариуцах эзэн" />
                                 </Form.Item>
                               </Card>
