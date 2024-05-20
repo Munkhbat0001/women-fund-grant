@@ -13,6 +13,7 @@ const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
 
 const CustomerTable = (
   {
+    idField,
     selectAPI,
     autoload = true,
     serverPaging = true,
@@ -69,7 +70,7 @@ const CustomerTable = (
   return (
     <>
       <div className="relative overflow-x-auto shadow-lg sm:rounded-lg">
-        <TailwindTable columns={columns} rows={dataSource} />
+        <TailwindTable idField={idField} columns={columns} rows={dataSource} />
       </div>
       <div className=" p-4">
         <Row justify="end">

@@ -1,6 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import { Button, Checkbox, Form, Input, Flex, Row, Col, Radio } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
+import { useAxios } from "../hooks";
+import { CUSTOMER_REGISTER } from "../utils/operation";
+import { useNavigate } from "react-router-dom";
 const boxStyle = {
   width: "100%",
   height: "100%",
@@ -8,8 +11,20 @@ const boxStyle = {
   // border: "1px solid #40a9ff",
 };
 const Register = () => {
+  const navigate = useNavigate();
+  const [typeId, setTypeId] = useState(1);
+
   const onFinish = (values) => {
-    console.log("Success:", values);
+    const customer = {
+      typeId,
+      ...values,
+    };
+    useAxios(CUSTOMER_REGISTER, customer, {
+      method: "POST",
+      showSuccess: true,
+    }).then((res) => {
+      navigate("/login");
+    });
   };
   const onFinishFailed = (errorInfo) => {
     console.log("Failed:", errorInfo);
@@ -30,12 +45,13 @@ const Register = () => {
             </h2>
             <Flex style={boxStyle} justify="center" align="center">
               <Radio.Group
-                defaultValue="a"
+                value={typeId}
+                onChange={(e) => setTypeId(e.target.value)}
                 // optionType="button"
                 // buttonStyle="solid"
               >
-                <Radio.Button value="a">Байгууллага</Radio.Button>
-                <Radio.Button value="b">Бүлгээр</Radio.Button>
+                <Radio.Button value={1}>Байгууллага</Radio.Button>
+                <Radio.Button value={2}>Бүлгээр</Radio.Button>
               </Radio.Group>
             </Flex>
             <br />

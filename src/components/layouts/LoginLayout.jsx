@@ -1,11 +1,11 @@
 import React, { useContext, useEffect } from "react";
 import { Outlet, useNavigate } from "react-router-dom";
 import { Skeleton } from "antd";
-import { CustomerContext } from "../../context/CustomerContext";
+import { SystemContext } from "../../context/SystemContext";
 
 const LoginLayout = () => {
   const navigate = useNavigate();
-  const { loggedIn } = useContext(CustomerContext);
+  const { loggedIn } = useContext(SystemContext);
 
   useEffect(() => {
     if (loggedIn == 0) return;

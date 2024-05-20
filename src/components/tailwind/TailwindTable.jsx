@@ -1,6 +1,6 @@
 import React from "react";
 
-const TailwindTable = ({ columns = [], rows = [] }) => {
+const TailwindTable = ({ idField, columns = [], rows = [] }) => {
   const classRow = {
     bold: "font-medium",
     textGray900: "text-gray-900",
@@ -31,7 +31,7 @@ const TailwindTable = ({ columns = [], rows = [] }) => {
         <tbody>
           {rows.map((row) => {
             return (
-              <tr key={row.name} className=" border-b dark:border-gray-700">
+              <tr key={row[idField]} className=" border-b dark:border-gray-700">
                 {columns.map((col) => {
                   const cls = Object.values(classRow).join(" ");
                   let render;

@@ -3,24 +3,23 @@ import { Button, Checkbox, Form, Input, Flex, Row, Col, Radio } from "antd";
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useAxios } from "../hooks";
 import { validator } from "../utils/validator";
-import { CUSTOMER_LOGIN } from "../utils/operation";
-import { CustomerContext } from "../context/CustomerContext";
+import { ADMIN_LOGIN, CUSTOMER_LOGIN } from "../utils/operation";
+import { SystemContext } from "../context/SystemContext";
 
 const Login = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const { loginUser } = useContext(CustomerContext);
+  const { loginUser } = useContext(SystemContext);
 
   const onFinish = (values) => {
     setMessage("");
 
     setLoading(true);
-    useAxios(CUSTOMER_LOGIN, values, { method: "POST" })
+    useAxios(ADMIN_LOGIN, values, { method: "POST" })
       .then((res) => {
-        console.log("res: ", res);
         loginUser(res);
-        localStorage.setItem("customer", JSON.stringify(res));
+        localStorage.setItem("user", JSON.stringify(res));
       })
       .catch((err) => {
         setMessage(err);
@@ -54,7 +53,7 @@ const Login = () => {
               <Form.Item
                 label="И-мэйл"
                 name="loginName"
-                rules={validator().email().build()}
+                rules={validator().required().build()}
               >
                 <Input prefix={<MailOutlined />} size="large" />
               </Form.Item>
@@ -72,6 +71,7 @@ const Login = () => {
                   htmlType="submit"
                   size="large"
                   style={{ width: "100%" }}
+                  loading={loading}
                 >
                   Нэвтрэх
                 </Button>

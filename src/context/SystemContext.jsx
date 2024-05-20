@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { useAxios } from "../hooks";
+import { ADMIN_INFO } from "../utils/operation";
 
-import { ADMIN_INFO, CUSTOMER_INFO } from "../utils/operation";
+const SystemContext = React.createContext({});
 
-const CustomerContext = React.createContext({});
-
-const CustomerProvider = ({ children }) => {
+const SystemProvider = ({ children }) => {
   const [user, setUser] = useState({});
   const [loggedIn, setLoggedIn] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -18,7 +17,7 @@ const CustomerProvider = ({ children }) => {
   const logoutUser = () => {
     setUser({});
     setLoggedIn(2);
-    localStorage.removeItem("customer");
+    localStorage.removeItem("user");
   };
 
   const logout = () => {
@@ -36,16 +35,16 @@ const CustomerProvider = ({ children }) => {
 
   useEffect(() => {
     if (loggedIn !== 0) return;
+    const user = JSON.parse(localStorage.getItem("user"));
 
     useAxios(ADMIN_INFO)
-      .then((res) => {
-        loginUser(res);
-        const customer = JSON.parse(localStorage.getItem("customer"));
+      .then((data) => {
+        loginUser(data);
         const new_info = {
-          ...res,
-          token: customer?.token,
+          ...data,
+          token: user?.token,
         };
-        localStorage.setItem("customer", JSON.stringify(new_info));
+        localStorage.setItem("user", JSON.stringify(new_info));
       })
       .catch((err) => {
         let error = err.response.data || err.message || "Server Error";
@@ -56,10 +55,10 @@ const CustomerProvider = ({ children }) => {
   }, [loggedIn]);
 
   return (
-    <CustomerContext.Provider value={contextProps}>
+    <SystemContext.Provider value={contextProps}>
       {children}
-    </CustomerContext.Provider>
+    </SystemContext.Provider>
   );
 };
 
-export { CustomerContext, CustomerProvider };
+export { SystemContext, SystemProvider };

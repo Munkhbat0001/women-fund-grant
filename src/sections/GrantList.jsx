@@ -51,7 +51,11 @@ const GrantList = () => {
   return (
     <>
       <div className="container pt-[150px] pb-[100px] ">
-        <CustomerTable selectAPI={CUSTOMER_GRANT} columns={columns} />
+        <CustomerTable
+          idField="grantId"
+          selectAPI={CUSTOMER_GRANT}
+          columns={columns}
+        />
       </div>
     </>
   );

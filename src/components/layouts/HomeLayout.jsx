@@ -3,14 +3,15 @@ import { useEffect, useContext } from "react";
 import Header from "../Header";
 import Footer from "../Footer";
 import { Skeleton } from "antd";
-import { CustomerContext } from "../../context/CustomerContext";
+import { SystemContext } from "../../context/SystemContext";
 
 const HomeLayout = () => {
   const navigate = useNavigate();
-  const { loggedIn, user, logout } = useContext(CustomerContext);
+  const { loggedIn, user, logout } = useContext(SystemContext);
 
   useEffect(() => {
     if (loggedIn == 0) return;
+    if (user.isAdmin === true) navigate("/admin");
     // if (loggedIn === 2) navigate("/login");
   }, [loggedIn]);
 

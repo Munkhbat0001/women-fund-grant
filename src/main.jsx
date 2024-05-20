@@ -5,7 +5,7 @@ import App from "./App";
 import "./index.css";
 import enUSIntl from "antd/locale/en_US";
 import { validationMessagesMn } from "./locales/antdValidation";
-import { CustomerProvider } from "./context/CustomerContext";
+import { SystemProvider } from "./context/SystemContext";
 
 const formConfig = {
   validateMessages: validationMessagesMn,
@@ -22,10 +22,10 @@ export const antdConfig = {
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <ConfigProvider form={formConfig} {...antdConfig}>
-    <CustomerProvider>
+    <SystemProvider>
       {/* <React.StrictMode> */}
       <App />
       {/* </React.StrictMode> */}
-    </CustomerProvider>
+    </SystemProvider>
   </ConfigProvider>
 );
