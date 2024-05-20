@@ -9,7 +9,7 @@ const GrantList = () => {
 
   const onClick = (row) => {
     // todo энэ тэтгэлэг дээр хүсэлт явуулсан эсэхийг шалгахаа шийдээгүй
-    navigate("/request");
+    navigate(`/request/${row.grantId}`);
   };
 
   const columns = [

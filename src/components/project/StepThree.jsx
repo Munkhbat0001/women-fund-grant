@@ -5,7 +5,7 @@ import OSelect from "../../screens/form/OSelect";
 import OInputNumber from "../../screens/form/OInputNumber";
 import { validator } from "../../utils/validator";
 
-const StepThree = () => {
+const StepThree = ({ next, prev }) => {
   const [form] = Form.useForm();
 
   return (
@@ -136,6 +136,31 @@ const StepThree = () => {
             </div>
           )}
         </Form.List>
+        <br />
+        <Row justify="center">
+          <Row gutter={12} justify="end" style={{ width: 800 }}>
+            <Space>
+              <Button
+                // size="large"
+                onClick={() => {
+                  prev && prev();
+                }}
+              >
+                Буцах
+              </Button>
+              <Button
+                // size="large"
+                type="primary"
+                onClick={() => {
+                  // form.submit();
+                  next && next();
+                }}
+              >
+                Үргэлжлүүлэх
+              </Button>
+            </Space>
+          </Row>
+        </Row>
       </Form>
     </>
   );

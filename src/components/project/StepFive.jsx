@@ -1,11 +1,29 @@
-import React from "react";
+import React, { useRef, useState } from "react";
 import {
-  MinusCircleOutlined,
+  EditOutlined,
+  DeleteOutlined,
+  EyeOutlined,
   PlusOutlined,
-  UploadOutlined,
+  DownloadOutlined,
 } from "@ant-design/icons";
-import { Button, Form, Input, Space, Upload, Checkbox, Table } from "antd";
-const StepFive = () => {
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Space,
+  Typography,
+  Row,
+  Col,
+  Select,
+  Table,
+} from "antd";
+import StepFiveModal from "./StepFiveModal";
+import useAxios from "../../hooks/useAxios";
+import { CUSTOMER_PROJECT_MEMBER } from "../../utils/operation";
+const StepFive = ({ next, prev, projectId }) => {
+  const formRef = useRef(null);
+  const [dataSource, setDataSource] = useState([]);
   const onFinish = (values) => {
     console.log("Received values of form:", values);
   };
@@ -13,78 +31,92 @@ const StepFive = () => {
   const columns = [
     {
       title: "Овог",
-      dataIndex: "name",
+      dataIndex: "lastName",
     },
     {
       title: "Нэр",
-      dataIndex: "age",
+      dataIndex: "firstName",
     },
     {
       title: "Албан тушаал",
-      dataIndex: "address",
+      dataIndex: "position",
     },
     {
       title: "Төсөлд гүйцэтгэх үүрэг",
-      dataIndex: "address",
+      dataIndex: "role",
     },
     {
       title: "Удирдах ажилтан",
-      dataIndex: "address",
+      dataIndex: "leader",
     },
     {
       title: "Төсөл хариуцах ажилтан",
-      dataIndex: "address",
+      dataIndex: "owner",
     },
   ];
 
-  const data = [
-    {
-      key: "1",
-      name: "Овог",
-      age: "Албан тушаал",
-      address: "New York No. 1 Lake Park",
-    },
-    {
-      key: "2",
-      name: "Албан тушаал",
-      age: 42,
-      address: "London No. 1 Lake Park",
-    },
-    {
-      key: "3",
-      name: "Албан тушаал",
-      age: 32,
-      address: "Sydney No. 1 Lake Park",
-    },
-    {
-      key: "4",
-      name: "Төсөлд гүйцэтгэх үүрг",
-      age: 32,
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "5",
-      name: "Удирдах ажилтан",
-      age: 32,
-      address: "London No. 2 Lake Park",
-    },
-    {
-      key: "6",
-      name: "Төсөл хариуцах ажилтан",
-      age: 32,
-      address: "London No. 2 Lake Park",
-    },
-  ];
+  const fetch = () => {
+    if (projectId)
+      useAxios(CUSTOMER_PROJECT_MEMBER + `/${projectId}`).then((res) => {
+        setDataSource(res);
+      });
+  };
 
   return (
-    <Table
-      style={{ width: "100%" }}
-      bordered
-      size="small"
-      pagination={false}
-      columns={columns}
-      dataSource={data}
-    />
+    <>
+      <Row justify="end" style={{ width: "100%", marginBottom: "16px" }}>
+        <Button
+          icon={<PlusOutlined />}
+          type="primary"
+          onClick={() => {
+            formRef.current.show();
+          }}
+        >
+          Нэмэх
+        </Button>
+      </Row>
+      <Table
+        style={{ width: "100%" }}
+        bordered
+        size="small"
+        pagination={false}
+        columns={columns}
+        dataSource={dataSource}
+      />
+      {React.createElement(StepFiveModal, {
+        ref: formRef,
+        hide: () => formRef.current.hide(),
+        afterSave: () => {
+          fetch();
+        },
+      })}
+      <Row
+        gutter={12}
+        justify="end"
+        style={{ width: "100%", marginTop: "20px" }}
+      >
+        <Space>
+          <Button
+            // size="large"
+            onClick={() => {
+              prev && prev();
+            }}
+          >
+            Буцах
+          </Button>
+          <Button
+            // size="large"
+            type="primary"
+            onClick={() => {
+              // form.submit();
+              // next && next();
+            }}
+          >
+            Хүсэлт илгээх
+          </Button>
+        </Space>
+      </Row>
+    </>
     // <Form
     //   name="dynamic_form_nest_item"
     //   onFinish={onFinish}

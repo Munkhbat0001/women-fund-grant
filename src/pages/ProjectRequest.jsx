@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { Steps, Form, Button, Row, Col, theme } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import StepOne from "../components/project/StepOne";
@@ -29,12 +29,16 @@ const items = [
 
 const ProjectRequest = () => {
   const { token } = theme.useToken();
-  const [current, setCurrent] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const [projectId, setProjectId] = useState(null);
+  const oneRef = useRef(null);
+
   const next = () => {
-    setCurrent(current + 1);
+    setCurrentStep(currentStep + 1);
   };
+
   const prev = () => {
-    setCurrent(current - 1);
+    setCurrentStep(currentStep - 1);
   };
 
   const contentStyle = {
@@ -45,39 +49,41 @@ const ProjectRequest = () => {
     padding: 16,
   };
 
-  const onContinue = (e) => {};
+  const onContinue = (e) => {
+    oneRef.current.submit();
+  };
 
-  const onChange = (step) => {
-    setCurrent(step);
+  const onChangeStep = (step) => {
+    setCurrentStep(step);
   };
 
   return (
     <div className="container">
       <div className="pt-[150px] pb-[100px]">
         <Steps
-          current={current}
-          onChange={onChange}
+          current={currentStep}
+          onChange={onChangeStep}
           percent={60}
           items={items}
         />
         <br />
         <div style={contentStyle}>
           <Row justify="center">
-            {current === 0 && <StepOne />}
-            {current === 1 && <StepTwo />}
-            {current === 2 && <StepThree />}
-            {current === 3 && <StepFour />}
-            {current === 4 && <StepFive />}
+            {currentStep === 0 && <StepOne next={next} prev={prev} />}
+            {currentStep === 1 && <StepTwo next={next} prev={prev} />}
+            {currentStep === 2 && <StepThree next={next} prev={prev} />}
+            {currentStep === 3 && <StepFour next={next} prev={prev} />}
+            {currentStep === 4 && <StepFive next={next} prev={prev} />}
           </Row>
         </div>
-        <br />
+        {/* <br />
         <Row justify="center">
           <Row justify="end" style={{ width: 800 }}>
             <Button size="large" type="primary" onClick={onContinue}>
               Үргэлжлүүлэх
             </Button>
           </Row>
-        </Row>
+        </Row> */}
       </div>
     </div>
   );

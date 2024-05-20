@@ -16,7 +16,7 @@ export default () => {
         </Route>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<Home />} />
-          <Route path="/request" element={<ProjectRequest />} />
+          <Route path="/request/:grantId" element={<ProjectRequest />} />
         </Route>
       </Routes>
     </BrowserRouter>

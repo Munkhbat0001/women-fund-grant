@@ -10,8 +10,14 @@ const TailwindTable = ({ columns = [], rows = [] }) => {
 
   return (
     <>
-      <table className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
-        <thead className="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+      <table
+        className="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400"
+        // className="min-w-full text-sm text-left font-light text-surface dark:text-white"
+      >
+        <thead
+          className="text-xs uppercase bg-gray-10  text-white dark:text-gray-10"
+          // className="border-b border-neutral-200 bg-gray-10 font-medium text-white dark:border-white/10"
+        >
           <tr>
             {columns.map((col) => {
               return (

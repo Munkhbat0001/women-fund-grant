@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   Steps,
   Form,
@@ -18,15 +18,16 @@ import { validator } from "../../utils/validator";
 import OSelect from "../../screens/form/OSelect";
 import OInputNumber from "../../screens/form/OInputNumber";
 
-const StepOne = () => {
+const StepOne = ({ next, prev }, ref) => {
   const [form] = Form.useForm();
   return (
     <>
       <Form
+        ref={ref}
         form={form}
         layout="vertical"
         colon={false}
-        style={{ maxWidth: 600, justify: "center" }}
+        style={{ maxWidth: 800, justify: "center" }}
       >
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
@@ -184,16 +185,27 @@ const StepOne = () => {
           <Col flex="1 0 25%" className="column"></Col>
         </Row>
         <Row justify="center">
-          <Row justify="end" style={{ width: 800 }}>
-            <Button
-              size="large"
-              type="primary"
-              onClick={() => {
-                form.submit();
-              }}
-            >
-              Үргэлжлүүлэх
-            </Button>
+          <Row gutter={12} justify="end" style={{ width: 800 }}>
+            <Space>
+              {/* <Button
+                // size="large"
+                onClick={() => {
+                  prev && prev();
+                }}
+              >
+                Болих
+              </Button> */}
+              <Button
+                // size="large"
+                type="primary"
+                onClick={() => {
+                  // form.submit();
+                  next && next();
+                }}
+              >
+                Үргэлжлүүлэх
+              </Button>
+            </Space>
           </Row>
         </Row>
       </Form>
@@ -201,4 +213,4 @@ const StepOne = () => {
   );
 };
 
-export default StepOne;
+export default forwardRef(StepOne);

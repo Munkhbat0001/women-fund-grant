@@ -3,7 +3,7 @@ import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
 import { validator } from "../../utils/validator";
 
-const StepTwo = () => {
+const StepTwo = ({ next, prev }) => {
   const [form] = Form.useForm();
 
   return (
@@ -177,6 +177,31 @@ const StepTwo = () => {
             </div>
           )}
         </Form.List>
+        <br />
+        <Row justify="center">
+          <Row gutter={12} justify="end" style={{ width: 800 }}>
+            <Space>
+              <Button
+                // size="large"
+                onClick={() => {
+                  prev && prev();
+                }}
+              >
+                Буцах
+              </Button>
+              <Button
+                // size="large"
+                type="primary"
+                onClick={() => {
+                  // form.submit();
+                  next && next();
+                }}
+              >
+                Үргэлжлүүлэх
+              </Button>
+            </Space>
+          </Row>
+        </Row>
       </Form>
     </>
   );

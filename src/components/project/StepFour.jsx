@@ -22,7 +22,7 @@ for (let i = 10; i < 36; i++) {
     label: i.toString(36) + i,
   });
 }
-const StepFour = () => {
+const StepFour = ({ next, prev }) => {
   const [form] = Form.useForm();
 
   return (
@@ -226,6 +226,31 @@ const StepFour = () => {
             </div>
           )}
         </Form.List>
+        <br />
+        <Row justify="center">
+          <Row gutter={12} justify="end" style={{ width: 800 }}>
+            <Space>
+              <Button
+                // size="large"
+                onClick={() => {
+                  prev && prev();
+                }}
+              >
+                Буцах
+              </Button>
+              <Button
+                // size="large"
+                type="primary"
+                onClick={() => {
+                  // form.submit();
+                  next && next();
+                }}
+              >
+                Үргэлжлүүлэх
+              </Button>
+            </Space>
+          </Row>
+        </Row>
       </Form>
     </>
   );
