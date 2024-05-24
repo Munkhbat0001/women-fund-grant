@@ -7,6 +7,7 @@ import ProjectRequest from "../pages/ProjectRequest";
 import LoginLayout from "../components/layouts/LoginLayout";
 import MainLayout from "../components/layouts/MainLayout";
 import AdminUser from "../pages/admin/AdminUser";
+import GrantList from "../pages/admin/GrantList";
 
 export default () => {
   return (
@@ -21,7 +22,8 @@ export default () => {
           <Route path="/request/:grantId" element={<ProjectRequest />} />
         </Route>
         <Route element={<MainLayout />}>
-          <Route path="/admin" element={<AdminUser />} />
+          <Route path="/admin-user" element={<AdminUser />} />
+          <Route path="/grant-list" element={<GrantList />} />
         </Route>
       </Routes>
     </BrowserRouter>

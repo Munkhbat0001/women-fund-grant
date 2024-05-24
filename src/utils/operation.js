@@ -37,6 +37,7 @@ export const CUSTOMER_PROJECT_MEMBER_DELETE = "/project/member";
 // Admin
 export const ADMIN_LOGIN = "/auth/login";
 export const ADMIN_INFO = "/auth/info";
+export const ADMIN_MENU = "/menu";
 
 // Core
 export const CONST_PROJECT_RESULT = "/v2/const?begin=300&end=302";

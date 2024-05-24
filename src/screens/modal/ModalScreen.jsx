@@ -1,10 +1,10 @@
-// import { SystemContext } from "@/context/SystemContext";
 import { Modal, Space, Button, Spin } from "antd";
 import { forwardRef, useContext, useState } from "react";
+import { SystemContext } from "../../context/SystemContext";
 
 const ModalScreen = ({ onCancel, onOk, children, ...others }, ref) => {
-  //   const { loading } = useContext(SystemContext);
-  const [loading, setLoading] = useState(false);
+  const { loading } = useContext(SystemContext);
+  // const [loading, setLoading] = useState(false);
 
   const customFooter = [
     <Space className="ml-auto">
