@@ -76,7 +76,7 @@ const ProjectRequest = () => {
   useEffect(() => {
     useAxios(CUSTOMER_PROJECT_BY_GRANT + `/${grantId}`).then((res) => {
       setProject(res);
-      setCurrentStep(res.stepId);
+      setCurrentStep(res.stepId || 0);
     });
   }, []);
 
