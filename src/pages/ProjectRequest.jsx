@@ -1,15 +1,20 @@
-import React, { useRef, useState } from "react";
-import { Steps, Form, Button, Row, Col, theme } from "antd";
+import React, { useContext, useEffect, useRef, useState } from "react";
+import { Steps, Form, Button, Row, Col, theme, Spin, Skeleton } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import StepOne from "../components/project/StepOne";
 import StepTwo from "../components/project/StepTwo";
 import StepThree from "../components/project/StepThree";
 import StepFour from "../components/project/StepFour";
 import StepFive from "../components/project/StepFive";
+import useAxios from "../hooks/useAxios";
+import { CUSTOMER_PROJECT_BY_GRANT } from "../utils/operation";
+import { useParams, useSearchParams } from "react-router-dom";
+import { SystemContext } from "../context/SystemContext";
 
 const items = [
   {
-    title: "Төслийн танилцуулга",
+    title: "Төслийн",
+    description: "танилцуулга",
   },
   {
     title: "Төслийн зорилго",
@@ -23,18 +28,27 @@ const items = [
     title: "Төсвийн санал",
   },
   {
-    title: "Төсөл хэрэгжүүлэх баг",
+    title: "Төсөл",
+    description: "хэрэгжүүлэх баг",
   },
+  // {
+  //   title: "Баталгаажуулалт",
+  // },
 ];
+
+export const ProjectContext = React.createContext({});
 
 const ProjectRequest = () => {
   const { token } = theme.useToken();
-  const [currentStep, setCurrentStep] = useState(0);
-  const [projectId, setProjectId] = useState(null);
-  const oneRef = useRef(null);
+  const [currentStep, setCurrentStep] = useState(null);
+  const [project, setProject] = useState(null);
+  const { loading } = useContext(SystemContext);
+
+  const { grantId } = useParams();
 
   const next = () => {
     setCurrentStep(currentStep + 1);
+    getProject();
   };
 
   const prev = () => {
@@ -49,32 +63,62 @@ const ProjectRequest = () => {
     padding: 16,
   };
 
-  const onContinue = (e) => {
-    oneRef.current.submit();
-  };
-
   const onChangeStep = (step) => {
     setCurrentStep(step);
   };
 
+  const getProject = () => {
+    useAxios(CUSTOMER_PROJECT_BY_GRANT + `/${grantId}`).then((res) => {
+      setProject(res);
+    });
+  };
+
+  useEffect(() => {
+    useAxios(CUSTOMER_PROJECT_BY_GRANT + `/${grantId}`).then((res) => {
+      setProject(res);
+      setCurrentStep(res.stepId);
+    });
+  }, []);
+
+  const contextProps = {
+    next,
+    prev,
+    project,
+    getProject,
+    currentStep,
+    loading,
+  };
+
+  if (currentStep == null || currentStep == undefined)
+    return (
+      <div className="container">
+        <div className="pt-[150px] pb-[100px]">
+          <Skeleton />
+        </div>
+      </div>
+    );
   return (
     <div className="container">
       <div className="pt-[150px] pb-[100px]">
         <Steps
           current={currentStep}
-          onChange={onChangeStep}
+          // onChange={onChangeStep}
           percent={60}
           items={items}
         />
         <br />
         <div style={contentStyle}>
-          <Row justify="center">
-            {currentStep === 0 && <StepOne next={next} prev={prev} />}
-            {currentStep === 1 && <StepTwo next={next} prev={prev} />}
-            {currentStep === 2 && <StepThree next={next} prev={prev} />}
-            {currentStep === 3 && <StepFour next={next} prev={prev} />}
-            {currentStep === 4 && <StepFive next={next} prev={prev} />}
-          </Row>
+          <ProjectContext.Provider value={contextProps}>
+            <Row justify="center">
+              <Col xs={24} sm={20} md={18} lg={16} xl={16}>
+                {currentStep === 0 && <StepOne />}
+                {currentStep === 1 && <StepTwo />}
+                {currentStep === 2 && <StepThree />}
+                {currentStep === 3 && <StepFour />}
+              </Col>
+              {currentStep === 4 && <StepFive />}
+            </Row>
+          </ProjectContext.Provider>
         </div>
         {/* <br />
         <Row justify="center">

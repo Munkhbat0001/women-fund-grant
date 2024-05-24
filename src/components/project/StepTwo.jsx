@@ -1,10 +1,40 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
 import { validator } from "../../utils/validator";
+import { ProjectContext } from "../../pages/ProjectRequest";
+import useAxios from "../../hooks/useAxios";
+import {
+  CUSTOMER_PROJECT_GOAL_ALL_POST,
+  CUSTOMER_PROJECT_GOAL_DELETE,
+  CUSTOMER_PROJECT_OBJECT_DELETE,
+} from "../../utils/operation";
 
-const StepTwo = ({ next, prev }) => {
+const StepTwo = ({}) => {
   const [form] = Form.useForm();
+  const {
+    project: { projectId, goalList },
+    next,
+    prev,
+  } = useContext(ProjectContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (goalList && goalList.length > 0) {
+      form.setFieldsValue({ items: goalList });
+    } else {
+      form.setFieldsValue({ items: [{ goalList: [{}] }] });
+    }
+  }, [goalList]);
+
+  const onFinish = (values) => {
+    useAxios(CUSTOMER_PROJECT_GOAL_ALL_POST.format(projectId), values.items, {
+      method: "POST",
+      showSuccess: true,
+    }).then((res) => {
+      next && next();
+    });
+  };
 
   return (
     <>
@@ -14,11 +44,12 @@ const StepTwo = ({ next, prev }) => {
         wrapperCol={{ span: 18 }}
         form={form}
         name="dynamic_form_complex"
-        style={{ width: 800, justify: "center" }}
+        // style={{ maxWidth: 800 }}
         autoComplete="off"
-        initialValues={{
-          items: [{}],
-        }}
+        // initialValues={{
+        //   items: [{}],
+        // }}
+        onFinish={onFinish}
       >
         <Form.List name="items">
           {(fields, { add, remove }) => (
@@ -37,10 +68,25 @@ const StepTwo = ({ next, prev }) => {
                   extra={
                     <CloseOutlined
                       onClick={() => {
-                        remove(field.name);
+                        const goal = form.getFieldsValue().items[field.name];
+                        if (goal) {
+                          useAxios(
+                            CUSTOMER_PROJECT_GOAL_DELETE.format(goal.goalId),
+                            {},
+                            {
+                              method: "DELETE",
+                              showSuccess: true,
+                            }
+                          ).then((res) => {
+                            remove(field.name);
+                          });
+                        } else {
+                          remove(field.name);
+                        }
                       }}
                     />
                   }
+                  style={{ width: "100%" }}
                 >
                   {/* <Row gutter={12}>
                     <Col>
@@ -57,6 +103,14 @@ const StepTwo = ({ next, prev }) => {
                       </Form.Item>
                     </Col>
                   </Row> */}
+
+                  {/* <Form.Item
+                      label="Дугаар"
+                      name={[field.name, "goalId"]}
+                      rules={validator().required().build()}
+                    >
+                      <Input disabled />
+                    </Form.Item> */}
 
                   <Form.Item
                     label="Тайлбар"
@@ -91,7 +145,7 @@ const StepTwo = ({ next, prev }) => {
 
                   {/* Nest Form.List */}
                   <Form.Item label="Зорилтууд">
-                    <Form.List name={[field.name, "list"]}>
+                    <Form.List name={[field.name, "goalObjects"]}>
                       {(subFields, subOpt) => (
                         <div
                           style={{
@@ -113,11 +167,36 @@ const StepTwo = ({ next, prev }) => {
                                 extra={
                                   <CloseOutlined
                                     onClick={() => {
-                                      subOpt.remove(subField.name);
+                                      const obj =
+                                        form.getFieldsValue().items[field.name]
+                                          .goalObjects[subField.name];
+                                      if (obj) {
+                                        useAxios(
+                                          CUSTOMER_PROJECT_OBJECT_DELETE.format(
+                                            obj.objectId
+                                          ),
+                                          {},
+                                          {
+                                            method: "DELETE",
+                                            showSuccess: true,
+                                          }
+                                        ).then((res) => {
+                                          subOpt.remove(subField.name);
+                                        });
+                                      } else {
+                                        subOpt.remove(subField.name);
+                                      }
                                     }}
                                   />
                                 }
                               >
+                                {/* <Form.Item
+                                    label="Дугаар"
+                                    name={[subField.name, "objectId"]}
+                                    rules={validator().required().build()}
+                                  >
+                                    <Input disabled />
+                                  </Form.Item> */}
                                 <Form.Item
                                   name={[subField.name, "description"]}
                                   rules={validator()
@@ -178,8 +257,8 @@ const StepTwo = ({ next, prev }) => {
           )}
         </Form.List>
         <br />
-        <Row justify="center">
-          <Row gutter={12} justify="end" style={{ width: 800 }}>
+        <Col xs={{ flex: "100%" }}>
+          <Row gutter={12} justify="end">
             <Space>
               <Button
                 // size="large"
@@ -192,16 +271,13 @@ const StepTwo = ({ next, prev }) => {
               <Button
                 // size="large"
                 type="primary"
-                onClick={() => {
-                  // form.submit();
-                  next && next();
-                }}
+                onClick={() => form.submit()}
               >
                 Үргэлжлүүлэх
               </Button>
             </Space>
           </Row>
-        </Row>
+        </Col>
       </Form>
     </>
   );

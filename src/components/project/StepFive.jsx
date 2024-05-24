@@ -1,10 +1,13 @@
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   EditOutlined,
   DeleteOutlined,
   EyeOutlined,
   PlusOutlined,
   DownloadOutlined,
+  UploadOutlined,
+  MinusCircleOutlined,
+  DownOutlined,
 } from "@ant-design/icons";
 import {
   Button,
@@ -17,15 +20,75 @@ import {
   Col,
   Select,
   Table,
+  Upload,
+  Checkbox,
+  Dropdown,
 } from "antd";
 import StepFiveModal from "./StepFiveModal";
 import useAxios from "../../hooks/useAxios";
-import { CUSTOMER_PROJECT_MEMBER } from "../../utils/operation";
-const StepFive = ({ next, prev, projectId }) => {
+import {
+  CUSTOMER_PROJECT_MEMBER,
+  CUSTOMER_PROJECT_MEMBER_DELETE,
+  FILE_DOWNLOAD,
+} from "../../utils/operation";
+import { ProjectContext } from "../../pages/ProjectRequest";
+import FileUpload from "../FileUpload";
+import { showConfirm } from "../modals/Confirmation";
+
+const commands = [
+  {
+    key: "edit",
+    label: "Засах",
+  },
+  {
+    key: "delete",
+    label: "Устгах",
+  },
+];
+
+const StepFive = () => {
   const formRef = useRef(null);
-  const [dataSource, setDataSource] = useState([]);
-  const onFinish = (values) => {
-    console.log("Received values of form:", values);
+  const {
+    project: { projectId, memberList },
+    next,
+    prev,
+    getProject,
+  } = useContext(ProjectContext);
+
+  const _onMenuClick = (key, row) => {
+    switch (key) {
+      case "edit":
+        formRef.current.show();
+        formRef.current.clear({ ...row, mode: "edit" });
+        break;
+      case "delete":
+        showConfirm({
+          title: `${row.firstName} нэртэй хүнийг устгахдаа итгэлтэй байна уу?`,
+          onOk: () => {
+            useAxios(
+              CUSTOMER_PROJECT_MEMBER_DELETE + `/${row.memberId}`,
+              {},
+              { method: "DELETE", showSuccess: true }
+            ).then((res) => {
+              getProject();
+            });
+          },
+        });
+
+        break;
+      case "download":
+        useAxios(
+          FILE_DOWNLOAD + `/${row.workExperiencePath}`,
+          {},
+          { responseType: "arraybuffer", showLoader: false }
+        ).then((res) => {
+          // const file = new Blob([res], { type: "application/octet-stream" });
+          // const fileURL = URL.createObjectURL(file);
+          // const pdfWindow = window.open();
+          // pdfWindow.location.href = fileURL;
+        });
+        break;
+    }
   };
 
   const columns = [
@@ -46,21 +109,80 @@ const StepFive = ({ next, prev, projectId }) => {
       dataIndex: "role",
     },
     {
+      title: "И-мэйл",
+      dataIndex: "email",
+    },
+    {
+      title: "Утас",
+      dataIndex: "mobileNumber",
+    },
+    {
       title: "Удирдах ажилтан",
       dataIndex: "leader",
+      width: "100px",
+      align: "center",
+      render: (leader) => {
+        return <Checkbox checked={leader} />;
+      },
     },
     {
       title: "Төсөл хариуцах ажилтан",
       dataIndex: "owner",
+      width: "100px",
+      align: "center",
+      render: (owner) => {
+        return <Checkbox checked={owner} />;
+      },
+    },
+    {
+      title: "Файл",
+      dataIndex: "workExperiencePath",
+      width: "100px",
+      align: "center",
+      render: (text, row) => {
+        return (
+          <Button type="link" onClick={() => _onMenuClick("download", row)}>
+            Татах
+          </Button>
+        );
+      },
+    },
+    {
+      title: "Үйлдэл",
+      dataIndex: "workExperiencePath",
+      width: "100px",
+      align: "center",
+      render: (text, row) => {
+        return (
+          <Space>
+            <Dropdown
+              trigger="click"
+              menu={{
+                items: commands,
+                onClick: ({ key }) => _onMenuClick(key, row),
+              }}
+            >
+              <Button>
+                <Space>
+                  Үйлдэл
+                  <DownOutlined />
+                </Space>
+              </Button>
+            </Dropdown>
+          </Space>
+        );
+      },
     },
   ];
 
-  const fetch = () => {
-    if (projectId)
-      useAxios(CUSTOMER_PROJECT_MEMBER + `/${projectId}`).then((res) => {
-        setDataSource(res);
-      });
-  };
+  const onFinish = (values) => {};
+
+  // const fetch = () => {
+  //   if (projectId)
+  //     useAxios(CUSTOMER_PROJECT_MEMBER + `/${projectId}`).then((res) => {
+  //       setDataSource(res);
+  //     });
+  // };
 
   return (
     <>
@@ -70,24 +192,29 @@ const StepFive = ({ next, prev, projectId }) => {
           type="primary"
           onClick={() => {
             formRef.current.show();
+            formRef.current.clear(null);
           }}
         >
           Нэмэх
         </Button>
       </Row>
       <Table
+        rowKey={"memberId"}
         style={{ width: "100%" }}
         bordered
         size="small"
         pagination={false}
         columns={columns}
-        dataSource={dataSource}
+        dataSource={memberList}
+        scroll={{ x: "0" }}
       />
       {React.createElement(StepFiveModal, {
         ref: formRef,
         hide: () => formRef.current.hide(),
+        projectId: projectId,
         afterSave: () => {
-          fetch();
+          getProject();
+          formRef.current.hide();
         },
       })}
       <Row
@@ -108,11 +235,10 @@ const StepFive = ({ next, prev, projectId }) => {
             // size="large"
             type="primary"
             onClick={() => {
-              // form.submit();
-              // next && next();
+              next && next();
             }}
           >
-            Хүсэлт илгээх
+            Баталгаажуулах
           </Button>
         </Space>
       </Row>
@@ -137,30 +263,36 @@ const StepFive = ({ next, prev, projectId }) => {
     //             style={{ display: "flex", marginBottom: 8 }}
     //             align="baseline"
     //           >
-    //             <Form.Item {...restField} name={[name, "first"]}>
+    //             <Form.Item {...restField} name={[name, "lastName"]}>
     //               <Input placeholder="Овог" />
     //             </Form.Item>
-    //             <Form.Item {...restField} name={[name, "last"]}>
+    //             <Form.Item {...restField} name={[name, "firstName"]}>
     //               <Input placeholder="Нэр" />
     //             </Form.Item>
-    //             <Form.Item {...restField} name={[name, "last"]}>
+    //             <Form.Item {...restField} name={[name, "position"]}>
     //               <Input placeholder="Албан тушаал" />
     //             </Form.Item>
-    //             <Form.Item {...restField} name={[name, "last"]}>
-    //               <Input placeholder="Төсөлд гүйцэтгэх үүрэг" />
+    //             <Form.Item {...restField} name={[name, "role"]}>
+    //               <Input
+    //                 placeholder="Төсөлд гүйцэтгэх үүрэг"
+    //                 style={{ width: "200px" }}
+    //               />
     //             </Form.Item>
-    //             <Form.Item {...restField} name={[name, "last"]}>
-    //               <Upload>
-    //                 <Button icon={<UploadOutlined />}>Click to Upload</Button>
-    //               </Upload>
+    //             <Form.Item {...restField} name={[name, "workExperiencePath"]}>
+    //               <div style={{ width: "200px" }}>
+    //                 <FileUpload dir="member" />
+    //               </div>
     //             </Form.Item>
-    //             <Form.Item {...restField} name={[name, "last"]}>
+    //             {/* <Form.Item {...restField} name={[name, "last"]}>
     //               <Checkbox>Удирдах ажилтан</Checkbox>
     //             </Form.Item>
     //             <Form.Item {...restField} name={[name, "last"]}>
     //               <Checkbox>Төсөл хариуцах ажилтан</Checkbox>
-    //             </Form.Item>
-    //             <MinusCircleOutlined onClick={() => remove(name)} />
+    //             </Form.Item> */}
+    //             <MinusCircleOutlined
+    //               style={{ width: "30px" }}
+    //               onClick={() => remove(name)}
+    //             />
     //           </Space>
     //         ))}
     //         <Form.Item>

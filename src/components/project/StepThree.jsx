@@ -1,12 +1,58 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
 import OSelect from "../../screens/form/OSelect";
 import OInputNumber from "../../screens/form/OInputNumber";
 import { validator } from "../../utils/validator";
+import {
+  CUSTOMER_PROJECT_GOAL,
+  CUSTOMER_PROJECT_OBJECT,
+  CUSTOMER_PROJECT_PLAN_ALL_POST,
+  CUSTOMER_PROJECT_PLAN_DELETE,
+  CUSTOMER_PROJECT_PLAN_OBJECT_DELETE,
+} from "../../utils/operation";
+import { ProjectContext } from "../../pages/ProjectRequest";
+import useAxios from "../../hooks/useAxios";
+import { isEmpty } from "lodash";
 
-const StepThree = ({ next, prev }) => {
+const StepThree = ({}) => {
   const [form] = Form.useForm();
+  const {
+    project: { projectId, planList },
+    next,
+    prev,
+  } = useContext(ProjectContext);
+
+  // const [goalId, setGoalId] = React.useState(0);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (planList && planList.length > 0) {
+      const items = [];
+      planList.map((plan) => {
+        const item = items.find((x) => x.objectId === plan.objectId);
+        if (isEmpty(item)) {
+          plan.planList = [{ ...plan }];
+          items.push(plan);
+        } else {
+          item.planList.push(plan);
+        }
+      });
+
+      form.setFieldsValue({ items: items });
+    } else {
+      form.setFieldsValue({ items: [{ planList: [{}] }] });
+    }
+  }, [planList]);
+
+  const onFinish = (values) => {
+    useAxios(CUSTOMER_PROJECT_PLAN_ALL_POST.format(projectId), values.items, {
+      method: "POST",
+      showSuccess: true,
+    }).then((res) => {
+      next && next();
+    });
+  };
 
   return (
     <>
@@ -16,11 +62,12 @@ const StepThree = ({ next, prev }) => {
         wrapperCol={{ span: 18 }}
         form={form}
         name="dynamic_form_complex"
-        style={{ width: 800, justify: "center" }}
+        style={{ maxWidth: 800 }}
         autoComplete="off"
-        initialValues={{
-          items: [{}],
-        }}
+        // initialValues={{
+        //   items: [{}],
+        // }}
+        onFinish={onFinish}
       >
         <Form.List name="items">
           {(fields, { add, remove }) => (
@@ -39,22 +86,61 @@ const StepThree = ({ next, prev }) => {
                   extra={
                     <CloseOutlined
                       onClick={() => {
-                        remove(field.name);
+                        const plan = form.getFieldsValue().items[field.name];
+                        if (plan) {
+                          useAxios(
+                            CUSTOMER_PROJECT_PLAN_OBJECT_DELETE.format(
+                              plan.projectId,
+                              plan.objectId
+                            ),
+                            {},
+                            {
+                              method: "DELETE",
+                              showSuccess: true,
+                            }
+                          ).then((res) => {
+                            remove(field.name);
+                          });
+                        } else {
+                          remove(field.name);
+                        }
                       }}
                     />
                   }
                 >
+                  {/* <Form.Item
+                    label="Зорилго"
+                    name={[field.name, "goalId"]}
+                    rules={validator().required().build()}
+                  >
+                    <OSelect
+                      style={{ width: "100%" }}
+                      placeholder="сонгох"
+                      selectAPI={CUSTOMER_PROJECT_GOAL + `/${projectId}`}
+                      selectName="description"
+                      selectValue="goalId"
+                    />
+                  </Form.Item> */}
+
                   <Form.Item
                     label="Зорилт"
                     name={[field.name, "objectId"]}
                     rules={validator().required().build()}
                   >
-                    <OSelect style={{ width: "100%" }} placeholder="сонгох" />
+                    <OSelect
+                      style={{ width: "100%" }}
+                      placeholder="сонгох"
+                      selectAPI={
+                        CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
+                      }
+                      selectName="description"
+                      selectValue="objectId"
+                    />
                   </Form.Item>
 
                   {/* Nest Form.List */}
                   <Form.Item label="Үйл ажиллагаа">
-                    <Form.List name={[field.name, "list"]}>
+                    <Form.List name={[field.name, "planList"]}>
                       {(subFields, subOpt) => (
                         <div
                           style={{
@@ -76,7 +162,25 @@ const StepThree = ({ next, prev }) => {
                                 extra={
                                   <CloseOutlined
                                     onClick={() => {
-                                      subOpt.remove(subField.name);
+                                      const plan =
+                                        form.getFieldsValue().items[field.name]
+                                          .planList[subField.name];
+                                      if (plan) {
+                                        useAxios(
+                                          CUSTOMER_PROJECT_PLAN_DELETE.format(
+                                            plan.planId
+                                          ),
+                                          {},
+                                          {
+                                            method: "DELETE",
+                                            showSuccess: true,
+                                          }
+                                        ).then((res) => {
+                                          subOpt.remove(subField.name);
+                                        });
+                                      } else {
+                                        subOpt.remove(subField.name);
+                                      }
                                     }}
                                   />
                                 }
@@ -100,10 +204,14 @@ const StepThree = ({ next, prev }) => {
                                     .required("Хэрэгжүүлэх хугацаа оруулна уу")
                                     .build()}
                                 >
-                                  <OSelect
+                                  <OInputNumber
                                     placeholder="Хэрэгжүүлэх хугацаа"
                                     style={{ width: "100%" }}
                                   />
+                                  {/* <OSelect
+                                    placeholder="Хэрэгжүүлэх хугацаа"
+                                    style={{ width: "100%" }}
+                                  /> */}
                                 </Form.Item>
                                 <Form.Item
                                   name={[subField.name, "ownerName"]}
@@ -137,8 +245,8 @@ const StepThree = ({ next, prev }) => {
           )}
         </Form.List>
         <br />
-        <Row justify="center">
-          <Row gutter={12} justify="end" style={{ width: 800 }}>
+        <Col xs={{ flex: "100%" }}>
+          <Row gutter={12} justify="end">
             <Space>
               <Button
                 // size="large"
@@ -151,16 +259,13 @@ const StepThree = ({ next, prev }) => {
               <Button
                 // size="large"
                 type="primary"
-                onClick={() => {
-                  // form.submit();
-                  next && next();
-                }}
+                onClick={() => form.submit()}
               >
                 Үргэлжлүүлэх
               </Button>
             </Space>
           </Row>
-        </Row>
+        </Col>
       </Form>
     </>
   );

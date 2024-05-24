@@ -1,32 +1,80 @@
-import React, { forwardRef } from "react";
-import {
-  Steps,
-  Form,
-  Space,
-  Button,
-  Input,
-  Row,
-  Col,
-  theme,
-  InputNumber,
-  Select,
-  Checkbox,
-  DatePicker,
-} from "antd";
+import React, { forwardRef, useContext, useEffect, useRef } from "react";
+import { Form, Space, Button, Input, Row, Col, DatePicker } from "antd";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { validator } from "../../utils/validator";
 import OSelect from "../../screens/form/OSelect";
 import OInputNumber from "../../screens/form/OInputNumber";
+import { ProjectContext } from "../../pages/ProjectRequest";
+import useAxios from "../../hooks/useAxios";
+import {
+  CONST_PROJECT_GROUP,
+  CONST_PROJECT_RESULT,
+  CUSTOMER_PROJECT_POST,
+  CUSTOMER_PROJECT_PUT,
+} from "../../utils/operation";
+import { useParams } from "react-router-dom";
 
-const StepOne = ({ next, prev }, ref) => {
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import weekday from "dayjs/plugin/weekday";
+import localeData from "dayjs/plugin/localeData";
+dayjs.extend(customParseFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
+
+const StepOne = ({}, ref) => {
+  const { grantId } = useParams();
   const [form] = Form.useForm();
+  const scrollRef = useRef(null);
+
+  const { project, next, loading } = useContext(ProjectContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (project) {
+      const values = {
+        ...project,
+        beginDate: project.beginDate && dayjs(project.beginDate, "YYYY-MM-DD"),
+        endDate: project.endDate && dayjs(project.endDate, "YYYY-MM-DD"),
+      };
+      form.setFieldsValue(values);
+    }
+  }, [project]);
+
+  const onFinish = (values) => {
+    values.beginDate = values.beginDate.format("YYYY-MM-DD");
+    values.endDate = values.endDate.format("YYYY-MM-DD");
+
+    const payLoad = {
+      grantId,
+      projectId: project && project.projectId,
+      ...values,
+    };
+
+    const url =
+      project && project.projectId
+        ? CUSTOMER_PROJECT_PUT + `/${project.projectId}`
+        : CUSTOMER_PROJECT_POST;
+
+    const method = project && project.projectId ? "PUT" : "POST";
+
+    useAxios(url, payLoad, {
+      method,
+      showSucces: true,
+    }).then((res) => {
+      next && next();
+      getProject();
+    });
+  };
+
   return (
     <>
       <Form
-        ref={ref}
+        ref={scrollRef}
         form={form}
         layout="vertical"
         colon={false}
+        onFinish={onFinish}
         style={{ maxWidth: 800, justify: "center" }}
       >
         <Row gutter={12}>
@@ -82,6 +130,7 @@ const StepOne = ({ next, prev }, ref) => {
               <OSelect
                 placeholder="Хүлээгдэж буй үр дүн"
                 style={{ width: "100%" }}
+                selectAPI={CONST_PROJECT_RESULT}
               />
             </Form.Item>
           </Col>
@@ -94,6 +143,7 @@ const StepOne = ({ next, prev }, ref) => {
               <OSelect
                 placeholder="Төслийн зорилтот бүлэг"
                 style={{ width: "100%" }}
+                selectAPI={CONST_PROJECT_GROUP}
               />
             </Form.Item>
           </Col>
@@ -198,10 +248,8 @@ const StepOne = ({ next, prev }, ref) => {
               <Button
                 // size="large"
                 type="primary"
-                onClick={() => {
-                  // form.submit();
-                  next && next();
-                }}
+                onClick={() => form.submit()}
+                loading={loading}
               >
                 Үргэлжлүүлэх
               </Button>

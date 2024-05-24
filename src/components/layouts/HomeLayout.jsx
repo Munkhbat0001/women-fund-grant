@@ -2,12 +2,12 @@ import { Outlet, useNavigate } from "react-router-dom";
 import { useEffect, useContext } from "react";
 import Header from "../Header";
 import Footer from "../Footer";
-import { Skeleton } from "antd";
+import { Skeleton, Spin } from "antd";
 import { SystemContext } from "../../context/SystemContext";
 
 const HomeLayout = () => {
   const navigate = useNavigate();
-  const { loggedIn, user, logout } = useContext(SystemContext);
+  const { loggedIn, user, logout, loading } = useContext(SystemContext);
 
   useEffect(() => {
     if (loggedIn == 0) return;
@@ -20,7 +20,9 @@ const HomeLayout = () => {
   return (
     <>
       <Header user={user} loggedIn={loggedIn} logout={logout} />
-      <Outlet />
+      <Spin tip="Loading" spinning={loading}>
+        <Outlet />
+      </Spin>
       <Footer />
     </>
   );

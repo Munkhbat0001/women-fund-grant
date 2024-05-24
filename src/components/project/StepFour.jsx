@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext, useEffect } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -14,6 +14,16 @@ import {
 import OSelect from "../../screens/form/OSelect";
 import OInputNumber from "../../screens/form/OInputNumber";
 import { validator } from "../../utils/validator";
+import {
+  CONST_PROJECT_BUDGET_MEASURE,
+  CUSTOMER_PROJECT_BUDGET_ALL_POST,
+  CUSTOMER_PROJECT_BUDGET_DELETE,
+  CUSTOMER_PROJECT_BUDGET_OBJECT_DELETE,
+  CUSTOMER_PROJECT_OBJECT,
+} from "../../utils/operation";
+import { ProjectContext } from "../../pages/ProjectRequest";
+import useAxios from "../../hooks/useAxios";
+import { isEmpty } from "lodash";
 
 const options = [];
 for (let i = 10; i < 36; i++) {
@@ -22,8 +32,42 @@ for (let i = 10; i < 36; i++) {
     label: i.toString(36) + i,
   });
 }
-const StepFour = ({ next, prev }) => {
+const StepFour = ({}) => {
   const [form] = Form.useForm();
+  const {
+    project: { projectId, budgetList },
+    next,
+    prev,
+  } = useContext(ProjectContext);
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+    if (budgetList && budgetList.length > 0) {
+      const items = [];
+      budgetList.map((plan) => {
+        const item = items.find((x) => x.objectId === plan.objectId);
+        if (isEmpty(item)) {
+          plan.budgetList = [{ ...plan }];
+          items.push(plan);
+        } else {
+          item.budgetList.push(plan);
+        }
+      });
+
+      form.setFieldsValue({ items: items });
+    } else {
+      form.setFieldsValue({ items: [{ budgetList: [{}] }] });
+    }
+  }, [budgetList]);
+
+  const onFinish = (values) => {
+    useAxios(CUSTOMER_PROJECT_BUDGET_ALL_POST.format(projectId), values.items, {
+      method: "POST",
+      showSuccess: true,
+    }).then((res) => {
+      next && next();
+    });
+  };
 
   return (
     <>
@@ -33,11 +77,12 @@ const StepFour = ({ next, prev }) => {
         wrapperCol={{ span: 18 }}
         form={form}
         name="dynamic_form_complex"
-        style={{ width: 800, justify: "center" }}
+        style={{ maxWidth: 800 }}
         autoComplete="off"
-        initialValues={{
-          items: [{}],
-        }}
+        // initialValues={{
+        //   items: [{}],
+        // }}
+        onFinish={onFinish}
       >
         <Form.List name="items">
           {(fields, { add, remove }) => (
@@ -56,7 +101,24 @@ const StepFour = ({ next, prev }) => {
                   extra={
                     <CloseOutlined
                       onClick={() => {
-                        remove(field.name);
+                        const budget = form.getFieldsValue().items[field.name];
+                        if (budget) {
+                          useAxios(
+                            CUSTOMER_PROJECT_BUDGET_OBJECT_DELETE.format(
+                              budget.projectId,
+                              budget.objectId
+                            ),
+                            {},
+                            {
+                              method: "DELETE",
+                              showSuccess: true,
+                            }
+                          ).then((res) => {
+                            remove(field.name);
+                          });
+                        } else {
+                          remove(field.name);
+                        }
                       }}
                     />
                   }
@@ -66,12 +128,20 @@ const StepFour = ({ next, prev }) => {
                     name={[field.name, "objectId"]}
                     rules={validator().required().build()}
                   >
-                    <OSelect style={{ width: "100%" }} placeholder="сонгох" />
+                    <OSelect
+                      style={{ width: "100%" }}
+                      placeholder="сонгох"
+                      selectAPI={
+                        CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
+                      }
+                      selectName="description"
+                      selectValue="objectId"
+                    />
                   </Form.Item>
 
                   {/* Nest Form.List */}
                   <Form.Item label="Үйл ажиллагаа">
-                    <Form.List name={[field.name, "list"]}>
+                    <Form.List name={[field.name, "budgetList"]}>
                       {(subFields, subOpt) => (
                         <div
                           style={{
@@ -81,7 +151,7 @@ const StepFour = ({ next, prev }) => {
                           }}
                         >
                           {subFields.map((subField) => (
-                            <div>
+                            <>
                               <Card
                                 size="small"
                                 bordered
@@ -89,16 +159,39 @@ const StepFour = ({ next, prev }) => {
                                 headStyle={{
                                   backgroundColor: "#ddf247",
                                 }}
+                                key={`${field.key}_${subField.key}card`}
                                 // headerBg="red"
                                 extra={
                                   <CloseOutlined
                                     onClick={() => {
-                                      subOpt.remove(subField.name);
+                                      const budget =
+                                        form.getFieldsValue().items[field.name]
+                                          .budgetList[subField.name];
+                                      console.log("budget: ", budget);
+                                      if (budget) {
+                                        useAxios(
+                                          CUSTOMER_PROJECT_BUDGET_DELETE.format(
+                                            budget.budgetId
+                                          ),
+                                          {},
+                                          {
+                                            method: "DELETE",
+                                            showSuccess: true,
+                                          }
+                                        ).then((res) => {
+                                          subOpt.remove(subField.name);
+                                        });
+                                      } else {
+                                        subOpt.remove(subField.name);
+                                      }
                                     }}
                                   />
                                 }
                               >
-                                <Row gutter={12}>
+                                <Row
+                                  key={`${field.key}_${subField.key}`}
+                                  gutter={12}
+                                >
                                   <Col span={12}>
                                     <Form.Item
                                       name={[subField.name, "quantity"]}
@@ -123,11 +216,15 @@ const StepFour = ({ next, prev }) => {
                                       <OSelect
                                         placeholder="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт)"
                                         style={{ width: "100%" }}
+                                        selectAPI={CONST_PROJECT_BUDGET_MEASURE}
                                       />
                                     </Form.Item>
                                   </Col>
                                 </Row>
-                                <Row gutter={12}>
+                                <Row
+                                  gutter={12}
+                                  key={`${field.key}_${subField.key}2`}
+                                >
                                   <Col span={12}>
                                     <Form.Item
                                       name={[subField.name, "unitPrice"]}
@@ -155,7 +252,10 @@ const StepFour = ({ next, prev }) => {
                                     </Form.Item>
                                   </Col>
                                 </Row>
-                                <Row gutter={12}>
+                                <Row
+                                  gutter={12}
+                                  key={`${field.key}_${subField.key}3`}
+                                >
                                   <Col span={12}>
                                     <Form.Item
                                       name={[subField.name, "provider"]}
@@ -204,7 +304,7 @@ const StepFour = ({ next, prev }) => {
                                   </Col>
                                 </Row>
                               </Card>
-                            </div>
+                            </>
                           ))}
                           <Button
                             type="dashed"
@@ -227,8 +327,9 @@ const StepFour = ({ next, prev }) => {
           )}
         </Form.List>
         <br />
-        <Row justify="center">
-          <Row gutter={12} justify="end" style={{ width: 800 }}>
+
+        <Col xs={{ flex: "100%" }}>
+          <Row gutter={12} justify="end">
             <Space>
               <Button
                 // size="large"
@@ -241,16 +342,13 @@ const StepFour = ({ next, prev }) => {
               <Button
                 // size="large"
                 type="primary"
-                onClick={() => {
-                  // form.submit();
-                  next && next();
-                }}
+                onClick={() => form.submit()}
               >
                 Үргэлжлүүлэх
               </Button>
             </Space>
           </Row>
-        </Row>
+        </Col>
       </Form>
     </>
   );

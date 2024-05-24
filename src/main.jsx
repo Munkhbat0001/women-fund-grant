@@ -6,6 +6,7 @@ import "./index.css";
 import enUSIntl from "antd/locale/en_US";
 import { validationMessagesMn } from "./locales/antdValidation";
 import { SystemProvider } from "./context/SystemContext";
+import WithAxios from "./context/WithAxios";
 
 const formConfig = {
   validateMessages: validationMessagesMn,
@@ -24,7 +25,9 @@ ReactDOM.createRoot(document.getElementById("root")).render(
   <ConfigProvider form={formConfig} {...antdConfig}>
     <SystemProvider>
       {/* <React.StrictMode> */}
-      <App />
+      <WithAxios>
+        <App />
+      </WithAxios>
       {/* </React.StrictMode> */}
     </SystemProvider>
   </ConfigProvider>

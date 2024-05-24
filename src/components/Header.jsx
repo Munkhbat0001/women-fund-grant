@@ -62,8 +62,14 @@ const Header = ({ user, loggedIn, logout }) => {
           Coursat.
         </a> */}
         <div className="h-[30px] w-[140px] items-center justify-center">
-          <a href="/">
-            <img src={logoEn} height="35" />
+          <a href="#">
+            <img
+              src={logoEn}
+              height="35"
+              onClick={() => {
+                navigate("/");
+              }}
+            />
           </a>
         </div>
         <div className="hidden lg:flex lg:justify-between w-full">
@@ -71,7 +77,13 @@ const Header = ({ user, loggedIn, logout }) => {
             {navLinks.map((link) => {
               return (
                 <li key={link.id}>
-                  <a href={`${link.link}`} className="link">
+                  <a
+                    href="#"
+                    className="link"
+                    onClick={() => {
+                      navigate(link.link);
+                    }}
+                  >
                     {link.title}
                   </a>
                 </li>

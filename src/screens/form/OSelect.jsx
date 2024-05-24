@@ -24,11 +24,11 @@ const OSelect = ({
           setLocalOptions(
             res.map((item) => ({
               label: !isWithId
-                ? item[selectName || "name"]
-                : item[selectValue || "id"] +
+                ? item[selectName || "text"]
+                : item[selectValue || "constId"] +
                   " - " +
-                  item[selectName || "name"],
-              value: item[selectValue || "id"],
+                  item[selectName || "text"],
+              value: item[selectValue || "constId"],
             }))
           );
         });
@@ -42,6 +42,7 @@ const OSelect = ({
   }, [options]);
 
   useEffect(() => {
+    console.log("parentId", parentId);
     if (!options && parentId) {
       selectAPI += `/${parentId}`;
 
@@ -49,9 +50,11 @@ const OSelect = ({
         setLocalOptions(
           res.map((item) => ({
             label: !isWithId
-              ? item[selectName || "name"]
-              : item[selectValue || "id"] + " - " + item[selectName || "name"],
-            value: item[selectValue || "id"],
+              ? item[selectName || "text"]
+              : item[selectValue || "constId"] +
+                " - " +
+                item[selectName || "text"],
+            value: item[selectValue || "constId"],
           }))
         );
       });
