@@ -26,8 +26,8 @@ export default ({ mode }) => {
         "referrer-policy": "strict-origin",
       },
       proxy: {
-        "/api": "http://localhost:8021",
-        // "/api": "http://152.42.174.142:8021",
+        // "/api": "http://localhost:8021",
+        "/api": "http://152.42.174.142:8021",
         "/upload": process.env.API_URL,
         "/download": process.env.API_URL,
         "^/request/.*": {

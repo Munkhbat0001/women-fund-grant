@@ -11,19 +11,19 @@ const HomeLayout = () => {
 
   useEffect(() => {
     if (loggedIn == 0) return;
-    if (user.isAdmin === true) navigate("/admin-user");
-    // if (loggedIn === 2) navigate("/login");
+    // if (user.isAdmin === true) navigate("/admin-user");
+    if (loggedIn === 2) navigate("/");
   }, [loggedIn]);
 
-  if (loggedIn == 0) return <Skeleton />;
+  // if (loggedIn == 0) return <Skeleton />;
 
   return (
     <>
-      <Header user={user} loggedIn={loggedIn} logout={logout} />
       <Spin tip="Loading" spinning={loading}>
+        <Header user={user} loggedIn={loggedIn} logout={logout} />
         <Outlet />
+        <Footer />
       </Spin>
-      <Footer />
     </>
   );
 };

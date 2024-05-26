@@ -17,7 +17,7 @@ const SystemProvider = ({ children }) => {
   const logoutUser = () => {
     setUser({});
     setLoggedIn(2);
-    localStorage.removeItem("user");
+    localStorage.removeItem("customer");
   };
 
   const logout = () => {
@@ -35,7 +35,7 @@ const SystemProvider = ({ children }) => {
 
   useEffect(() => {
     if (loggedIn !== 0) return;
-    const user = JSON.parse(localStorage.getItem("user"));
+    const user = JSON.parse(localStorage.getItem("customer"));
 
     useAxios(ADMIN_INFO)
       .then((data) => {
@@ -44,7 +44,7 @@ const SystemProvider = ({ children }) => {
           ...data,
           token: user?.token,
         };
-        localStorage.setItem("user", JSON.stringify(new_info));
+        localStorage.setItem("customer", JSON.stringify(new_info));
       })
       .catch((err) => {
         let error = err.response.data || err.message || "Server Error";

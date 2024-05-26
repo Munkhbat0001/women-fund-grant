@@ -21,10 +21,10 @@ export default () => {
           <Route path="/" element={<Home />} />
           <Route path="/request/:grantId" element={<ProjectRequest />} />
         </Route>
-        <Route element={<MainLayout />}>
+        {/* <Route element={<MainLayout />}>
           <Route path="/admin-user" element={<AdminUser />} />
           <Route path="/grant-list" element={<GrantList />} />
-        </Route>
+        </Route> */}
       </Routes>
     </BrowserRouter>
   );

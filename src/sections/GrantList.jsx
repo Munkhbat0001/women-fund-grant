@@ -1,15 +1,21 @@
-import React from "react";
+import React, { useContext } from "react";
 import CustomerTable from "../screens/listTailwind/CustomerTable";
 import { CUSTOMER_GRANT } from "../utils/operation";
 import { Button } from "antd";
 import { useNavigate } from "react-router-dom";
+import { SystemContext } from "../context/SystemContext";
 
 const GrantList = () => {
   const navigate = useNavigate();
+  const { loggedIn, user, logout, loading } = useContext(SystemContext);
 
   const onClick = (row) => {
     // todo энэ тэтгэлэг дээр хүсэлт явуулсан эсэхийг шалгахаа шийдээгүй
-    navigate(`/request/${row.grantId}`);
+    if (loggedIn === 2) {
+      navigate("/login");
+    } else {
+      navigate(`/request/${row.grantId}`);
+    }
   };
 
   const columns = [

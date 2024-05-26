@@ -49,6 +49,7 @@ const StepTwo = ({}) => {
         // initialValues={{
         //   items: [{}],
         // }}
+        // layout="vertical"
         onFinish={onFinish}
       >
         <Form.List name="items">
@@ -198,10 +199,12 @@ const StepTwo = ({}) => {
                                     <Input disabled />
                                   </Form.Item> */}
                                 <Form.Item
+                                  // label="Тайлбар"
                                   name={[subField.name, "description"]}
                                   rules={validator()
                                     .required("Тайлбар оруулна уу")
                                     .build()}
+                                  className="ant-form-item-label-wrap"
                                 >
                                   <Input.TextArea placeholder="Тайлбар" />
                                 </Form.Item>

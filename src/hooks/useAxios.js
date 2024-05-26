@@ -17,8 +17,8 @@ const useAxios = (url, payload = {}, options = {}) => {
   };
 
   let headers = {};
-  if (localStorage.getItem("user")) {
-    const user = JSON.parse(localStorage.getItem("user"));
+  if (localStorage.getItem("customer")) {
+    const user = JSON.parse(localStorage.getItem("customer"));
     headers.Authorization = `Bearer ${user.token}`;
     token = user.token;
   }

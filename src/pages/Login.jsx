@@ -19,7 +19,7 @@ const Login = () => {
     useAxios(ADMIN_LOGIN, values, { method: "POST" })
       .then((res) => {
         loginUser(res);
-        localStorage.setItem("user", JSON.stringify(res));
+        localStorage.setItem("customer", JSON.stringify(res));
       })
       .catch((err) => {
         setMessage(err);

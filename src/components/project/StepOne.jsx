@@ -63,7 +63,6 @@ const StepOne = ({}, ref) => {
       showSucces: true,
     }).then((res) => {
       next && next();
-      getProject();
     });
   };
 
@@ -237,14 +236,6 @@ const StepOne = ({}, ref) => {
         <Row justify="center">
           <Row gutter={12} justify="end" style={{ width: 800 }}>
             <Space>
-              {/* <Button
-                // size="large"
-                onClick={() => {
-                  prev && prev();
-                }}
-              >
-                Болих
-              </Button> */}
               <Button
                 // size="large"
                 type="primary"

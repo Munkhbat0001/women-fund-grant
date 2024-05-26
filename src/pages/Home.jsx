@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Header, Statistics, CTA, Footer } from "../components";
 import {
   About,
