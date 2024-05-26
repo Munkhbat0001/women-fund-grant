@@ -39,7 +39,7 @@ export const navLinks = [
   },
   {
     id: "request",
-    title: "Төслүүд",
+    title: "Бидний тухай",
   },
   // {
   //   id: "home",

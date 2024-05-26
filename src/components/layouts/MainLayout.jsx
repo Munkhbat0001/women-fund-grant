@@ -107,7 +107,7 @@ const MainLayout = () => {
 
   const handleMenuClick = (e) => {
     if (e.key === "1") {
-      navigate(`/personal`);
+      navigate(`/profile`);
     } else if (e.key === "2") {
       showConfirm({ onOk: logout });
     }

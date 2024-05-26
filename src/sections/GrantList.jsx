@@ -42,7 +42,7 @@ const GrantList = () => {
     },
     {
       key: "5",
-      label: "Action",
+      label: "Үйлдэл",
       name: "action",
       render: (text, row) => {
         return (
