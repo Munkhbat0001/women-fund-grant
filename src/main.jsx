@@ -13,11 +13,11 @@ const formConfig = {
 };
 
 export const antdConfig = {
-  // theme: {
-  //   token: {
-  //     colorPrimary: "#FFCC29",
-  //   },
-  // },
+  theme: {
+    token: {
+      colorPrimary: "#884cdb",
+    },
+  },
   locale: enUSIntl,
 };
 

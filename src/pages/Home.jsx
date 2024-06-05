@@ -9,20 +9,29 @@ import {
   PopularCourses,
 } from "../sections";
 import GrantList from "../sections/GrantList";
+import Purple from "../sections/Purple";
+import GrantCardList from "../sections/GrantCardList";
+import Features from "../sections/Features";
 
 const Home = () => {
   return (
     <>
       {/* <Header /> */}
       {/* <Hero /> */}
-      <GrantList />
-      {/* <Statistics />
-      <About />
-      <PopularCourses />
-      <Courses />
-      <Instructors />
-      <Blogs />
-      <CTA /> */}
+      {/* <Purple /> */}
+      {/* <GrantList /> */}
+
+      {/* ---------------------------- */}
+      <GrantCardList />
+      {/* ------------------------ */}
+      {/* <Features /> */}
+      {/* <Statistics /> */}
+      {/* <About /> */}
+      {/* <PopularCourses />
+      <Courses /> */}
+      {/* <Instructors /> */}
+      {/* <Blogs /> */}
+      {/* <CTA /> */}
       {/* <Footer /> */}
     </>
   );

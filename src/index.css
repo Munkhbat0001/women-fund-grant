@@ -41,7 +41,7 @@
 
 @layer components {
   .link {
-      @apply outline-none font-medium text-lg text-gray-10 cursor-pointer transition-colors hover:text-primary-40;
+      @apply outline-none font-medium text-lg text-gray-100 cursor-pointer transition-colors hover:text-primary-40;
   }
 
   .btn {
@@ -49,7 +49,7 @@
   }
 
   .btn-primary {
-      @apply rounded-full bg-primary-50 text-gray-10 hover:bg-primary-60 active:bg-primary-70;
+      @apply rounded-full bg-primary-50 text-white hover:bg-primary-60 active:bg-primary-70;
   }
 
   .btn-outline {
@@ -81,10 +81,10 @@
   }
 }
 
-::-webkit-scrollbar {
+/* ::-webkit-scrollbar {
   width: 10px;
   height: 8px;
-}
+} */
 
 ::-webkit-scrollbar-thumb {
   background-color: theme(colors.gray.40);

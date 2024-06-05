@@ -49,19 +49,24 @@ const Header = ({ user, loggedIn, logout }) => {
   const onLogin = () => navigate(`/login`);
 
   return (
-    <motion.header
-      layout
-      variants={navbarVariants}
-      initial={["default", { y: -100 }]}
-      animate={[scrolled ? "active" : "default", "slide"]}
-      transition={{ duration: 0.3 }}
-      className="fixed flex items-center h-[70px] z-[1000] w-full border border-solid border-transparent shadow-md"
+    <header
+      // layout
+      // variants={navbarVariants}
+      // initial={["default", { y: -100 }]}
+      // animate={[scrolled ? "active" : "default", "slide"]}
+      // transition={{ duration: 0.3 }}
+      className="bg-[#836ba4] fixed flex items-center h-[90px] z-[1000] w-full border border-solid border-transparent shadow-md"
     >
+      {/* bg-[#5a9dd0] */}
+      {/* #8870b9 */}
+      {/* #836ba4 */}
+      {/* #6ea2d5 */}
+      {/* #5a9dd0 */}
       <nav className="container flex items-center justify-between gap-x-16">
         {/* <a href="/" className="text-2xl font-bold text-gray-10">
           Coursat.
         </a> */}
-        <div className="h-[30px] w-[140px] items-center justify-center">
+        <div className="h-[50px] w-[250px] items-center justify-center">
           <a href="#">
             <img
               src={logoEn}
@@ -78,7 +83,6 @@ const Header = ({ user, loggedIn, logout }) => {
               return (
                 <li key={link.id}>
                   <a
-                    href="#"
                     className="link"
                     onClick={() => {
                       navigate(link.link);
@@ -182,7 +186,7 @@ const Header = ({ user, loggedIn, logout }) => {
           </motion.nav>
         )}
       </AnimatePresence>
-    </motion.header>
+    </header>
   );
 };
 
