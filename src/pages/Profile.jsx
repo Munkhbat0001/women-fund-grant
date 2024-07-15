@@ -12,6 +12,8 @@ import Information from "../components/profile/Information";
 import HistoryGrantList from "../components/profile/HistoryGrantList";
 import ActiveGrantList from "../components/profile/ActiveGrantList";
 import ChangePassword from "../components/profile/ChangePassword";
+import ProgressList from "../components/profile/ProgressList";
+import IntegratedList from "../components/profile/IntegratedList";
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
@@ -32,6 +34,16 @@ const items = [
   },
   {
     key: "4",
+    icon: <ProfileOutlined />,
+    label: "Явцын тайлын",
+  },
+  {
+    key: "5",
+    icon: <ProfileOutlined />,
+    label: "Нэгдсэн тайлан",
+  },
+  {
+    key: "6",
     icon: <LockOutlined />,
     label: "Нууц үг",
   },
@@ -94,7 +106,9 @@ const Profile = () => {
               {current == "1" && <Information />}
               {current == "2" && <HistoryGrantList />}
               {current == "3" && <ActiveGrantList />}
-              {current == "4" && <ChangePassword />}
+              {current == "4" && <ProgressList />}
+              {current == "5" && <IntegratedList />}
+              {current == "6" && <ChangePassword />}
             </Content>
           </Layout>
         </Layout>

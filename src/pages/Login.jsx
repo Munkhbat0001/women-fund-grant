@@ -16,7 +16,7 @@ const Login = () => {
     setMessage("");
 
     setLoading(true);
-    useAxios(ADMIN_LOGIN, values, { method: "POST" })
+    useAxios(CUSTOMER_LOGIN, values, { method: "POST" })
       .then((res) => {
         loginUser(res);
         localStorage.setItem("customer", JSON.stringify(res));

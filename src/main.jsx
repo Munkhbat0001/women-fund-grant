@@ -3,6 +3,7 @@ import ReactDOM from "react-dom/client";
 import { ConfigProvider } from "antd";
 import App from "./App";
 import "./index.css";
+import "./assets/main.less";
 import enUSIntl from "antd/locale/en_US";
 import { validationMessagesMn } from "./locales/antdValidation";
 import { SystemProvider } from "./context/SystemContext";

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAxios } from "../hooks";
-import { ADMIN_INFO } from "../utils/operation";
+import { ADMIN_INFO, CUSTOMER_INFO } from "../utils/operation";
 
 const SystemContext = React.createContext({});
 
@@ -37,7 +37,7 @@ const SystemProvider = ({ children }) => {
     if (loggedIn !== 0) return;
     const user = JSON.parse(localStorage.getItem("customer"));
 
-    useAxios(ADMIN_INFO)
+    useAxios(CUSTOMER_INFO)
       .then((data) => {
         loginUser(data);
         const new_info = {

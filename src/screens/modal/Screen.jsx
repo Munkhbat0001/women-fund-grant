@@ -104,4 +104,4 @@ const TailwindScreen = forwardRef((props, ref) => {
   );
 });
 
-export { TailwindScreen };
+export { TailwindScreen, Screen };

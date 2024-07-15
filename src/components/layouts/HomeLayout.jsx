@@ -11,7 +11,6 @@ const HomeLayout = () => {
 
   useEffect(() => {
     if (loggedIn == 0) return;
-    // if (user.isAdmin === true) navigate("/admin-user");
     if (loggedIn === 2) navigate("/");
   }, [loggedIn]);
 

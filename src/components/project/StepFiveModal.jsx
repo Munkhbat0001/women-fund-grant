@@ -120,8 +120,8 @@ const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
   };
 
   let token = "";
-  if (localStorage.getItem("user")) {
-    const user = JSON.parse(localStorage.getItem("user"));
+  if (localStorage.getItem("customer")) {
+    const user = JSON.parse(localStorage.getItem("customer"));
     token = user.token;
   }
 

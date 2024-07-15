@@ -43,7 +43,13 @@ export const ADMIN_MENU = "/menu";
 export const CONST_PROJECT_RESULT = "/v2/const?begin=300&end=302";
 export const CONST_PROJECT_GROUP = "/v2/const?begin=400&end=402";
 export const CONST_PROJECT_BUDGET_MEASURE = "/v2/const?begin=500&end=502";
+export const CONST_REPORT_DONE = "/v2/const?begin=110&end=112";
 
 export const FILE_UPLOAD = "/api/upload/file/{0}";
 export const FILE_DOWNLOAD = "/file";
 export const FILE_REMOVE = "/file";
+
+// Report
+export const REPORT_PROJECT_STATUS = "/report/customer/status?statusIds=207";
+export const REPORT_IMPLEMENT = "/report/customer/implement?projectId={0}";
+export const REPORT_BUDGET = "/report/customer/budget?projectId={0}";
