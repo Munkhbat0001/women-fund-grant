@@ -36,10 +36,10 @@ import FileUpload from "../FileUpload";
 import { showConfirm } from "../modals/Confirmation";
 
 const commands = [
-  {
-    key: "edit",
-    label: "Засах",
-  },
+  // {
+  //   key: "edit",
+  //   label: "Засах",
+  // },
   {
     key: "delete",
     label: "Устгах",
@@ -77,16 +77,20 @@ const StepFive = () => {
 
         break;
       case "download":
-        useAxios(
-          FILE_DOWNLOAD + `/${row.workExperiencePath}`,
-          {},
-          { responseType: "arraybuffer", showLoader: false }
-        ).then((res) => {
-          // const file = new Blob([res], { type: "application/octet-stream" });
-          // const fileURL = URL.createObjectURL(file);
-          // const pdfWindow = window.open();
-          // pdfWindow.location.href = fileURL;
-        });
+        window.open(
+          `http://152.42.174.142:8021/file/${row.workExperiencePath}`,
+          "_blank"
+        );
+        // useAxios(
+        //   `http://152.42.174.142:8021/file/${row.workExperiencePath}`,
+        //   {},
+        //   { responseType: "arraybuffer", showLoader: false }
+        // ).then((res) => {
+        //   // const file = new Blob([res], { type: "application/octet-stream" });
+        //   // const fileURL = URL.createObjectURL(file);
+        //   // const pdfWindow = window.open();
+        //   // pdfWindow.location.href = fileURL;
+        // });
         break;
     }
   };
@@ -195,7 +199,7 @@ const StepFive = () => {
             formRef.current.clear(null);
           }}
         >
-          Нэмэх
+          Гишүүн нэмэх
         </Button>
       </Row>
       <Table

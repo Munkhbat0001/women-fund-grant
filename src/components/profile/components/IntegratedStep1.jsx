@@ -17,49 +17,77 @@ import {
   CONST_PROJECT_GROUP,
   CONST_PROJECT_RESULT,
   CONST_REPORT_DONE,
-  REPORT_BUDGET,
-  REPORT_BUDGET_POST,
   REPORT_IMPLEMENT,
+  REPORT_INTEGRATED_POST,
+  REPORT_PROGRESS_POST,
   REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
-import OInputNumber from "../../../screens/form/OInputNumber";
-import { ProgressContext } from "../ProgressAdd";
-import { resetComponent } from "@ant-design/pro-components";
+import { IntegratedContext } from "../IntegratedAdd";
 
-const ProgressStep3 = () => {
+const IntegratedStep1 = ({ ...other }) => {
   const [data, setData] = useState([]);
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+
+  const { next, loading, setProjectId, projectId, setReport } =
+    useContext(IntegratedContext);
+
+  useEffect(() => {
+    if (projectId > 0) {
+      getImplement(projectId);
+    }
+  }, []);
 
   const onFinish = (values) => {
     console.log("values: ", values);
-    const budgetList = [];
-    values.items.map((item) =>
-      item?.goalObjects.map((goal) => {
-        goal?.budgetList.map((budget) => {
-          budgetList.push({
-            budgetId: budget.budgetId,
-            reportAmount: budget.reportAmount,
+    const impl = [];
+    values.items.map((goal) => {
+      goal.goalObjects.map((obj) => {
+        obj.iplanList.map((plan) => {
+          impl.push({
+            projectId: values.projectId,
+            goalId: goal.goalId,
+            objectId: obj.objectId,
+            planId: plan.planId,
+            id: plan.id,
+            doneId: plan.doneId,
+            description: plan.description,
+            typeId: 151,
           });
         });
-      })
-    );
-    useAxios(REPORT_BUDGET_POST.format(projectId), budgetList, {
+      });
+    });
+
+    const payload = {
+      projectId: values.projectId,
+      implementDtoList: impl,
+    };
+
+    useAxios(REPORT_INTEGRATED_POST, payload, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
-      console.log("res: ", res);
+      setReport(res);
       next && next();
     });
   };
 
-  useEffect(() => {
-    useAxios(REPORT_BUDGET.format(projectId)).then((res) => {
-      form.setFieldsValue({ items: res });
+  const onChange = (val) => {
+    if (!projectId) {
+      console.log("projectId: ", projectId);
+      setProjectId(val);
+    }
+    getImplement(val);
+  };
+
+  const getImplement = (projectId) => {
+    useAxios(REPORT_IMPLEMENT.format(projectId, 151)).then((res) => {
+      console.log("implement: ", res);
+      setData(res);
+      form.setFieldsValue({ projectId: projectId, items: res });
     });
-  }, []);
+  };
 
   return (
     <>
@@ -71,6 +99,24 @@ const ProgressStep3 = () => {
         onFinish={onFinish}
         // style={{ maxWidth: 800, justify: "center" }}
       >
+        <Row gutter={12}>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="projectId"
+              label="Төслийн нэр"
+              rules={validator().required().build()}
+            >
+              <OSelect
+                placeholder="Төслийн нэр"
+                style={{ width: "100%" }}
+                selectAPI={REPORT_PROJECT_STATUS}
+                selectName="projectName"
+                selectValue="projectId"
+                onChange={onChange}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
         <Form.List name="items">
           {(fields, { add, remove }) => (
             <Collapse size="small">
@@ -116,7 +162,6 @@ const ProgressStep3 = () => {
                                   const object =
                                     form.getFieldsValue().items[field.name]
                                       .goalObjects[field2.name];
-
                                   return (
                                     <Card
                                       type="inner"
@@ -162,7 +207,7 @@ const ProgressStep3 = () => {
 
                                       <Form.Item label="">
                                         <Form.List
-                                          name={[field2.name, "budgetList"]}
+                                          name={[field2.name, "iplanList"]}
                                         >
                                           {(subFields2, subOpt) => {
                                             return (
@@ -170,12 +215,12 @@ const ProgressStep3 = () => {
                                                 <Row gutter={12}>
                                                   {subFields2.map(
                                                     (field3, subIndex2) => {
-                                                      const budget =
+                                                      const plan =
                                                         form.getFieldsValue()
                                                           .items[field.name]
                                                           .goalObjects[
                                                           field2.name
-                                                        ].budgetList[
+                                                        ].iplanList[
                                                           field3.name
                                                         ];
                                                       return (
@@ -202,75 +247,60 @@ const ProgressStep3 = () => {
                                                               column={4}
                                                             >
                                                               <Descriptions.Item
-                                                                label="Тоо, ширхэг:"
+                                                                label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:"
                                                                 span={2}
                                                               >
                                                                 {
-                                                                  budget?.quantity
+                                                                  plan?.requirement
                                                                 }
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
-                                                                label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
+                                                                label="Хэрэгжүүлэх хугацаа:"
+                                                                span={2}
+                                                              >
+                                                                {plan?.termUnit}
+                                                              </Descriptions.Item>
+                                                              <Descriptions.Item
+                                                                label="Хариуцах эзэн:"
                                                                 span={2}
                                                               >
                                                                 {
-                                                                  budget?.measureUnit
+                                                                  plan?.ownerName
                                                                 }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нэгж үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  budget?.unitPrice
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нийт үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  budget?.totalPrice
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Төсөл хэрэгжүүлэгч байгууллагаас:"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  budget?.provider
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Бусад эх үүсвэрээс:"
-                                                                span={2}
-                                                              >
-                                                                {budget?.other}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="МОНЭС-аас:"
-                                                                span={2}
-                                                              >
-                                                                {budget?.mnFund}
                                                               </Descriptions.Item>
                                                             </Descriptions>
                                                             <br />
                                                             <Form.Item
-                                                              label="Хэрэгжүүлсэн дүн"
+                                                              label="Хийгдсэн эсэх"
                                                               name={[
                                                                 field3.name,
-                                                                "reportAmount",
+                                                                "doneId",
                                                               ]}
                                                               rules={validator()
                                                                 .required()
                                                                 .build()}
                                                             >
-                                                              <OInputNumber
-                                                                placeholder="Хэрэгжүүлсэн дүн"
+                                                              <OSelect
                                                                 style={{
                                                                   width: "100%",
                                                                 }}
+                                                                placeholder="сонгох"
+                                                                selectAPI={
+                                                                  CONST_REPORT_DONE
+                                                                }
                                                               />
+                                                            </Form.Item>
+                                                            <Form.Item
+                                                              label="Дэлгэрэнгүй тайлбар"
+                                                              name={[
+                                                                field3.name,
+                                                                "description",
+                                                              ]}
+                                                              // rules={validator()
+                                                              //   .required()
+                                                              //   .build()}
+                                                            >
+                                                              <Input.TextArea placeholder="Дэлгэрэнгүй тайлбар" />
                                                             </Form.Item>
                                                           </Card>
                                                         </Col>
@@ -315,4 +345,4 @@ const ProgressStep3 = () => {
   );
 };
 
-export default ProgressStep3;
+export default IntegratedStep1;

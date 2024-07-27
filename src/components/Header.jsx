@@ -79,7 +79,29 @@ const Header = ({ user, loggedIn, logout }) => {
         </div>
         <div className="hidden lg:flex lg:justify-between w-full">
           <ul className="flex items-center gap-x-4">
-            {navLinks.map((link) => {
+            <li key="grant">
+              <a
+                className="link"
+                onClick={() => {
+                  navigate("/");
+                }}
+              >
+                Тэтгэлэг
+              </a>
+            </li>
+            {loggedIn === 1 && (
+              <li key="request">
+                <a
+                  className="link"
+                  onClick={() => {
+                    navigate("/profile");
+                  }}
+                >
+                  Хувийн мэдээлэл
+                </a>
+              </li>
+            )}
+            {/* {navLinks.map((link) => {
               return (
                 <li key={link.id}>
                   <a
@@ -92,7 +114,7 @@ const Header = ({ user, loggedIn, logout }) => {
                   </a>
                 </li>
               );
-            })}
+            })} */}
           </ul>
 
           {loggedIn === 1 && (

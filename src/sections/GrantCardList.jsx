@@ -1,27 +1,27 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import { useAxios } from "../hooks";
 import { CUSTOMER_GRANT } from "../utils/operation";
 import { useNavigate } from "react-router-dom";
 import { SystemContext } from "../context/SystemContext";
 import { Button } from "antd";
+import Introduction from "../components/modals/Introduction";
 
 const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
   if (serverPaging === true)
-    return (
-      `?page=${current}&pageSize=${pageSize}` + (search ? "&" + search : "")
-    );
+    return `?page=${current}&size=${pageSize}` + (search ? "&" + search : "");
   else return search ? "?" + search : "";
 };
 
 const GrantCardList = () => {
   const navigate = useNavigate();
   const { loggedIn } = useContext(SystemContext);
+  const introRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [dataSource, setDataSource] = useState([]);
   const [data, setData] = useState({});
   const [pagination, setPagination] = useState({
     current: 1,
-    pageSize: 8,
+    pageSize: 4,
     total: 0,
   });
 
@@ -31,7 +31,7 @@ const GrantCardList = () => {
     const queryParam = serverQueryParams(current, pageSize, "", true);
     useAxios(CUSTOMER_GRANT + queryParam, {}, { showLoader: false })
       .then((res) => {
-        setDataSource(res.list);
+        setDataSource((prevState) => [...prevState, ...res.list]);
         setPagination({
           current: current,
           pageSize: pageSize,
@@ -62,14 +62,16 @@ const GrantCardList = () => {
     if (loggedIn === 2) {
       navigate("/login");
     } else {
-      navigate(`/request/${row.grantId}`);
+      introRef.current.show();
+      // navigate(`/request/${row.grantId}`);
     }
   };
 
   return (
-    <div>
-      <div className="container flex flex-wrap pt-[150px]">
-        {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
+    <>
+      <div>
+        <div className="container flex flex-wrap pt-[150px]">
+          {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
           <div className="flex flex-grow">
             <div className="triangle"></div>
             <div className="flex flex-col bg-white border border-gray-400 text">
@@ -110,63 +112,63 @@ const GrantCardList = () => {
           </div>
         </div> */}
 
-        {dataSource.map((item) => {
-          return (
-            <div
-              key={item.grantId}
-              className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col"
-            >
-              <div className="flex flex-grow">
-                <div className="triangle"></div>
-                <div className="flex flex-col bg-white border border-gray-400 text">
-                  <div className="w-full h-32 bg-gradient-to-br from-[#7a51d2] to-[#008080] flex items-center justify-center">
-                    <h4 className="text-white font-bold text-1xl leading-tight px-8">
-                      {item.title}
-                    </h4>
-                  </div>
-                  {/* <img
+          {dataSource.map((item) => {
+            return (
+              <div
+                key={item.grantId}
+                className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col"
+              >
+                <div className="flex flex-grow">
+                  <div className="triangle"></div>
+                  <div className="flex flex-col bg-white border border-gray-400 text">
+                    <div className="w-full h-32 bg-gradient-to-br from-[#7a51d2] to-[#008080] flex items-center justify-center">
+                      <h4 className="text-white font-bold text-1xl leading-tight px-8">
+                        {item.title}
+                      </h4>
+                    </div>
+                    {/* <img
                       src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg"
                       alt="Headless UI"
                       className="w-full h-32 object-cover"
                     /> */}
-                  <div className="px-4 py-6 flex flex-grow flex-col justify-between">
-                    <div>
-                      <a
-                        href="#"
-                        className="inline-block mb-4 text-xs font-bold capitalize border-b-2 border-primary-60 hover:text-primary-60"
-                      >
-                        Global Fund for Women
-                      </a>
-                      <a
-                        href="#"
-                        className="block mb-4 text-2xl font-black leading-tight hover:underline hover:text-primary-60"
-                      >
-                        {item.title}
-                      </a>
-                      <p className="mb-4">{item.body}</p>
-                    </div>
-                    <div>
-                      <a
-                        href="#"
-                        className="inline-block pb-1 mt-2 text-base font-black text-primary-40 uppercase border-b border-transparent hover:border-primary-60 hover:text-primary-60"
-                        onClick={() => onClick(item)}
-                      >
-                        Хүсэлт илгээх
-                      </a>
+                    <div className="px-4 py-6 flex flex-grow flex-col justify-between">
+                      <div>
+                        <a
+                          href="#"
+                          className="inline-block mb-4 text-xs font-bold capitalize border-b-2 border-primary-60 hover:text-primary-60"
+                        >
+                          Global Fund for Women
+                        </a>
+                        <a
+                          href="#"
+                          className="block mb-4 text-2xl font-black leading-tight hover:underline hover:text-primary-60"
+                        >
+                          {item.title}
+                        </a>
+                        <p className="mb-4">{item.body}</p>
+                      </div>
+                      <div>
+                        <a
+                          href="#"
+                          className="inline-block pb-1 mt-2 text-base font-black text-primary-40 uppercase border-b border-transparent hover:border-primary-60 hover:text-primary-60"
+                          onClick={() => onClick(item)}
+                        >
+                          Хүсэлт илгээх
+                        </a>
+                      </div>
                     </div>
                   </div>
                 </div>
               </div>
-            </div>
-          );
-        })}
+            );
+          })}
 
-        {/* <img
+          {/* <img
                 src="https://tailwindcss.com/_next/static/media/heroicons@75.4a558f35.jpg"
                 alt="Heroicons"
                 className="w-full h-32 object-cover"
               /> */}
-        {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
+          {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
           <div className="flex flex-grow">
             <div className="triangle"></div>
             <div className="flex flex-col bg-white border border-gray-400">
@@ -208,7 +210,7 @@ const GrantCardList = () => {
           </div>
         </div> */}
 
-        {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
+          {/* <div className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col">
           <div className="flex flex-grow">
             <div className="triangle"></div>
             <div className="flex flex-col bg-white border border-gray-400">
@@ -289,14 +291,27 @@ const GrantCardList = () => {
             </div>
           </div>
         </div> */}
+        </div>
+        <div className="container">
+          <Button
+            style={{ width: "100%" }}
+            size="large"
+            loading={loading}
+            onClick={() => {
+              const { current, pageSize } = pagination;
+              onChangePagination(current + 1, pageSize);
+            }}
+          >
+            Дараагийнх
+          </Button>
+        </div>
+        <br />
       </div>
-      <div className="container">
-        <Button style={{ width: "100%" }} size="large" loading={loading}>
-          Дараагийнх
-        </Button>
-      </div>
-      <br />
-    </div>
+      {React.createElement(Introduction, {
+        ref: introRef,
+        hide: () => introRef.current.hide(),
+      })}
+    </>
   );
 };
 

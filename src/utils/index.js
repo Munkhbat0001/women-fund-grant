@@ -9,3 +9,15 @@ String.prototype.format = function () {
   }
   return content;
 };
+
+export const formatMoney = (price) => {
+  return new Intl.NumberFormat().format(price);
+};
+
+export const normFile = (e) => {
+  console.log("normFile: ", e);
+  if (Array.isArray(e)) {
+    return e;
+  }
+  return e?.fileList;
+};

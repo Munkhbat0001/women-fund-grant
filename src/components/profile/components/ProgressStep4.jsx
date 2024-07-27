@@ -1,15 +1,41 @@
 import { Button, Col, Form, Input, Row, Space } from "antd";
-import React, { useRef } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import OSelect from "../../../screens/form/OSelect";
 import { validator } from "../../../utils/validator";
-import { REPORT_PROJECT_STATUS } from "../../../utils/operation";
+import {
+  REPORT_PROGRESS,
+  REPORT_PROGRESS_SEND,
+  REPORT_PROJECT_STATUS,
+} from "../../../utils/operation";
+import { useAxios } from "../../../hooks";
+import { ProgressContext } from "../ProgressAdd";
 
 const ProgressStep4 = () => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
 
+  const { next, loading, projectId, report } = useContext(ProgressContext);
+
+  useEffect(() => {
+    form.setFieldsValue(report);
+  }, []);
+
   const onFinish = (values) => {
     console.log("values: ", values);
+    useAxios(
+      REPORT_PROGRESS_SEND,
+      {
+        projectId: projectId,
+        reportId: report?.reportId || values.reportId,
+        ...values,
+      },
+      {
+        method: "POST",
+        showSuccess: true,
+      }
+    ).then((res) => {
+      console.log("res", res);
+    });
   };
 
   return (
@@ -27,7 +53,7 @@ const ProgressStep4 = () => {
             <Row gutter={12}>
               <Col flex="1 0 25%" className="column">
                 <Form.Item
-                  name="test"
+                  name="reportWriter"
                   label="Тайлан бичсэн хүний нэр"
                   rules={validator().required().build()}
                 >

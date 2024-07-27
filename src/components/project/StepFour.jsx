@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import {
   Button,
@@ -34,11 +34,23 @@ for (let i = 10; i < 36; i++) {
 }
 const StepFour = ({}) => {
   const [form] = Form.useForm();
+  const [options, setOptions] = useState([]);
   const {
     project: { projectId, budgetList },
     next,
     prev,
   } = useContext(ProjectContext);
+
+  useEffect(() => {
+    useAxios(CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`).then((res) => {
+      setOptions(
+        res.map((item) => ({
+          value: item.objectId,
+          label: item.description,
+        }))
+      );
+    });
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -131,9 +143,10 @@ const StepFour = ({}) => {
                     <OSelect
                       style={{ width: "100%" }}
                       placeholder="сонгох"
-                      selectAPI={
-                        CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
-                      }
+                      // selectAPI={
+                      //   CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
+                      // }
+                      options={options}
                       selectName="description"
                       selectValue="objectId"
                     />
@@ -256,7 +269,7 @@ const StepFour = ({}) => {
                                   gutter={12}
                                   key={`${field.key}_${subField.key}3`}
                                 >
-                                  <Col span={12}>
+                                  <Col span={24}>
                                     <Form.Item
                                       name={[subField.name, "provider"]}
                                       rules={validator()
@@ -311,7 +324,7 @@ const StepFour = ({}) => {
                             onClick={() => subOpt.add()}
                             block
                           >
-                            + Зорилт нэмэх
+                            + Үйл ажиллагаа нэмэх
                           </Button>
                         </div>
                       )}

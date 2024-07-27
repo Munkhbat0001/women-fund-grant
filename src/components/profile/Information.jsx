@@ -1,67 +1,154 @@
-import { Button, Col, Form, Input, Row } from "antd";
-import React from "react";
+import { Button, Col, DatePicker, Form, Input, Row, Upload } from "antd";
+import React, { useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
-import { SaveOutlined } from "@ant-design/icons";
+import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
+import OInputNumber from "../../screens/form/OInputNumber";
+import { useAxios } from "../../hooks";
+import {
+  CONST_CITY,
+  CONST_CUSTOMER_ROAD,
+  CONST_CUSTOMER_TARGET,
+  CONST_DISTRICT,
+  CUSTOMER_GET,
+  CUSTOMER_PUT,
+} from "../../utils/operation";
+import OSelect from "../../screens/form/OSelect";
+import dayjs from "dayjs";
+import customParseFormat from "dayjs/plugin/customParseFormat";
+import weekday from "dayjs/plugin/weekday";
+import localeData from "dayjs/plugin/localeData";
+import { normFile } from "../../utils";
+
+dayjs.extend(customParseFormat);
+dayjs.extend(weekday);
+dayjs.extend(localeData);
 
 const Information = () => {
   const [form] = Form.useForm();
-  const onFinish = (values) => {};
+  const [cityId, setCityId] = useState(0);
+  let customer = {};
+  let token;
+  if (localStorage.getItem("customer")) {
+    customer = JSON.parse(localStorage.getItem("customer"));
+    token = customer?.token;
+  }
+
+  useEffect(() => {
+    useAxios(CUSTOMER_GET.format(customer.customerId)).then((res) => {
+      let filePath;
+      if (res.certificatePath || res.rulePath) {
+        filePath = [
+          {
+            uid: `${customer.customerId}`,
+            name: `${
+              customer.typeId === 1 ? res.certificatePath : res.rulePath
+            }`,
+            status: "done",
+            url: `http://localhost:8021/file/${
+              customer.typeId === 1 ? res.certificatePath : res.rulePath
+            }`,
+          },
+        ];
+      }
+
+      form.setFieldsValue({
+        ...res,
+        dateOfEstablishment: res.dateOfEstablishment
+          ? dayjs(res.dateOfEstablishment, "YYYY-MM-DD")
+          : null,
+        filePath,
+      });
+    });
+  }, []);
+
+  const onFinish = (values) => {
+    const payload = {
+      ...values,
+      customerId: customer.customerId,
+      typeId: customer.typeId,
+      dateOfEstablishment: values.dateOfEstablishment.format("YYYY-MM-DD"),
+      certificatePath: Array.isArray(values.filePath)
+        ? values.filePath[0].response
+        : null,
+      rulePath: Array.isArray(values.filePath)
+        ? values.filePath[0].response
+        : null,
+    };
+
+    useAxios(CUSTOMER_PUT.format(customer.customerId), payload, {
+      method: "PUT",
+      showSuccess: true,
+    }).then((res) => {});
+  };
+
   return (
     <>
       <Form form={form} layout="vertical" onFinish={onFinish}>
         <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
+          <Col flex="1" className="column">
             <Form.Item
-              name="projectName"
+              name="name"
               label="Байгууллагын нэр"
               rules={validator().required().build()}
             >
               <Input placeholder="Байгууллагын нэр" />
             </Form.Item>
           </Col>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item
-              name="projectName"
-              label="Байгууллагын гэрчилгээний дугаар"
-              rules={validator().required().build()}
-            >
-              <Input placeholder="Байгууллагын гэрчилгээний дугаар" />
-            </Form.Item>
-          </Col>
+          {customer?.typeId === 1 && (
+            <Col flex="1" className="column">
+              <Form.Item
+                name="certificateNumber"
+                label="Байгууллагын гэрчилгээний дугаар"
+                rules={validator().required().build()}
+              >
+                <Input placeholder="Байгууллагын гэрчилгээний дугаар" />
+              </Form.Item>
+            </Col>
+          )}
         </Row>
         <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
+          {customer?.typeId === 1 && (
+            <Col flex="1" className="column">
+              <Form.Item
+                name="directorName"
+                label="Гүйцэтгэх захиралын нэр"
+                rules={validator().required().build()}
+              >
+                <Input placeholder="Гүйцэтгэх захиралын нэр" />
+              </Form.Item>
+            </Col>
+          )}
+          <Col flex="1" className="column">
             <Form.Item
-              name="projectName"
-              label="Гүйцэтгэх захиралын нэр"
-              rules={validator().required().build()}
-            >
-              <Input placeholder="Гүйцэтгэх захиралын нэр" />
-            </Form.Item>
-          </Col>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item
-              name="projectName"
+              name="employerCount"
               label="Байгууллагын ажилчдын тоо"
               rules={validator().required().build()}
             >
-              <Input placeholder="Байгууллагын ажилчдын тоо" />
+              <OInputNumber
+                placeholder="Байгууллагын ажилчдын тоо"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="dateOfEstablishment"
               label="Байгуулагдсан огноо"
               rules={validator().required().build()}
             >
-              <Input placeholder="Байгуулагдсан огноо" />
+              <DatePicker
+                placeholder="Байгуулагдсан огноо"
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="roadText"
               label="Үйл ажиллагааны чиглэл"
               rules={validator().required().build()}
             >
@@ -70,18 +157,24 @@ const Information = () => {
           </Col>
         </Row>
         <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
+          <Col flex="1" className="column">
             <Form.Item
-              name="projectName"
+              name="roadId"
               label="Тохирох үйл ажиллагааны чиглэлийг сонгоно уу."
               rules={validator().required().build()}
             >
-              <Input placeholder="Тохирох үйл ажиллагааны чиглэлийг сонгоно уу." />
+              <OSelect
+                placeholder="Тохирох үйл ажиллагааны чиглэлийг сонгоно уу."
+                selectAPI={CONST_CUSTOMER_ROAD}
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
-          <Col flex="1 0 25%" className="column">
+        </Row>
+        <Row>
+          <Col flex="1" className="column">
             <Form.Item
-              name="projectName"
+              name="targetGroupText"
               label="Зорилтот бүлэг"
               rules={validator().required().build()}
             >
@@ -92,27 +185,59 @@ const Information = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="targetGroupId"
               label="Тохирох зорилтот бүлгийг сонгоно уу"
               rules={validator().required().build()}
             >
-              <Input placeholder="Тохирох зорилтот бүлгийг сонгоно уу" />
-            </Form.Item>
-          </Col>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item
-              name="projectName"
-              label="Хамрах хүрээ/Байршил"
-              rules={validator().required().build()}
-            >
-              <Input placeholder="Хамрах хүрээ/Байршил" />
+              <OSelect
+                placeholder="Тохирох зорилтот бүлгийг сонгоно уу"
+                selectAPI={CONST_CUSTOMER_TARGET}
+                style={{ width: "100%" }}
+              />
             </Form.Item>
           </Col>
         </Row>
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="areaCityId"
+              label="Аймаг"
+              rules={validator().required().build()}
+            >
+              <OSelect
+                placeholder="Аймаг"
+                selectAPI={CONST_CITY}
+                selectName="name"
+                selectValue="id"
+                style={{ width: "100%" }}
+                onChange={(val) => {
+                  setCityId(val);
+                  form.setFieldValue("areaDistrictId", undefined);
+                }}
+              />
+            </Form.Item>
+          </Col>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="areaDistrictId"
+              label="Дүүрэг"
+              rules={validator().required().build()}
+            >
+              <OSelect
+                placeholder="Дүүрэг"
+                selectAPI={CONST_DISTRICT}
+                selectName="name"
+                selectValue="id"
+                style={{ width: "100%" }}
+                parentId={cityId}
+              />
+            </Form.Item>
+          </Col>
+        </Row>
+        <Row gutter={12}>
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="contactAddress"
               label="Холбоо барих хаяг"
               rules={validator().required().build()}
             >
@@ -121,7 +246,7 @@ const Information = () => {
           </Col>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="contactPhone"
               label="Холбоо барих утас"
               rules={validator().required().build()}
             >
@@ -132,18 +257,18 @@ const Information = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="contactEmail"
               label="Холбоо барих мэйл хаяг"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="Холбоо барих мэйл хаяг" />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="websiteLink"
               label="Вэбсайт"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="Вэбсайт" />
             </Form.Item>
@@ -152,18 +277,18 @@ const Information = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="facebookLink"
               label="Facebook"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="Facebook" />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="twitterLink"
               label="Twitter"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="Twitter" />
             </Form.Item>
@@ -172,26 +297,52 @@ const Information = () => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="instagramLink"
               label="Instagram"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="Instagram" />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="linkedInLink"
               label="LinkedIn"
-              rules={validator().required().build()}
+              // rules={validator().required().build()}
             >
               <Input placeholder="LinkedIn" />
             </Form.Item>
           </Col>
         </Row>
+        <Row gutter={24}>
+          <Col>
+            <Form.Item
+              name="filePath"
+              label="Гэрчилгээ хавсаргах"
+              valuePropName="fileList"
+              getValueFromEvent={normFile}
+            >
+              <Upload
+                action={`/api/upload/file/certificate`}
+                headers={{ Authorization: `Bearer ${token}` }}
+                name="file"
+                listType="picture"
+                maxCount={1}
+                // onRemove={onRemove}
+                showUploadList={{ showRemoveIcon: false }}
+              >
+                <Button icon={<UploadOutlined />}> CV хавсаргах</Button>
+              </Upload>
+            </Form.Item>
+          </Col>
+        </Row>
         <Row justify="end">
           <Col>
-            <Button icon={<SaveOutlined />} type="primary">
+            <Button
+              icon={<SaveOutlined />}
+              type="primary"
+              onClick={() => form.submit()}
+            >
               Хадгалах
             </Button>
           </Col>

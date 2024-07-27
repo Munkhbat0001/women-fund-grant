@@ -8,8 +8,9 @@ import StepFour from "../components/project/StepFour";
 import StepFive from "../components/project/StepFive";
 import useAxios from "../hooks/useAxios";
 import { CUSTOMER_PROJECT_BY_GRANT } from "../utils/operation";
-import { useParams, useSearchParams } from "react-router-dom";
+import { useNavigate, useParams, useSearchParams } from "react-router-dom";
 import { SystemContext } from "../context/SystemContext";
+import Confirm from "../components/project/Confirm";
 
 const items = [
   {
@@ -31,9 +32,9 @@ const items = [
     title: "Төсөл",
     description: "хэрэгжүүлэх баг",
   },
-  // {
-  //   title: "Баталгаажуулалт",
-  // },
+  {
+    title: "Баталгаажуулалт",
+  },
 ];
 
 export const ProjectContext = React.createContext({});
@@ -43,6 +44,7 @@ const ProjectRequest = () => {
   const [currentStep, setCurrentStep] = useState(null);
   const [project, setProject] = useState(null);
   const { loading } = useContext(SystemContext);
+  const navigate = useNavigate();
 
   const { grantId } = useParams();
 
@@ -75,8 +77,12 @@ const ProjectRequest = () => {
 
   useEffect(() => {
     useAxios(CUSTOMER_PROJECT_BY_GRANT + `/${grantId}`).then((res) => {
-      setProject(res);
-      setCurrentStep(res.stepId || 0);
+      if (!res.statusId || res.statusId === 200) {
+        setProject(res);
+        setCurrentStep(res.stepId || 0);
+      } else {
+        navigate("/profile");
+      }
     });
   }, []);
 
@@ -117,6 +123,7 @@ const ProjectRequest = () => {
                 {currentStep === 3 && <StepFour />}
               </Col>
               {currentStep === 4 && <StepFive />}
+              {currentStep === 5 && <Confirm />}
             </Row>
           </ProjectContext.Provider>
         </div>

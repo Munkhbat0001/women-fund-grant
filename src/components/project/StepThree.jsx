@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
 import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
 import OSelect from "../../screens/form/OSelect";
@@ -17,6 +17,7 @@ import { isEmpty } from "lodash";
 
 const StepThree = ({}) => {
   const [form] = Form.useForm();
+  const [options, setOptions] = useState([]);
   const {
     project: { projectId, planList },
     next,
@@ -24,6 +25,17 @@ const StepThree = ({}) => {
   } = useContext(ProjectContext);
 
   // const [goalId, setGoalId] = React.useState(0);
+
+  useEffect(() => {
+    useAxios(CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`).then((res) => {
+      setOptions(
+        res.map((item) => ({
+          value: item.objectId,
+          label: item.description,
+        }))
+      );
+    });
+  }, []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -130,9 +142,10 @@ const StepThree = ({}) => {
                     <OSelect
                       style={{ width: "100%" }}
                       placeholder="сонгох"
-                      selectAPI={
-                        CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
-                      }
+                      // selectAPI={
+                      //   CUSTOMER_PROJECT_OBJECT + `/${projectId}/object`
+                      // }
+                      options={options}
                       selectName="description"
                       selectValue="objectId"
                     />

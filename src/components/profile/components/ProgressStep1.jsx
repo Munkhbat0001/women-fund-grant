@@ -9,7 +9,7 @@ import {
   Space,
   Card,
 } from "antd";
-import React, { useContext, useRef, useState } from "react";
+import React, { useContext, useEffect, useRef, useState } from "react";
 import OSelect from "../../../screens/form/OSelect";
 import { InfoCircleOutlined } from "@ant-design/icons";
 import { validator } from "../../../utils/validator";
@@ -18,6 +18,7 @@ import {
   CONST_PROJECT_RESULT,
   CONST_REPORT_DONE,
   REPORT_IMPLEMENT,
+  REPORT_PROGRESS_POST,
   REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
@@ -28,24 +29,61 @@ const ProgressStep1 = ({ ...other }) => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
 
-  const { next, loading } = useContext(ProgressContext);
+  const { next, loading, setProjectId, projectId, setReport } =
+    useContext(ProgressContext);
+
+  useEffect(() => {
+    if (projectId > 0) {
+      getImplement(projectId);
+    }
+  }, []);
 
   const onFinish = (values) => {
     console.log("values: ", values);
+    const impl = [];
+    values.items.map((goal) => {
+      goal.goalObjects.map((obj) => {
+        obj.iplanList.map((plan) => {
+          impl.push({
+            projectId: values.projectId,
+            goalId: goal.goalId,
+            objectId: obj.objectId,
+            planId: plan.planId,
+            id: plan.id,
+            doneId: plan.doneId,
+            description: plan.description,
+            typeId: 150,
+          });
+        });
+      });
+    });
 
-    next && next();
+    const payload = {
+      projectId: values.projectId,
+      implementDtoList: impl,
+    };
+
+    useAxios(REPORT_PROGRESS_POST, payload, {
+      showSuccess: true,
+      method: "POST",
+    }).then((res) => {
+      setReport(res);
+      next && next();
+    });
   };
 
   const onChange = (val) => {
-    console.log("val: ", val);
+    if (!projectId) {
+      setProjectId(val);
+    }
     getImplement(val);
   };
 
   const getImplement = (projectId) => {
-    useAxios(REPORT_IMPLEMENT.format(projectId)).then((res) => {
+    useAxios(REPORT_IMPLEMENT.format(projectId, 150)).then((res) => {
       console.log("implement: ", res);
       setData(res);
-      form.setFieldsValue({ items: res });
+      form.setFieldsValue({ projectId: projectId, items: res });
     });
   };
 
@@ -62,7 +100,7 @@ const ProgressStep1 = ({ ...other }) => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="projectName"
+              name="projectId"
               label="Төслийн нэр"
               rules={validator().required().build()}
             >
@@ -218,9 +256,7 @@ const ProgressStep1 = ({ ...other }) => {
                                                                 label="Хэрэгжүүлэх хугацаа:"
                                                                 span={2}
                                                               >
-                                                                {
-                                                                  plan?.termUnitName
-                                                                }
+                                                                {plan?.termUnit}
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="Хариуцах эзэн:"
@@ -235,12 +271,12 @@ const ProgressStep1 = ({ ...other }) => {
                                                             <Form.Item
                                                               label="Хийгдсэн эсэх"
                                                               name={[
-                                                                plan.name,
+                                                                field3.name,
                                                                 "doneId",
                                                               ]}
-                                                              // rules={validator()
-                                                              //   .required()
-                                                              //   .build()}
+                                                              rules={validator()
+                                                                .required()
+                                                                .build()}
                                                             >
                                                               <OSelect
                                                                 style={{
@@ -255,7 +291,7 @@ const ProgressStep1 = ({ ...other }) => {
                                                             <Form.Item
                                                               label="Дэлгэрэнгүй тайлбар"
                                                               name={[
-                                                                plan.name,
+                                                                field3.name,
                                                                 "description",
                                                               ]}
                                                               // rules={validator()

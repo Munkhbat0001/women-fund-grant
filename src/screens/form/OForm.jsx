@@ -42,6 +42,16 @@ const OForm = (
             selectedData[key] = dayjs(selectedData[key], "YYYY-MM-DD");
           if (value == "time")
             selectedData[key] = dayjs(selectedData[key], "HH:mm");
+          if (value == "file" && selectedData[key]) {
+            selectedData[key] = [
+              {
+                uid: `${id}`,
+                name: `${selectedData[key]}`,
+                status: "done",
+                url: `http://152.42.174.142:8021/file/${selectedData[key]}`,
+              },
+            ];
+          }
         }
       });
       form.setFieldsValue(selectedData);
@@ -74,6 +84,15 @@ const OForm = (
           values[key] = values[key].format("YYYY-MM-DD HH:mm");
         if (value == "date") values[key] = values[key].format("YYYY-MM-DD");
         if (value == "time") values[key] = values[key].format("HH:mm");
+        if (
+          value == "file" &&
+          Array.isArray(values[key]) &&
+          values[key][0].response
+        ) {
+          values[key] = values[key][0].response;
+        } else if (Array.isArray(values[key]) && values[key][0].url) {
+          values[key] = values[key][0].url;
+        }
       }
     });
 

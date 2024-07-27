@@ -28,14 +28,7 @@ import FileUpload from "../FileUpload";
 import { UploadOutlined } from "@ant-design/icons";
 import { showConfirm } from "../modals/Confirmation";
 import { useAxios } from "../../hooks";
-
-const normFile = (e) => {
-  console.log("normFile: ", e);
-  if (Array.isArray(e)) {
-    return e;
-  }
-  return e?.fileList;
-};
+import { normFile } from "../../utils";
 
 const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
   const formRef = useRef(null);
@@ -50,18 +43,18 @@ const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
       console.log("row: ", row);
       if (row) {
         setMode(row.mode);
-        const workExperiencePath = row.workExperiencePath && [
-          {
-            uid: `${row.memberId}`,
-            name: row.workExperiencePath,
-            status: "done",
-            url: `${row.workExperiencePath}`,
-          },
-        ];
-        setSelectedData({
-          ...row,
-          workExperiencePath,
-        });
+        // const workExperiencePath = row.workExperiencePath && [
+        //   {
+        //     uid: `${row.memberId}`,
+        //     name: row.workExperiencePath,
+        //     status: "done",
+        //     url: `${row.workExperiencePath}`,
+        //   },
+        // ];
+        // setSelectedData({
+        //   ...row,
+        //   workExperiencePath,
+        // });
       } else {
         setMode(null);
         setSelectedData({});
@@ -99,11 +92,11 @@ const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
 
   const beforeSave = (values) => {
     values.projectId = projectId;
-    if (values.workExperiencePath && values.workExperiencePath.length > 0) {
-      values.workExperiencePath =
-        values.workExperiencePath[0].response ||
-        values.workExperiencePath[0].url;
-    }
+    // if (values.workExperiencePath && values.workExperiencePath.length > 0) {
+    //   values.workExperiencePath =
+    //     values.workExperiencePath[0].response ||
+    //     values.workExperiencePath[0].url;
+    // }
     console.log("values: ", values);
     return values;
   };
@@ -117,6 +110,9 @@ const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
     mode,
     selectedData,
     beforeSave,
+    itemTypes: {
+      workExperiencePath: "file",
+    },
   };
 
   let token = "";
@@ -228,19 +224,18 @@ const StepFiveModal = ({ projectId, hide, ...other }, ref) => {
               label="Файл хавсаргах"
               valuePropName="fileList"
               getValueFromEvent={normFile}
-              rules={validator().required().build()}
             >
               {/* <FileUpload dir="member" /> */}
               <Upload
                 action={`/api/upload/file/member`}
                 headers={{ Authorization: `Bearer ${token}` }}
                 name="file"
-                // listType="picture"
+                listType="picture"
                 maxCount={1}
-                onRemove={onRemove}
+                // onRemove={onRemove}
                 showUploadList={{ showRemoveIcon: false }}
               >
-                <Button icon={<UploadOutlined />}> Файл сонгох</Button>
+                <Button icon={<UploadOutlined />}> CV хавсаргах</Button>
               </Upload>
             </Form.Item>
           </Col>

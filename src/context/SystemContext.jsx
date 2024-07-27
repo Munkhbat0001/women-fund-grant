@@ -36,22 +36,26 @@ const SystemProvider = ({ children }) => {
   useEffect(() => {
     if (loggedIn !== 0) return;
     const user = JSON.parse(localStorage.getItem("customer"));
-
-    useAxios(CUSTOMER_INFO)
-      .then((data) => {
-        loginUser(data);
-        const new_info = {
-          ...data,
-          token: user?.token,
-        };
-        localStorage.setItem("customer", JSON.stringify(new_info));
-      })
-      .catch((err) => {
-        let error = err.response.data || err.message || "Server Error";
-        if (error) {
-          logoutUser();
-        }
-      });
+    // console.log("user: ", user);
+    if (user) {
+      useAxios(CUSTOMER_INFO)
+        .then((data) => {
+          loginUser(data);
+          const new_info = {
+            ...data,
+            token: user?.token,
+          };
+          localStorage.setItem("customer", JSON.stringify(new_info));
+        })
+        .catch((err) => {
+          let error = err.response.data || err.message || "Server Error";
+          if (error) {
+            logoutUser();
+          }
+        });
+    } else {
+      setLoggedIn(2);
+    }
   }, [loggedIn]);
 
   return (

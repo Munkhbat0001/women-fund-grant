@@ -4,7 +4,7 @@ import { Button, Form, Input, InputNumber, Popconfirm, Table } from "antd";
 import { useAxios } from "../../../hooks";
 import { REPORT_DATA, REPORT_DATA_POST } from "../../../utils/operation";
 import { isEmpty } from "lodash";
-import { ProgressContext } from "../ProgressAdd";
+import { IntegratedContext } from "../IntegratedAdd";
 
 const groups = [
   {
@@ -325,12 +325,12 @@ const EditableCell = ({
   return <td {...restProps}>{childNode}</td>;
 };
 
-const ProgressStep2 = () => {
+const IntegratedStep2 = () => {
   const [dataSource, setDataSource] = useState([]);
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+  const { next, loading, projectId, report } = useContext(IntegratedContext);
 
   useEffect(() => {
-    useAxios(REPORT_DATA.format(projectId, 150)).then((res) => {
+    useAxios(REPORT_DATA.format(projectId, 151)).then((res) => {
       console.log("res: ", res);
       const list = [...groups];
       if (isEmpty(res)) {
@@ -491,8 +491,6 @@ const ProgressStep2 = () => {
     },
   ];
   const onFinish = () => {
-    console.log("dataSource: ", dataSource);
-
     const data = [];
     dataSource.map((item) => {
       if (!["a", "b", "c", "d"].includes(item.group)) {
@@ -500,7 +498,7 @@ const ProgressStep2 = () => {
           id: item.id,
           reportId: item.reportId || report.reportId,
           projectId: item.projectId || projectId,
-          typeId: item.typeId || 150,
+          typeId: item.typeId || 151,
           groupName: item.group,
           targetGroup: item.targetGroup,
           underTen: parseFloat(item.underTen),
@@ -602,4 +600,4 @@ const ProgressStep2 = () => {
   );
 };
 
-export default ProgressStep2;
+export default IntegratedStep2;

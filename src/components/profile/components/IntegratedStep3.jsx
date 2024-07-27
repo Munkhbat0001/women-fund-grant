@@ -24,14 +24,13 @@ import {
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import OInputNumber from "../../../screens/form/OInputNumber";
-import { ProgressContext } from "../ProgressAdd";
-import { resetComponent } from "@ant-design/pro-components";
+import { IntegratedContext } from "../IntegratedAdd";
 
-const ProgressStep3 = () => {
+const IntegratedStep3 = () => {
   const [data, setData] = useState([]);
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+  const { next, loading, projectId, report } = useContext(IntegratedContext);
 
   const onFinish = (values) => {
     console.log("values: ", values);
@@ -41,12 +40,12 @@ const ProgressStep3 = () => {
         goal?.budgetList.map((budget) => {
           budgetList.push({
             budgetId: budget.budgetId,
-            reportAmount: budget.reportAmount,
+            reportAmountLast: budget.reportAmountLast,
           });
         });
       })
     );
-    useAxios(REPORT_BUDGET_POST.format(projectId), budgetList, {
+    useAxios(REPORT_BUDGET_POST.format(report.projectId, 151), budgetList, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
@@ -56,7 +55,7 @@ const ProgressStep3 = () => {
   };
 
   useEffect(() => {
-    useAxios(REPORT_BUDGET.format(projectId)).then((res) => {
+    useAxios(REPORT_BUDGET.format(report.projectId, 151)).then((res) => {
       form.setFieldsValue({ items: res });
     });
   }, []);
@@ -259,7 +258,7 @@ const ProgressStep3 = () => {
                                                               label="Хэрэгжүүлсэн дүн"
                                                               name={[
                                                                 field3.name,
-                                                                "reportAmount",
+                                                                "reportAmountLast",
                                                               ]}
                                                               rules={validator()
                                                                 .required()
@@ -315,4 +314,4 @@ const ProgressStep3 = () => {
   );
 };
 
-export default ProgressStep3;
+export default IntegratedStep3;

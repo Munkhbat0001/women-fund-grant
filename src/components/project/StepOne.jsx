@@ -117,7 +117,7 @@ const StepOne = ({}, ref) => {
         <Row gutter={12}>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="resultId"
+              name="resultIds"
               label="Хүлээгдэж буй үр дүн"
               tooltip={{
                 title:
@@ -126,23 +126,38 @@ const StepOne = ({}, ref) => {
               }}
               rules={validator().required().build()}
             >
-              <OSelect
+              {/* <OSelect
                 placeholder="Хүлээгдэж буй үр дүн"
                 style={{ width: "100%" }}
                 selectAPI={CONST_PROJECT_RESULT}
+              /> */}
+
+              <OSelect
+                mode="multiple"
+                placeholder="Хүлээгдэж буй үр дүн"
+                selectAPI={CONST_PROJECT_RESULT}
+                style={{ width: "100%" }}
               />
             </Form.Item>
           </Col>
+        </Row>
+        <Row>
           <Col flex="1 0 25%" className="column">
             <Form.Item
-              name="groupId"
+              name="groupIds"
               label="Төслийн зорилтот бүлэг"
               rules={validator().required().build()}
             >
-              <OSelect
+              {/* <OSelect
                 placeholder="Төслийн зорилтот бүлэг"
                 style={{ width: "100%" }}
                 selectAPI={CONST_PROJECT_GROUP}
+              /> */}
+              <OSelect
+                mode="multiple"
+                placeholder="Төслийн зорилтот бүлэг"
+                selectAPI={CONST_PROJECT_GROUP}
+                style={{ width: "100%" }}
               />
             </Form.Item>
           </Col>
