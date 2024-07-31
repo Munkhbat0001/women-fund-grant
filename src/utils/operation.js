@@ -68,7 +68,10 @@ export const FILE_DOWNLOAD = "/file";
 export const FILE_REMOVE = "/file";
 
 // Report
-export const REPORT_PROJECT_STATUS = "/report/customer/status?statusIds=207";
+export const REPORT_PROJECT_STATUS_PROGRESS =
+  "/report/customer/status/progress?statusIds=207";
+export const REPORT_PROJECT_STATUS_INTEGRATED =
+  "/report/customer/status/integrated?statusIds=207,209";
 export const REPORT_IMPLEMENT =
   "/report/customer/implement?projectId={0}&typeId={1}";
 export const REPORT_BUDGET = "/report/customer/budget?projectId={0}&typeId={1}";
@@ -78,13 +81,13 @@ export const REPORT_DATA =
   "/report/customer/report-data?projectId={0}&typeId={1}";
 export const REPORT_DATA_POST = "/report/customer/report-data?projectId={0}";
 export const REPORT_PROGRESS = "/report/customer/progress/{0}";
-export const REPORT_PROGRESS_LIST = "/report/progress";
+export const REPORT_PROGRESS_LIST = "/report/customer/progress";
 export const REPORT_PROGRESS_POST = "/report/customer/progress";
 export const REPORT_PROGRESS_SEND = "/report/customer/send-progress";
 
 export const REPORT_MEASURE = "/report/customer/measure?projectId={0}";
 export const REPORT_MEASURE_POST = "/report/customer/measure?projectId={0}";
 export const REPORT_INTEGRATED = "/report/customer/integrated/{0}";
-export const REPORT_INTEGRATED_LIST = "/report/integrated";
+export const REPORT_INTEGRATED_LIST = "/report/customer/integrated";
 export const REPORT_INTEGRATED_POST = "/report/customer/integrated";
 export const REPORT_INTEGRATED_SEND = "/report/customer/send-integrated";

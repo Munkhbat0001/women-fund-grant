@@ -39,7 +39,7 @@ const IntegratedList = () => {
   const _onMenuClick = (key, row) => {
     switch (key) {
       case "againView":
-        formRef.current.clear(row);
+        formRef.current.clear({ ...row, mode: "edit" });
         formRef.current.show();
         break;
       case "detailView":
@@ -124,6 +124,7 @@ const IntegratedList = () => {
   ];
 
   const onShow = () => {
+    formRef.current.clear(null);
     formRef.current.show();
   };
 
@@ -166,7 +167,7 @@ const IntegratedList = () => {
     <>
       <Row justify="end" style={{ marginBottom: "10px" }}>
         <Button type="primary" onClick={onShow}>
-          Явцын тайлан оруулах
+          Нэгдсэн тайлан оруулах
         </Button>
       </Row>
       <Table

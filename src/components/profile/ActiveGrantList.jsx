@@ -7,6 +7,7 @@ import dayjs from "dayjs";
 import { formatMoney } from "../../utils";
 import { DownOutlined } from "@ant-design/icons";
 import ProjectTab from "./components/ProjectTab";
+import { useNavigate } from "react-router-dom";
 
 const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
   if (serverPaging === true)
@@ -18,6 +19,7 @@ const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
 
 const ActiveGrantList = () => {
   const detailRef = useRef(null);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({});
   const [dataSource, setDataSource] = useState([]);
@@ -37,6 +39,9 @@ const ActiveGrantList = () => {
         detailRef.current.clear(row);
         detailRef.current.show();
         break;
+      case "continueView":
+        navigate(`/request/${row.grantId}`);
+        break;
     }
   };
 
@@ -55,10 +60,10 @@ const ActiveGrantList = () => {
       dataIndex: "requestAmount",
       render: (text) => text && formatMoney(text),
     },
-    {
-      title: "Үндэслэл",
-      dataIndex: "introduction",
-    },
+    // {
+    //   title: "Үндэслэл",
+    //   dataIndex: "introduction",
+    // },
     {
       title: "Эхэлсэн огноо",
       dataIndex: "beginDate",
@@ -84,6 +89,13 @@ const ActiveGrantList = () => {
           key: "detailView",
           label: "Харах",
         });
+
+        if (row.statusId === 200) {
+          list.push({
+            key: "continueView",
+            label: "Үргэжлүүлэх",
+          });
+        }
 
         return (
           <Space>

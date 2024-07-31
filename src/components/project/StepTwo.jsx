@@ -264,18 +264,13 @@ const StepTwo = ({}) => {
           <Row gutter={12} justify="end">
             <Space>
               <Button
-                // size="large"
                 onClick={() => {
                   prev && prev();
                 }}
               >
                 Буцах
               </Button>
-              <Button
-                // size="large"
-                type="primary"
-                onClick={() => form.submit()}
-              >
+              <Button type="primary" onClick={() => form.submit()}>
                 Үргэлжлүүлэх
               </Button>
             </Space>

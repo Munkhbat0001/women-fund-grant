@@ -19,7 +19,7 @@ import {
   CONST_REPORT_DONE,
   REPORT_IMPLEMENT,
   REPORT_PROGRESS_POST,
-  REPORT_PROJECT_STATUS,
+  REPORT_PROJECT_STATUS_PROGRESS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import { ProgressContext } from "../ProgressAdd";
@@ -29,7 +29,7 @@ const ProgressStep1 = ({ ...other }) => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
 
-  const { next, loading, setProjectId, projectId, setReport } =
+  const { next, mode, loading, setProjectId, projectId, setReport, project } =
     useContext(ProgressContext);
 
   useEffect(() => {
@@ -39,13 +39,13 @@ const ProgressStep1 = ({ ...other }) => {
   }, []);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
+    console.log("projectId: ", projectId);
     const impl = [];
     values.items.map((goal) => {
       goal.goalObjects.map((obj) => {
         obj.iplanList.map((plan) => {
           impl.push({
-            projectId: values.projectId,
+            projectId: values.projectId || projectId,
             goalId: goal.goalId,
             objectId: obj.objectId,
             planId: plan.planId,
@@ -59,7 +59,7 @@ const ProgressStep1 = ({ ...other }) => {
     });
 
     const payload = {
-      projectId: values.projectId,
+      projectId: values.projectId || projectId,
       implementDtoList: impl,
     };
 
@@ -81,7 +81,6 @@ const ProgressStep1 = ({ ...other }) => {
 
   const getImplement = (projectId) => {
     useAxios(REPORT_IMPLEMENT.format(projectId, 150)).then((res) => {
-      console.log("implement: ", res);
       setData(res);
       form.setFieldsValue({ projectId: projectId, items: res });
     });
@@ -97,24 +96,37 @@ const ProgressStep1 = ({ ...other }) => {
         onFinish={onFinish}
         // style={{ maxWidth: 800, justify: "center" }}
       >
-        <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item
-              name="projectId"
-              label="Төслийн нэр"
-              rules={validator().required().build()}
-            >
-              <OSelect
-                placeholder="Төслийн нэр"
-                style={{ width: "100%" }}
-                selectAPI={REPORT_PROJECT_STATUS}
-                selectName="projectName"
-                selectValue="projectId"
-                onChange={onChange}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {mode === "create" && (
+          <Row gutter={12}>
+            <Col flex="1 0 25%" className="column">
+              <Form.Item
+                name="projectId"
+                label="Төслийн нэр"
+                rules={validator().required().build()}
+              >
+                <OSelect
+                  placeholder="Төслийн нэр"
+                  style={{ width: "100%" }}
+                  selectAPI={REPORT_PROJECT_STATUS_PROGRESS}
+                  selectName="projectName"
+                  selectValue="projectId"
+                  onChange={onChange}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
+        {mode === "edit" && (
+          <Row gutter={12} style={{ marginBottom: "10px" }}>
+            <Col flex="1 0 25%" className="column">
+              <Descriptions bordered size="small" column={1}>
+                <Descriptions.Item label="Төслийн нэр:">
+                  {project?.projectName}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
+        )}
         <Form.List name="items">
           {(fields, { add, remove }) => (
             <Collapse size="small">

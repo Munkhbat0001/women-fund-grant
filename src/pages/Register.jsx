@@ -61,12 +61,12 @@ const Register = () => {
               onFinishFailed={onFinishFailed}
             >
               <Form.Item
-                label="Байгууллагын нэр"
+                label={`${typeId === 1 ? "Байгууллагын нэр" : "Бүлгийн нэр"} `}
                 name="name"
                 rules={[
                   {
                     required: true,
-                    message: "Please input your username!",
+                    message: "Нэр оруулна уу",
                   },
                 ]}
               >
@@ -78,7 +78,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your username!",
+                    message: "Мэйл хаягаа оруулна уу",
                   },
                 ]}
               >
@@ -90,7 +90,7 @@ const Register = () => {
                 rules={[
                   {
                     required: true,
-                    message: "Please input your password!",
+                    message: "Нууц үг оруулна уу",
                   },
                 ]}
               >

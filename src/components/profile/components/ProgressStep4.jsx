@@ -5,23 +5,24 @@ import { validator } from "../../../utils/validator";
 import {
   REPORT_PROGRESS,
   REPORT_PROGRESS_SEND,
-  REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import { ProgressContext } from "../ProgressAdd";
+import Success from "../../modals/Success";
 
 const ProgressStep4 = () => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
+  const successRef = useRef(null);
 
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+  const { prev, next, loading, projectId, report, afterSave } =
+    useContext(ProgressContext);
 
   useEffect(() => {
     form.setFieldsValue(report);
   }, []);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     useAxios(
       REPORT_PROGRESS_SEND,
       {
@@ -34,7 +35,10 @@ const ProgressStep4 = () => {
         showSuccess: true,
       }
     ).then((res) => {
-      console.log("res", res);
+      successRef.current.show();
+      setTimeout(() => {
+        afterSave && afterSave();
+      }, "2000");
     });
   };
 
@@ -129,6 +133,12 @@ const ProgressStep4 = () => {
           </Form>
         </Col>
       </Row>
+
+      {React.createElement(Success, {
+        ref: successRef,
+        title: "Явцын тайлан илгээгдлээ.",
+        hide: () => successRef.current.hide(),
+      })}
     </>
   );
 };

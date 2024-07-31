@@ -1,6 +1,16 @@
 import { EditableProTable } from "@ant-design/pro-components";
 import React, { useContext, useEffect, useRef, useState } from "react";
-import { Button, Form, Input, InputNumber, Popconfirm, Table } from "antd";
+import {
+  Button,
+  Col,
+  Form,
+  Input,
+  InputNumber,
+  Popconfirm,
+  Row,
+  Space,
+  Table,
+} from "antd";
 import { useAxios } from "../../../hooks";
 import { REPORT_DATA, REPORT_DATA_POST } from "../../../utils/operation";
 import { isEmpty } from "lodash";
@@ -327,11 +337,11 @@ const EditableCell = ({
 
 const ProgressStep2 = () => {
   const [dataSource, setDataSource] = useState([]);
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+  const { prev, next, loading, projectId, report } =
+    useContext(ProgressContext);
 
   useEffect(() => {
     useAxios(REPORT_DATA.format(projectId, 150)).then((res) => {
-      console.log("res: ", res);
       const list = [...groups];
       if (isEmpty(res)) {
         setDataSource(groups);
@@ -490,9 +500,8 @@ const ProgressStep2 = () => {
       width: "120px",
     },
   ];
-  const onFinish = () => {
-    console.log("dataSource: ", dataSource);
 
+  const onFinish = () => {
     const data = [];
     dataSource.map((item) => {
       if (!["a", "b", "c", "d"].includes(item.group)) {
@@ -567,15 +576,32 @@ const ProgressStep2 = () => {
   });
   return (
     <div>
-      <Button
-        onClick={onFinish}
-        type="primary"
-        style={{
-          marginBottom: 16,
-        }}
-      >
-        Үргэлжлүүлэх
-      </Button>
+      <Col xs={{ flex: "100%" }}>
+        <Row gutter={12} justify="end">
+          <Col>
+            <Button
+              // size="large"
+              onClick={() => {
+                prev && prev();
+              }}
+            >
+              Буцах
+            </Button>
+          </Col>
+          <Col>
+            <Button
+              onClick={onFinish}
+              type="primary"
+              style={{
+                marginBottom: 16,
+              }}
+            >
+              Үргэлжлүүлэх
+            </Button>
+          </Col>
+        </Row>
+      </Col>
+
       <Table
         size="small"
         components={components}

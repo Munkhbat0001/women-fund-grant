@@ -9,7 +9,6 @@ import {
   REPORT_INTEGRATED_SEND,
   REPORT_PROGRESS,
   REPORT_PROGRESS_SEND,
-  REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import { IntegratedContext } from "../IntegratedAdd";
@@ -17,6 +16,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
+import Success from "../../modals/Success";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(weekday);
@@ -25,19 +25,21 @@ dayjs.extend(localeData);
 const IntegratedStep5 = () => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
+  const successRef = useRef(null);
   const [cityId, setCityId] = useState(0);
 
-  const { next, loading, projectId, report } = useContext(IntegratedContext);
+  const { prev, next, loading, projectId, report, afterSave } =
+    useContext(IntegratedContext);
 
   useEffect(() => {
     form.setFieldsValue({
       ...report,
-      projectEndDate: dayjs(report.projectEndDate, "YYYY-MM-DD"),
+      projectEndDate:
+        report.projectEndDate && dayjs(report.projectEndDate, "YYYY-MM-DD"),
     });
   }, []);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     useAxios(
       REPORT_INTEGRATED_SEND,
       {
@@ -50,7 +52,10 @@ const IntegratedStep5 = () => {
         showSuccess: true,
       }
     ).then((res) => {
-      console.log("res", res);
+      successRef.current.show();
+      setTimeout(() => {
+        afterSave && afterSave();
+      }, "2000");
     });
   };
 
@@ -228,6 +233,11 @@ const IntegratedStep5 = () => {
           </Form>
         </Col>
       </Row>
+      {React.createElement(Success, {
+        ref: successRef,
+        title: "Нэгдсэн тайлан илгээгдлээ.",
+        hide: () => successRef.current.hide(),
+      })}
     </>
   );
 };

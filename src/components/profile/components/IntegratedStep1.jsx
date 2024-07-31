@@ -11,7 +11,6 @@ import {
 } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import OSelect from "../../../screens/form/OSelect";
-import { InfoCircleOutlined } from "@ant-design/icons";
 import { validator } from "../../../utils/validator";
 import {
   CONST_PROJECT_GROUP,
@@ -20,7 +19,7 @@ import {
   REPORT_IMPLEMENT,
   REPORT_INTEGRATED_POST,
   REPORT_PROGRESS_POST,
-  REPORT_PROJECT_STATUS,
+  REPORT_PROJECT_STATUS_INTEGRATED,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import { IntegratedContext } from "../IntegratedAdd";
@@ -30,7 +29,7 @@ const IntegratedStep1 = ({ ...other }) => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
 
-  const { next, loading, setProjectId, projectId, setReport } =
+  const { next, loading, setProjectId, projectId, setReport, mode, project } =
     useContext(IntegratedContext);
 
   useEffect(() => {
@@ -40,13 +39,12 @@ const IntegratedStep1 = ({ ...other }) => {
   }, []);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     const impl = [];
     values.items.map((goal) => {
       goal.goalObjects.map((obj) => {
         obj.iplanList.map((plan) => {
           impl.push({
-            projectId: values.projectId,
+            projectId: values.projectId || projectId,
             goalId: goal.goalId,
             objectId: obj.objectId,
             planId: plan.planId,
@@ -60,7 +58,7 @@ const IntegratedStep1 = ({ ...other }) => {
     });
 
     const payload = {
-      projectId: values.projectId,
+      projectId: values.projectId || projectId,
       implementDtoList: impl,
     };
 
@@ -75,7 +73,6 @@ const IntegratedStep1 = ({ ...other }) => {
 
   const onChange = (val) => {
     if (!projectId) {
-      console.log("projectId: ", projectId);
       setProjectId(val);
     }
     getImplement(val);
@@ -83,7 +80,6 @@ const IntegratedStep1 = ({ ...other }) => {
 
   const getImplement = (projectId) => {
     useAxios(REPORT_IMPLEMENT.format(projectId, 151)).then((res) => {
-      console.log("implement: ", res);
       setData(res);
       form.setFieldsValue({ projectId: projectId, items: res });
     });
@@ -99,24 +95,37 @@ const IntegratedStep1 = ({ ...other }) => {
         onFinish={onFinish}
         // style={{ maxWidth: 800, justify: "center" }}
       >
-        <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
-            <Form.Item
-              name="projectId"
-              label="Төслийн нэр"
-              rules={validator().required().build()}
-            >
-              <OSelect
-                placeholder="Төслийн нэр"
-                style={{ width: "100%" }}
-                selectAPI={REPORT_PROJECT_STATUS}
-                selectName="projectName"
-                selectValue="projectId"
-                onChange={onChange}
-              />
-            </Form.Item>
-          </Col>
-        </Row>
+        {mode === "create" && (
+          <Row gutter={12}>
+            <Col flex="1 0 25%" className="column">
+              <Form.Item
+                name="projectId"
+                label="Төслийн нэр"
+                rules={validator().required().build()}
+              >
+                <OSelect
+                  placeholder="Төслийн нэр"
+                  style={{ width: "100%" }}
+                  selectAPI={REPORT_PROJECT_STATUS_INTEGRATED}
+                  selectName="projectName"
+                  selectValue="projectId"
+                  onChange={onChange}
+                />
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
+        {mode === "edit" && (
+          <Row gutter={12} style={{ marginBottom: "10px" }}>
+            <Col flex="1 0 25%" className="column">
+              <Descriptions bordered size="small" column={1}>
+                <Descriptions.Item label="Төслийн нэр:">
+                  {project?.projectName}
+                </Descriptions.Item>
+              </Descriptions>
+            </Col>
+          </Row>
+        )}
         <Form.List name="items">
           {(fields, { add, remove }) => (
             <Collapse size="small">

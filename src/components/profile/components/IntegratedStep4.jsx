@@ -21,7 +21,6 @@ import {
   REPORT_MEASURE,
   REPORT_MEASURE_POST,
   REPORT_PROGRESS_POST,
-  REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import { IntegratedContext } from "../IntegratedAdd";
@@ -32,7 +31,7 @@ const IntegratedStep4 = ({ ...other }) => {
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
 
-  const { next, loading, setProjectId, projectId, report } =
+  const { prev, next, loading, setProjectId, projectId, report } =
     useContext(IntegratedContext);
 
   useEffect(() => {
@@ -195,15 +194,18 @@ const IntegratedStep4 = ({ ...other }) => {
         </Form.List>
         <br />
         <Row gutter={12} justify="end">
-          <Col>
+          <Space>
             <Button
-              // size="large"
-              type="primary"
-              onClick={() => form.submit()}
+              onClick={() => {
+                prev && prev();
+              }}
             >
-              Үргэлжлүүлэх
+              Буцах
             </Button>
-          </Col>
+            <Button type="primary" onClick={() => form.submit()}>
+              Илгээх
+            </Button>
+          </Space>
         </Row>
       </Form>
     </>

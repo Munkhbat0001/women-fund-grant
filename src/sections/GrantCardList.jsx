@@ -62,6 +62,7 @@ const GrantCardList = () => {
     if (loggedIn === 2) {
       navigate("/login");
     } else {
+      introRef.current.clear(row);
       introRef.current.show();
       // navigate(`/request/${row.grantId}`);
     }
@@ -145,7 +146,7 @@ const GrantCardList = () => {
                         >
                           {item.title}
                         </a>
-                        <p className="mb-4">{item.body}</p>
+                        {/* <p className="mb-4">{item.body}</p> */}
                       </div>
                       <div>
                         <a

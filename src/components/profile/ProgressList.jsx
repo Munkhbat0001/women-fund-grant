@@ -35,7 +35,7 @@ const ProgressList = () => {
   const _onMenuClick = (key, row) => {
     switch (key) {
       case "againView":
-        formRef.current.clear(row);
+        formRef.current.clear({ ...row, mode: "edit" });
         formRef.current.show();
         break;
       case "detailView":
@@ -121,6 +121,7 @@ const ProgressList = () => {
 
   const onShow = () => {
     formRef.current.show();
+    formRef.current.clear(null);
   };
 
   const fetch = (pagination) => {

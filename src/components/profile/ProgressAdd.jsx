@@ -26,10 +26,12 @@ const items = [
 
 export const ProgressContext = React.createContext({});
 
-const ProgressAdd = ({ ...other }, ref) => {
+const ProgressAdd = ({ afterSave, ...other }, ref) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [projectId, setProjectId] = useState(null);
   const [report, setReport] = useState(null);
+  const [mode, setMode] = useState(null);
+  const [project, setProject] = useState({});
   const { token } = theme.useToken();
   const { loading } = useContext(SystemContext);
 
@@ -38,8 +40,17 @@ const ProgressAdd = ({ ...other }, ref) => {
     width: "100vw",
     footer: null,
     clearScreen: (row) => {
-      setProjectId(row.projectId);
-      getReport(row.projectId);
+      setCurrentStep(0);
+      if (row) {
+        setProjectId(row.projectId);
+        getReport(row.projectId);
+        setMode(row.mode);
+        setProject(row);
+      } else {
+        setProjectId(null);
+        setReport(null);
+        setMode("create");
+      }
     },
     ...other,
   };
@@ -80,6 +91,9 @@ const ProgressAdd = ({ ...other }, ref) => {
     setProjectId,
     report,
     setReport,
+    afterSave,
+    mode,
+    project,
   };
 
   return (

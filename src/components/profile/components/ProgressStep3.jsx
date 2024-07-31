@@ -20,7 +20,6 @@ import {
   REPORT_BUDGET,
   REPORT_BUDGET_POST,
   REPORT_IMPLEMENT,
-  REPORT_PROJECT_STATUS,
 } from "../../../utils/operation";
 import { useAxios } from "../../../hooks";
 import OInputNumber from "../../../screens/form/OInputNumber";
@@ -31,10 +30,10 @@ const ProgressStep3 = () => {
   const [data, setData] = useState([]);
   const [form] = Form.useForm();
   const scrollRef = useRef(null);
-  const { next, loading, projectId, report } = useContext(ProgressContext);
+  const { prev, next, loading, projectId, report } =
+    useContext(ProgressContext);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     const budgetList = [];
     values.items.map((item) =>
       item?.goalObjects.map((goal) => {
@@ -46,7 +45,7 @@ const ProgressStep3 = () => {
         });
       })
     );
-    useAxios(REPORT_BUDGET_POST.format(projectId), budgetList, {
+    useAxios(REPORT_BUDGET_POST.format(projectId, 150), budgetList, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
@@ -56,7 +55,7 @@ const ProgressStep3 = () => {
   };
 
   useEffect(() => {
-    useAxios(REPORT_BUDGET.format(projectId)).then((res) => {
+    useAxios(REPORT_BUDGET.format(projectId, 150)).then((res) => {
       form.setFieldsValue({ items: res });
     });
   }, []);
@@ -300,15 +299,23 @@ const ProgressStep3 = () => {
         </Form.List>
         <br />
         <Row gutter={12} justify="end">
-          <Col>
+          <Space>
+            <Button
+              // size="large"
+              onClick={() => {
+                prev && prev();
+              }}
+            >
+              Буцах
+            </Button>
             <Button
               // size="large"
               type="primary"
               onClick={() => form.submit()}
             >
-              Үргэлжлүүлэх
+              Илгээх
             </Button>
-          </Col>
+          </Space>
         </Row>
       </Form>
     </>

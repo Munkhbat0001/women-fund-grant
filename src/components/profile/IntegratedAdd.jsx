@@ -33,10 +33,12 @@ const items = [
 
 export const IntegratedContext = React.createContext({});
 
-const IntegratedAdd = ({ ...other }, ref) => {
+const IntegratedAdd = ({ afterSave, ...other }, ref) => {
   const [currentStep, setCurrentStep] = useState(0);
   const [projectId, setProjectId] = useState(null);
   const [report, setReport] = useState(null);
+  const [mode, setMode] = useState(null);
+  const [project, setProject] = useState({});
   const { token } = theme.useToken();
   const { loading } = useContext(SystemContext);
 
@@ -45,8 +47,17 @@ const IntegratedAdd = ({ ...other }, ref) => {
     width: "100vw",
     footer: null,
     clearScreen: (row) => {
-      setProjectId(row.projectId);
-      getReport(row.projectId);
+      setCurrentStep(0);
+      if (row) {
+        setProjectId(row.projectId);
+        getReport(row.projectId);
+        setMode(row.mode);
+        setProject(row);
+      } else {
+        setProjectId(null);
+        setReport(null);
+        setMode("create");
+      }
     },
     ...other,
   };
@@ -74,10 +85,6 @@ const IntegratedAdd = ({ ...other }, ref) => {
     padding: 16,
   };
 
-  useEffect(() => {
-    // useAxios(REPORT_PROGRESS.format()).then(() => {});
-  }, []);
-
   const contextProps = {
     next,
     prev,
@@ -87,6 +94,9 @@ const IntegratedAdd = ({ ...other }, ref) => {
     setProjectId,
     report,
     setReport,
+    afterSave,
+    mode,
+    project,
   };
 
   return (
