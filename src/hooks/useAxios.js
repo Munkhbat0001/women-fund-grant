@@ -1,5 +1,5 @@
 import axios from "axios";
-import { message } from "antd";
+import { message, notification } from "antd";
 
 // axios.defaults.baseURL = ""
 axios.defaults.withCredentials = true;
@@ -37,8 +37,13 @@ const useAxios = (url, payload = {}, options = {}) => {
 
   return axios(config)
     .then(({ data }) => {
-      if (options.showSuccess === true)
-        message.success(data && data.message ? data.message : "Амжилттай");
+      if (options.showSuccess === true) {
+        // message.success(data && data.message ? data.message : "Амжилттай");
+        notification.success({
+          message: data && data.message ? data.message : "Амжилттай",
+          // description: data && data.message ? data.message : "Амжилттай",
+        });
+      }
       return data;
     })
     .catch((error) => {
@@ -47,7 +52,11 @@ const useAxios = (url, payload = {}, options = {}) => {
         error.message.includes("502 Bad Gateway") ||
         error.message.includes("Error occured")
       ) {
-        message.error(error.message);
+        // message.error(error.message);
+        notification.error({
+          message: "Системийн саатал",
+          description: error.response.data.message,
+        });
       }
 
       if (
@@ -55,7 +64,11 @@ const useAxios = (url, payload = {}, options = {}) => {
         showError === true
       ) {
         if (error.response.data.message)
-          message.error(error.response.data.message);
+          // message.error(error.response.data.message);
+          notification.warning({
+            message: "Анхааруулга",
+            description: error.response.data.message,
+          });
       }
 
       // throw Exception()
