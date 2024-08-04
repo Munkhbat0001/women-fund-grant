@@ -44,7 +44,7 @@ const Information = () => {
               customer.typeId === 1 ? res.certificatePath : res.rulePath
             }`,
             status: "done",
-            url: `http://localhost:8021/file/${
+            url: `http://206.189.82.44:8021/file/${
               customer.typeId === 1 ? res.certificatePath : res.rulePath
             }`,
           },

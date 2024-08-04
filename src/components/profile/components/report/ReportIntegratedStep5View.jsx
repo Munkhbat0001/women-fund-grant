@@ -58,7 +58,7 @@ const ReportIntegratedStep5View = ({ report }) => {
             type="link"
             onClick={() => {
               window.open(
-                `http://152.42.174.142:8021/file/${report?.attachmentPath}`,
+                `http://206.189.82.44:8021/file/${report?.attachmentPath}`,
                 "_blank"
               );
             }}

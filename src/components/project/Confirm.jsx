@@ -77,7 +77,7 @@ const Confirm = () => {
             type="link"
             onClick={() => {
               window.open(
-                `http://152.42.174.142:8021/file/${row.workExperiencePath}`,
+                `http://206.189.82.44:8021/file/${row.workExperiencePath}`,
                 "_blank"
               );
             }}

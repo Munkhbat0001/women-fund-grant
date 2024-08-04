@@ -48,7 +48,7 @@ const OForm = (
                 uid: `${id}`,
                 name: `${selectedData[key]}`,
                 status: "done",
-                url: `http://152.42.174.142:8021/file/${selectedData[key]}`,
+                url: `http://206.189.82.44:8021/file/${selectedData[key]}`,
               },
             ];
           }
