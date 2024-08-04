@@ -41,7 +41,6 @@ const IntegratedStep4 = ({ ...other }) => {
   }, []);
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     const measureList = [];
     values.items.map((goal) => {
       goal.imeasureDtoList.map((obj) => {

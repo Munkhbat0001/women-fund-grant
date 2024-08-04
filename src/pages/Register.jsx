@@ -50,8 +50,18 @@ const Register = () => {
                 // optionType="button"
                 // buttonStyle="solid"
               >
-                <Radio.Button value={1}>Байгууллага</Radio.Button>
-                <Radio.Button value={2}>Бүлгээр</Radio.Button>
+                <Radio.Button
+                  value={100}
+                  onChange={(e) => setTypeId(e.target.value)}
+                >
+                  Байгууллага
+                </Radio.Button>
+                <Radio.Button
+                  value={101}
+                  onChange={(e) => setTypeId(e.target.value)}
+                >
+                  Бүлгээр
+                </Radio.Button>
               </Radio.Group>
             </Flex>
             <br />

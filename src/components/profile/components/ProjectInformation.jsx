@@ -18,7 +18,7 @@ const ProjectInformation = ({ data = {}, ...other }) => {
     <>
       <Row gutter={12}>
         <Col span={24}>
-          <Descriptions bordered size="small" layout="vertical" column={4}>
+          <Descriptions bordered size="small" column={1}>
             <Descriptions.Item label="ID:">
               {project?.projectId}
             </Descriptions.Item>

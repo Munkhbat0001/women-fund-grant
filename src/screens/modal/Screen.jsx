@@ -1,11 +1,4 @@
-import { Button, Modal, Skeleton } from "antd";
-import React, {
-  Suspense,
-  useEffect,
-  useState,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, forwardRef, useImperativeHandle } from "react";
 import ModalScreen from "./ModalScreen";
 import useScreen from "../../hooks/useScreen";
 

@@ -260,9 +260,9 @@ const ProgressStep3 = () => {
                                                                 field3.name,
                                                                 "reportAmount",
                                                               ]}
-                                                              rules={validator()
-                                                                .required()
-                                                                .build()}
+                                                              // rules={validator()
+                                                              //   .required()
+                                                              //   .build()}
                                                             >
                                                               <OInputNumber
                                                                 placeholder="Хэрэгжүүлсэн дүн"

@@ -94,7 +94,7 @@ const Information = () => {
               <Input placeholder="Байгууллагын нэр" />
             </Form.Item>
           </Col>
-          {customer?.typeId === 1 && (
+          {customer?.typeId === 100 && (
             <Col flex="1" className="column">
               <Form.Item
                 name="certificateNumber"
@@ -107,7 +107,7 @@ const Information = () => {
           )}
         </Row>
         <Row gutter={12}>
-          {customer?.typeId === 1 && (
+          {customer?.typeId === 100 && (
             <Col flex="1" className="column">
               <Form.Item
                 name="directorName"

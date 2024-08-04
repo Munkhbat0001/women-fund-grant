@@ -260,9 +260,9 @@ const IntegratedStep3 = () => {
                                                                 field3.name,
                                                                 "reportAmountLast",
                                                               ]}
-                                                              rules={validator()
-                                                                .required()
-                                                                .build()}
+                                                              // rules={validator()
+                                                              //   .required()
+                                                              //   .build()}
                                                             >
                                                               <OInputNumber
                                                                 placeholder="Хэрэгжүүлсэн дүн"
@@ -308,7 +308,7 @@ const IntegratedStep3 = () => {
               Буцах
             </Button>
             <Button type="primary" onClick={() => form.submit()}>
-              Илгээх
+              Үргэлжлүүлэх
             </Button>
           </Space>
         </Row>

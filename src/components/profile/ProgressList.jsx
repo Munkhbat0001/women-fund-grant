@@ -6,7 +6,8 @@ import { REPORT_PROGRESS_LIST } from "../../utils/operation";
 import dayjs from "dayjs";
 import { formatMoney } from "../../utils";
 import { DownOutlined } from "@ant-design/icons";
-import ProjectTab from "./components/ProjectTab";
+import ReportStatusView from "./components/report/ReportStatusView";
+import ReportTabView from "./components/report/ReportTabView";
 
 const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
   if (serverPaging === true)
@@ -19,6 +20,7 @@ const serverQueryParams = (current, pageSize, search, serverPaging = true) => {
 const ProgressList = () => {
   const formRef = useRef(null);
   const detailRef = useRef(null);
+  const statusRef = useRef(null);
   const [loading, setLoading] = useState(false);
   const [filters, setFilters] = useState({});
   const [dataSource, setDataSource] = useState([]);
@@ -41,6 +43,10 @@ const ProgressList = () => {
       case "detailView":
         detailRef.current.clear(row);
         detailRef.current.show();
+        break;
+      case "statusView":
+        statusRef.current.clear(row);
+        statusRef.current.show();
         break;
     }
   };
@@ -86,10 +92,16 @@ const ProgressList = () => {
       render: (_, row) => {
         const list = [];
         if (row.statusId === 122 || row.statusId === 123) {
-          list.push({
-            key: "againView",
-            label: "Дахин илгээх",
-          });
+          list.push(
+            {
+              key: "againView",
+              label: "Дахин илгээх",
+            },
+            {
+              key: "statusView",
+              label: "Шалтгаан харах",
+            }
+          );
         } else {
           list.push({
             key: "detailView",
@@ -200,11 +212,18 @@ const ProgressList = () => {
           formRef.current.hide();
         },
       })}
-      {React.createElement(ProjectTab, {
+      {React.createElement(ReportTabView, {
         ref: detailRef,
         hide: () => detailRef.current.hide(),
         afterSave: () => {
           detailRef.current.hide();
+        },
+      })}
+      {React.createElement(ReportStatusView, {
+        ref: statusRef,
+        hide: () => statusRef.current.hide(),
+        afterSave: () => {
+          statusRef.current.hide();
         },
       })}
     </>

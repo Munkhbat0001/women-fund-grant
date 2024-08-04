@@ -117,22 +117,22 @@ const GrantCardList = () => {
             return (
               <div
                 key={item.grantId}
-                className="w-full max-w-full mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col"
+                className="w-full max-w-full  mb-8 sm:w-1/2 px-4 lg:w-1/4 flex flex-col"
               >
                 <div className="flex flex-grow">
                   <div className="triangle"></div>
                   <div className="flex flex-col bg-white border border-gray-400 text">
-                    <div className="w-full h-32 bg-gradient-to-br from-[#7a51d2] to-[#008080] flex items-center justify-center">
-                      <h4 className="text-white font-bold text-1xl leading-tight px-8">
+                    {/* <div className="w-full h-32 bg-gradient-to-br from-[#7a51d2] to-[#008080] flex items-center justify-center">
+                      <h4 className="text-white leading-tight px-8 py-8">
                         {item.title}
                       </h4>
-                    </div>
-                    {/* <img
+                    </div> */}
+                    <img
                       src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg"
                       alt="Headless UI"
                       className="w-full h-32 object-cover"
-                    /> */}
-                    <div className="px-4 py-6 flex flex-grow flex-col justify-between">
+                    />
+                    <div className="w-full px-4 py-6 flex flex-grow flex-col justify-between">
                       <div>
                         <a
                           href="#"
@@ -142,7 +142,7 @@ const GrantCardList = () => {
                         </a>
                         <a
                           href="#"
-                          className="block mb-4 text-2xl font-black leading-tight hover:underline hover:text-primary-60"
+                          className="block mb-4 text-xm font-black leading-tight hover:underline hover:text-primary-60"
                         >
                           {item.title}
                         </a>
