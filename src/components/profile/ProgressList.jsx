@@ -102,6 +102,11 @@ const ProgressList = () => {
               label: "Шалтгаан харах",
             }
           );
+        } else if (row.statusId === 119) {
+          list.push({
+            key: "againView",
+            label: "Үргэлжлүүлэх",
+          });
         } else {
           list.push({
             key: "detailView",
@@ -144,7 +149,7 @@ const ProgressList = () => {
     const queryParam = serverQueryParams(current, pageSize, search, true);
 
     useAxios(
-      REPORT_PROGRESS_LIST + queryParam + "&statusIds=120,122,123",
+      REPORT_PROGRESS_LIST + queryParam + "&statusIds=119,120,122,123",
       {},
       { showLoader: false }
     )

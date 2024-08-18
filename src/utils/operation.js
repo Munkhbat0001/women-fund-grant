@@ -74,12 +74,13 @@ export const REPORT_PROJECT_STATUS_INTEGRATED =
   "/report/customer/status/integrated?statusIds=207,209";
 export const REPORT_IMPLEMENT =
   "/report/customer/implement?projectId={0}&typeId={1}";
-export const REPORT_BUDGET = "/report/customer/budget?projectId={0}&typeId={1}";
+export const REPORT_BUDGET = "/report/customer/plan?projectId={0}&typeId={1}";
 export const REPORT_BUDGET_POST =
-  "/report/customer/budget?projectId={0}&typeId={1}";
+  "/report/customer/plan?projectId={0}&typeId={1}";
 export const REPORT_DATA =
   "/report/customer/report-data?projectId={0}&typeId={1}";
-export const REPORT_DATA_POST = "/report/customer/report-data?projectId={0}";
+export const REPORT_DATA_POST =
+  "/report/customer/report-data?projectId={0}&typeId={1}";
 export const REPORT_PROGRESS = "/report/customer/progress/{0}";
 export const REPORT_PROGRESS_LIST = "/report/customer/progress";
 export const REPORT_PROGRESS_POST = "/report/customer/progress";

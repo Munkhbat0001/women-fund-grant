@@ -1,7 +1,9 @@
-import { Col, Collapse, Descriptions, Card } from "antd";
+import { Col, Collapse, Descriptions, Card, Row } from "antd";
 import React, { useEffect, useState } from "react";
 import { REPORT_BUDGET } from "../../../../utils/operation";
 import { useAxios } from "../../../../hooks";
+import { MEASURE_UNIT } from "../../../../utils/constants";
+import { formatMoney } from "../../../../utils";
 
 const ReportStep3View = ({ report }) => {
   const [data, setData] = useState([]);
@@ -84,81 +86,85 @@ const ReportStep3View = ({ report }) => {
                           {object?.problem}
                         </Descriptions.Item>
                       </Descriptions>
-
-                      {object.budgetList.map((budget, subIndex2) => {
-                        return (
-                          <Col span={12}>
-                            <Card
-                              type="inner"
-                              title={`Үйл ажиллагаа ${subIndex2 + 1}`}
-                              size="small"
-                              style={{
-                                marginTop: "10px",
-                              }}
-                              headStyle={{
-                                backgroundColor: "#935dde",
-                                color: "white",
-                              }}
-                            >
-                              <Descriptions
-                                bordered
+                      <Row gutter={24}>
+                        {object?.planList.map((plan, subIndex2) => {
+                          return (
+                            <Col span={12}>
+                              <Card
+                                type="inner"
+                                title={`Үйл ажиллагаа ${subIndex2 + 1}`}
                                 size="small"
-                                layout="vertical"
-                                column={4}
+                                style={{
+                                  marginTop: "10px",
+                                }}
+                                headStyle={{
+                                  backgroundColor: "#935dde",
+                                  color: "white",
+                                }}
                               >
-                                <Descriptions.Item
-                                  label="Тоо, ширхэг:"
-                                  span={2}
+                                <Descriptions
+                                  bordered
+                                  size="small"
+                                  layout="vertical"
+                                  column={4}
                                 >
-                                  {budget?.quantity}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
-                                  span={2}
+                                  <Descriptions.Item
+                                    label="Тоо, ширхэг:"
+                                    span={2}
+                                  >
+                                    {plan?.quantity}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
+                                    span={2}
+                                  >
+                                    {MEASURE_UNIT[plan?.measureUnit]}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item label="Нэгж үнэ:" span={2}>
+                                    {formatMoney(plan?.unitPrice)}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item label="Нийт үнэ:" span={2}>
+                                    {formatMoney(plan?.totalPrice)}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Төсөл хэрэгжүүлэгч байгууллагаас:"
+                                    span={2}
+                                  >
+                                    {formatMoney(plan?.provider)}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Бусад эх үүсвэрээс:"
+                                    span={2}
+                                  >
+                                    {formatMoney(plan?.other)}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="МОНЭС-аас:"
+                                    span={2}
+                                  >
+                                    {formatMoney(plan?.mnFund)}
+                                  </Descriptions.Item>
+                                </Descriptions>
+                                <br />
+                                <Descriptions
+                                  bordered
+                                  size="small"
+                                  title="Тайлан"
+                                  layout="vertical"
+                                  column={4}
                                 >
-                                  {budget?.measureUnit}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="Нэгж үнэ:" span={2}>
-                                  {budget?.unitPrice}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="Нийт үнэ:" span={2}>
-                                  {budget?.totalPrice}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Төсөл хэрэгжүүлэгч байгууллагаас:"
-                                  span={2}
-                                >
-                                  {budget?.provider}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Бусад эх үүсвэрээс:"
-                                  span={2}
-                                >
-                                  {budget?.other}
-                                </Descriptions.Item>
-                                <Descriptions.Item label="МОНЭС-аас:" span={2}>
-                                  {budget?.mnFund}
-                                </Descriptions.Item>
-                              </Descriptions>
-                              <br />
-                              <Descriptions
-                                bordered
-                                size="small"
-                                title="Тайлан"
-                                layout="vertical"
-                                column={4}
-                              >
-                                <Descriptions.Item
-                                  label="Хэрэгжүүлсэн дүн"
-                                  span={2}
-                                >
-                                  {budget?.reportAmount || 0}
-                                </Descriptions.Item>
-                              </Descriptions>
-                            </Card>
-                          </Col>
-                        );
-                      })}
+                                  <Descriptions.Item
+                                    label="Хэрэгжүүлсэн дүн"
+                                    span={2}
+                                  >
+                                    {formatMoney(plan?.reportAmount) || 0}
+                                  </Descriptions.Item>
+                                </Descriptions>
+                              </Card>
+                            </Col>
+                          );
+                        })}
+                      </Row>
                     </Card>
                   );
                 })}

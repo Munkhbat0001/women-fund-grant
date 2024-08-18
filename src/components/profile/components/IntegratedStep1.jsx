@@ -85,6 +85,20 @@ const IntegratedStep1 = ({ ...other }) => {
     });
   };
 
+  const onRequire = (field, field2, field3) => {
+    const items = form.getFieldsValue().items;
+    const plan =
+      form.getFieldsValue().items[field.name].goalObjects[field2.name]
+        .iplanList[field3.name];
+    if (plan) {
+      const isDescRequire = plan.doneId !== 110;
+      items[field.name].goalObjects[field2.name].iplanList[
+        field3.name
+      ].isDescRequire = isDescRequire;
+      form.setFieldsValue({ items });
+    }
+  };
+
   return (
     <>
       <Form
@@ -297,6 +311,13 @@ const IntegratedStep1 = ({ ...other }) => {
                                                                 selectAPI={
                                                                   CONST_REPORT_DONE
                                                                 }
+                                                                onChange={() => {
+                                                                  onRequire(
+                                                                    field,
+                                                                    field2,
+                                                                    field3
+                                                                  );
+                                                                }}
                                                               />
                                                             </Form.Item>
                                                             <Form.Item
@@ -305,9 +326,14 @@ const IntegratedStep1 = ({ ...other }) => {
                                                                 field3.name,
                                                                 "description",
                                                               ]}
-                                                              // rules={validator()
-                                                              //   .required()
-                                                              //   .build()}
+                                                              rules={
+                                                                plan.isDescRequire ===
+                                                                true
+                                                                  ? validator()
+                                                                      .required()
+                                                                      .build()
+                                                                  : []
+                                                              }
                                                             >
                                                               <Input.TextArea placeholder="Дэлгэрэнгүй тайлбар" />
                                                             </Form.Item>

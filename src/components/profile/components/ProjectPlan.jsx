@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { useAxios } from "../../../hooks";
 import { CUSTOMER_PROJECT_PLAN_GET } from "../../../utils/operation";
+import { formatMoney } from "../../../utils";
 
 const ProjectPlan = ({ data = {}, ...other }) => {
   const [plan, setPlan] = useState([]);
@@ -91,6 +92,32 @@ const ProjectPlan = ({ data = {}, ...other }) => {
                               {child?.ownerName}
                             </Descriptions.Item>
                           </Descriptions>
+                          <br />
+                          <Card size="small" bordered title="Төсвийн санал">
+                            <Descriptions bordered size="small" column={1}>
+                              <Descriptions.Item label="Тоо, ширхэг:">
+                                {child?.quantity}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Хэмжих нэгж:">
+                                {child?.measureUnit}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Нэгж үнэ:">
+                                {formatMoney(child?.unitPrice)}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Нийт үнэ:">
+                                {formatMoney(child?.totalPrice)}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Төсөл хэрэгжүүлэгч байгууллагаас:">
+                                {formatMoney(child?.provider)}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="Бусад эх үүсвэрээс:">
+                                {formatMoney(child?.mnFund)}
+                              </Descriptions.Item>
+                              <Descriptions.Item label="МОНЭС-аас:">
+                                {formatMoney(child?.other)}
+                              </Descriptions.Item>
+                            </Descriptions>
+                          </Card>
                         </Card>
                       </>
                     );

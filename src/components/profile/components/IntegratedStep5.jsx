@@ -1,4 +1,4 @@
-import { Button, Col, DatePicker, Form, Input, Row, Space } from "antd";
+import { Button, Col, DatePicker, Form, Input, Row, Space, Upload } from "antd";
 import React, { useContext, useEffect, useRef, useState } from "react";
 import OSelect from "../../../screens/form/OSelect";
 import { validator } from "../../../utils/validator";
@@ -17,6 +17,8 @@ import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
 import Success from "../../modals/Success";
+import { UploadOutlined } from "@ant-design/icons";
+import { normFile } from "../../../utils";
 
 dayjs.extend(customParseFormat);
 dayjs.extend(weekday);
@@ -32,20 +34,36 @@ const IntegratedStep5 = () => {
     useContext(IntegratedContext);
 
   useEffect(() => {
+    let filePath;
+    if (report.attachmentPath) {
+      filePath = [
+        {
+          uid: `${report.reportId}`,
+          name: `${report.attachmentPath}`,
+          status: "done",
+          url: `http://206.189.82.44:8021/file/${report.attachmentPath}`,
+        },
+      ];
+    }
     form.setFieldsValue({
       ...report,
       projectEndDate:
         report.projectEndDate && dayjs(report.projectEndDate, "YYYY-MM-DD"),
+      attachmentPath: filePath,
     });
   }, []);
 
   const onFinish = (values) => {
+    const attachmentPath = Array.isArray(values.attachmentPath)
+      ? values.attachmentPath[0].response
+      : null;
     useAxios(
       REPORT_INTEGRATED_SEND,
       {
         projectId: projectId,
         reportId: report?.reportId || values.reportId,
         ...values,
+        attachmentPath,
       },
       {
         method: "POST",
@@ -58,6 +76,12 @@ const IntegratedStep5 = () => {
       }, "2000");
     });
   };
+
+  let token;
+  if (localStorage.getItem("customer")) {
+    const customer = JSON.parse(localStorage.getItem("customer"));
+    token = customer?.token;
+  }
 
   return (
     <>
@@ -89,7 +113,7 @@ const IntegratedStep5 = () => {
                   label="Төсөл хэрэгжиж дууссан огноо"
                   rules={validator().required().build()}
                 >
-                  <DatePicker />
+                  <DatePicker placeholder="сонгох" />
                 </Form.Item>
               </Col>
             </Row>
@@ -203,9 +227,20 @@ const IntegratedStep5 = () => {
                 <Form.Item
                   name="attachmentPath"
                   label="Боломжтой бол, төслийн хүрээнд боловсруулсан мэдлэгийн бүтээгдэхүүнийг энд хавсаргана уу."
-                  rules={validator().required().build()}
+                  valuePropName="fileList"
+                  getValueFromEvent={normFile}
                 >
-                  <Input.TextArea />
+                  <Upload
+                    action={`/api/upload/file/report`}
+                    headers={{ Authorization: `Bearer ${token}` }}
+                    name="file"
+                    listType="picture"
+                    maxCount={1}
+                    // onRemove={onRemove}
+                    showUploadList={{ showRemoveIcon: false }}
+                  >
+                    <Button icon={<UploadOutlined />}> Хавсаргах</Button>
+                  </Upload>
                 </Form.Item>
               </Col>
             </Row>

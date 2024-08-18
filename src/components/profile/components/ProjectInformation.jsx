@@ -38,10 +38,22 @@ const ProjectInformation = ({ data = {}, ...other }) => {
               {project?.endDate}
             </Descriptions.Item>
             <Descriptions.Item label="Хүлээгдэж буй үр дүн:">
-              {project?.resultName}
+              {project?.resultList?.map((item, index) => {
+                return (
+                  <div>
+                    {index + 1}. {item.resultName}
+                  </div>
+                );
+              })}
             </Descriptions.Item>
             <Descriptions.Item label="Төслийн зорилтот бүлэг:">
-              {project?.groupName}
+              {project?.groupList?.map((item, index) => {
+                return (
+                  <div>
+                    {index + 1}. {item.groupName}
+                  </div>
+                );
+              })}
             </Descriptions.Item>
             <Descriptions.Item label="Шууд үр шим хүртэгчийн тоо:">
               {project?.directBenefitCount}

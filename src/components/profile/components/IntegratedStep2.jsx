@@ -414,12 +414,13 @@ const IntegratedStep2 = () => {
     {
       title: "Нийт",
       dataIndex: "total",
-      align: "center",
+      // align: "center",
       width: "100px",
+      editable: true,
       onCell: sharedOnCell,
-      render: (text, row) => {
-        return getColSum(row);
-      },
+      // render: (text, row) => {
+      //   return getColSum(row);
+      // },
     },
     {
       title: "10-аас доош насны охид",
@@ -521,12 +522,12 @@ const IntegratedStep2 = () => {
           overEighteenBoy: parseFloat(item.overEighteenBoy),
           underEighteenSexual: parseFloat(item.underEighteenSexual),
           overEighteenSexual: parseFloat(item.overEighteenSexual),
-          total: getColSum(item),
+          total: parseFloat(item.total),
         });
       }
     });
 
-    useAxios(REPORT_DATA_POST.format(projectId), data, {
+    useAxios(REPORT_DATA_POST.format(projectId, 151), data, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {

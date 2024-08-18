@@ -87,72 +87,73 @@ const ReportStep1View = ({ report, ...other }) => {
                           {object?.problem}
                         </Descriptions.Item>
                       </Descriptions>
-
-                      {object?.iplanList.map((plan, subIndex2) => {
-                        return (
-                          <Col span={12}>
-                            <Card
-                              type="inner"
-                              title={`Үйл ажиллагаа ${subIndex2 + 1}`}
-                              size="small"
-                              style={{
-                                marginTop: "10px",
-                              }}
-                              headStyle={{
-                                backgroundColor: "#935dde",
-                                color: "white",
-                              }}
-                            >
-                              <Descriptions
-                                bordered
+                      <Row gutter={24}>
+                        {object?.iplanList.map((plan, subIndex2) => {
+                          return (
+                            <Col span={12}>
+                              <Card
+                                type="inner"
+                                title={`Үйл ажиллагаа ${subIndex2 + 1}`}
                                 size="small"
-                                layout="vertical"
-                                column={4}
+                                style={{
+                                  marginTop: "10px",
+                                }}
+                                headStyle={{
+                                  backgroundColor: "#935dde",
+                                  color: "white",
+                                }}
                               >
-                                <Descriptions.Item
-                                  label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:"
-                                  span={2}
+                                <Descriptions
+                                  bordered
+                                  size="small"
+                                  layout="vertical"
+                                  column={4}
                                 >
-                                  {plan?.requirement}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Хэрэгжүүлэх хугацаа:"
-                                  span={2}
+                                  <Descriptions.Item
+                                    label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:"
+                                    span={2}
+                                  >
+                                    {plan?.requirement}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Хэрэгжүүлэх хугацаа:"
+                                    span={2}
+                                  >
+                                    {plan?.termUnit}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Хариуцах эзэн:"
+                                    span={2}
+                                  >
+                                    {plan?.ownerName}
+                                  </Descriptions.Item>
+                                </Descriptions>
+                                <br />
+                                <Descriptions
+                                  bordered
+                                  size="small"
+                                  title="Тайлан"
+                                  layout="vertical"
+                                  column={4}
                                 >
-                                  {plan?.termUnit}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Хариуцах эзэн:"
-                                  span={2}
-                                >
-                                  {plan?.ownerName}
-                                </Descriptions.Item>
-                              </Descriptions>
-                              <br />
-                              <Descriptions
-                                bordered
-                                size="small"
-                                title="Тайлан"
-                                layout="vertical"
-                                column={4}
-                              >
-                                <Descriptions.Item
-                                  label="Хийгдсэн эсэх"
-                                  span={2}
-                                >
-                                  {plan?.doneName}
-                                </Descriptions.Item>
-                                <Descriptions.Item
-                                  label="Дэлгэрэнгүй тайлбар"
-                                  span={2}
-                                >
-                                  {plan?.description}
-                                </Descriptions.Item>
-                              </Descriptions>
-                            </Card>
-                          </Col>
-                        );
-                      })}
+                                  <Descriptions.Item
+                                    label="Хийгдсэн эсэх"
+                                    span={2}
+                                  >
+                                    {plan?.doneName}
+                                  </Descriptions.Item>
+                                  <Descriptions.Item
+                                    label="Дэлгэрэнгүй тайлбар"
+                                    span={2}
+                                  >
+                                    {plan?.description}
+                                  </Descriptions.Item>
+                                </Descriptions>
+                              </Card>
+                            </Col>
+                          );
+                        })}
+                      </Row>
                     </Card>
                   );
                 })}

@@ -36,21 +36,21 @@ const ProjectTab = ({ disabled = true, mode, ...other }, ref) => {
       label: `Үйл ажиллагааны төлөвлөгөө`,
       children: <ProjectPlan data={data} {...other} />,
     },
+    // {
+    //   key: "4",
+    //   label: `Төсвийн санал`,
+    //   children: <ProjectBudget data={data} {...other} />,
+    // },
     {
       key: "4",
-      label: `Төсвийн санал`,
-      children: <ProjectBudget data={data} {...other} />,
-    },
-    {
-      key: "5",
       label: `Төсөл хэрэгжүүлэх баг`,
       children: <ProjectMember data={data} {...other} />,
     },
-    {
-      key: "6",
-      label: `Санхүүжилт`,
-      children: <ProjectDonor data={data} {...other} />,
-    },
+    // {
+    //   key: "6",
+    //   label: `Санхүүжилт`,
+    //   children: <ProjectDonor data={data} {...other} />,
+    // },
   ];
 
   return (

@@ -1,6 +1,16 @@
 import React, { useContext, useEffect } from "react";
 import { CloseOutlined, MinusCircleOutlined } from "@ant-design/icons";
-import { Button, Card, Form, Input, Space, Typography, Row, Col } from "antd";
+import {
+  Button,
+  Card,
+  Form,
+  Input,
+  Space,
+  Typography,
+  Row,
+  Col,
+  notification,
+} from "antd";
 import { validator } from "../../utils/validator";
 import { ProjectContext } from "../../pages/ProjectRequest";
 import useAxios from "../../hooks/useAxios";
@@ -241,7 +251,17 @@ const StepTwo = ({}) => {
                           ))}
                           <Button
                             type="dashed"
-                            onClick={() => subOpt.add()}
+                            onClick={() => {
+                              if (subFields.length < 3) {
+                                subOpt.add();
+                              } else {
+                                notification.warning({
+                                  message: "Анхааруулга",
+                                  description:
+                                    "3-аас илүү зорилт бүртгэх боломжгүй",
+                                });
+                              }
+                            }}
                             block
                           >
                             + Зорилт нэмэх
@@ -253,7 +273,20 @@ const StepTwo = ({}) => {
                 </Card>
               ))}
 
-              <Button type="dashed" onClick={() => add()} block>
+              <Button
+                type="dashed"
+                onClick={() => {
+                  if (fields.length < 3) {
+                    add();
+                  } else {
+                    notification.warning({
+                      message: "Анхааруулга",
+                      description: "3-аас илүү зорилго бүртгэх боломжгүй",
+                    });
+                  }
+                }}
+                block
+              >
                 + Зорилго нэмэх
               </Button>
             </div>

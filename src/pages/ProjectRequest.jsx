@@ -25,9 +25,9 @@ const items = [
     title: "Үйл ажиллагааны",
     description: "төлөвлөгөө",
   },
-  {
-    title: "Төсвийн санал",
-  },
+  // {
+  //   title: "Төсвийн санал",
+  // },
   {
     title: "Төсөл",
     description: "хэрэгжүүлэх баг",
@@ -120,10 +120,10 @@ const ProjectRequest = () => {
                 {currentStep === 0 && <StepOne />}
                 {currentStep === 1 && <StepTwo />}
                 {currentStep === 2 && <StepThree />}
-                {currentStep === 3 && <StepFour />}
+                {/* {currentStep === 3 && <StepFour />} */}
               </Col>
-              {currentStep === 4 && <StepFive />}
-              {currentStep === 5 && <Confirm />}
+              {currentStep === 3 && <StepFive />}
+              {currentStep === 4 && <Confirm />}
             </Row>
           </ProjectContext.Provider>
         </div>

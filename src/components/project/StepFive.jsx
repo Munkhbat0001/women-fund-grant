@@ -23,6 +23,7 @@ import {
   Upload,
   Checkbox,
   Dropdown,
+  notification,
 } from "antd";
 import StepFiveModal from "./StepFiveModal";
 import useAxios from "../../hooks/useAxios";
@@ -239,7 +240,14 @@ const StepFive = () => {
             // size="large"
             type="primary"
             onClick={() => {
-              next && next();
+              if (memberList.length === 0) {
+                notification.warning({
+                  message: "Анхааруулга",
+                  description: "Багын гишүүдийг оруулна уу",
+                });
+              } else {
+                next && next();
+              }
             }}
           >
             Баталгаажуулах

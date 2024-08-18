@@ -25,6 +25,7 @@ import { useAxios } from "../../../hooks";
 import OInputNumber from "../../../screens/form/OInputNumber";
 import { ProgressContext } from "../ProgressAdd";
 import { resetComponent } from "@ant-design/pro-components";
+import { MEASURE_UNIT } from "../../../utils/constants";
 
 const ProgressStep3 = () => {
   const [data, setData] = useState([]);
@@ -34,18 +35,18 @@ const ProgressStep3 = () => {
     useContext(ProgressContext);
 
   const onFinish = (values) => {
-    const budgetList = [];
+    const planList = [];
     values.items.map((item) =>
       item?.goalObjects.map((goal) => {
-        goal?.budgetList.map((budget) => {
-          budgetList.push({
-            budgetId: budget.budgetId,
-            reportAmount: budget.reportAmount,
+        goal?.planList.map((plan) => {
+          planList.push({
+            planId: plan.planId,
+            reportAmount: plan.reportAmount,
           });
         });
       })
     );
-    useAxios(REPORT_BUDGET_POST.format(projectId, 150), budgetList, {
+    useAxios(REPORT_BUDGET_POST.format(projectId, 150), planList, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
@@ -161,7 +162,7 @@ const ProgressStep3 = () => {
 
                                       <Form.Item label="">
                                         <Form.List
-                                          name={[field2.name, "budgetList"]}
+                                          name={[field2.name, "planList"]}
                                         >
                                           {(subFields2, subOpt) => {
                                             return (
@@ -169,14 +170,12 @@ const ProgressStep3 = () => {
                                                 <Row gutter={12}>
                                                   {subFields2.map(
                                                     (field3, subIndex2) => {
-                                                      const budget =
+                                                      const plan =
                                                         form.getFieldsValue()
                                                           .items[field.name]
                                                           .goalObjects[
                                                           field2.name
-                                                        ].budgetList[
-                                                          field3.name
-                                                        ];
+                                                        ].planList[field3.name];
                                                       return (
                                                         <Col span={12}>
                                                           <Card
@@ -204,16 +203,17 @@ const ProgressStep3 = () => {
                                                                 label="Тоо, ширхэг:"
                                                                 span={2}
                                                               >
-                                                                {
-                                                                  budget?.quantity
-                                                                }
+                                                                {plan?.quantity}
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
                                                                 span={2}
                                                               >
                                                                 {
-                                                                  budget?.measureUnit
+                                                                  MEASURE_UNIT[
+                                                                    plan
+                                                                      ?.measureUnit
+                                                                  ]
                                                                 }
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
@@ -221,7 +221,7 @@ const ProgressStep3 = () => {
                                                                 span={2}
                                                               >
                                                                 {
-                                                                  budget?.unitPrice
+                                                                  plan?.unitPrice
                                                                 }
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
@@ -229,28 +229,26 @@ const ProgressStep3 = () => {
                                                                 span={2}
                                                               >
                                                                 {
-                                                                  budget?.totalPrice
+                                                                  plan?.totalPrice
                                                                 }
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="Төсөл хэрэгжүүлэгч байгууллагаас:"
                                                                 span={2}
                                                               >
-                                                                {
-                                                                  budget?.provider
-                                                                }
+                                                                {plan?.provider}
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="Бусад эх үүсвэрээс:"
                                                                 span={2}
                                                               >
-                                                                {budget?.other}
+                                                                {plan?.other}
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="МОНЭС-аас:"
                                                                 span={2}
                                                               >
-                                                                {budget?.mnFund}
+                                                                {plan?.mnFund}
                                                               </Descriptions.Item>
                                                             </Descriptions>
                                                             <br />
