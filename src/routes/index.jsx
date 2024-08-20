@@ -9,6 +9,8 @@ import MainLayout from "../components/layouts/MainLayout";
 import AdminUser from "../pages/admin/AdminUser";
 import GrantList from "../pages/admin/GrantList";
 import Profile from "../pages/Profile";
+import SurveyBefore from "../pages/SurveyBefore";
+import SurveyAfter from "../pages/SurveyAfter";
 
 export default () => {
   return (
@@ -22,6 +24,8 @@ export default () => {
           <Route path="/" element={<Home />} />
           <Route path="/request/:grantId" element={<ProjectRequest />} />
           <Route path="/profile" element={<Profile />} />
+          <Route path="/survey-before" element={<SurveyBefore />} />
+          <Route path="/survey-after" element={<SurveyAfter />} />
         </Route>
         {/* <Route element={<MainLayout />}>
           <Route path="/admin-user" element={<AdminUser />} />

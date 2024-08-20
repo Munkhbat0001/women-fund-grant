@@ -62,6 +62,7 @@ export const CONST_CITY = "/address/city";
 export const CONST_DISTRICT = "/address/district";
 export const CONST_CUSTOMER_ROAD = "/v2/const?begin=811&end=816";
 export const CONST_CUSTOMER_TARGET = "/v2/const?begin=851&end=858";
+export const CONST_SURVEY_PROPERTY = "/v2/const?begin=520&end=522";
 
 export const FILE_UPLOAD = "/api/upload/file/{0}";
 export const FILE_DOWNLOAD = "/file";
@@ -92,3 +93,9 @@ export const REPORT_INTEGRATED = "/report/customer/integrated/{0}";
 export const REPORT_INTEGRATED_LIST = "/report/customer/integrated";
 export const REPORT_INTEGRATED_POST = "/report/customer/integrated";
 export const REPORT_INTEGRATED_SEND = "/report/customer/send-integrated";
+
+export const SURVEY_BEFORE_POST = "/survey/before";
+export const SURVEY_BEFORE_PUT = "/survey/before/{id}";
+
+export const SURVEY_AFTER_POST = "/survey/after";
+export const SURVEY_AFTER_PUT = "/survey/after/{id}";
