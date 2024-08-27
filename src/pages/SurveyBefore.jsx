@@ -113,6 +113,11 @@ const SurveyBefore = () => {
                   </Col>
                 </Row>
                 <Row>
+                  <Title level={5}>
+                    Танай байгууллагын жилийн төсөвт зардлын эзлэх хувь
+                  </Title>
+                </Row>
+                <Row>
                   <Col span={8}>
                     <Form.Item
                       name="salaryExpenses"

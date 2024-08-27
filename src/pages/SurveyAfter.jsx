@@ -28,7 +28,6 @@ const SurveyAfter = () => {
   };
 
   const onFinish = (values) => {
-    console.log("values: ", values);
     useAxios(SURVEY_AFTER_POST, values, {
       method: "POST",
       showSuccess: true,

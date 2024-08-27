@@ -109,7 +109,7 @@ const IntegratedStep1 = ({ ...other }) => {
         onFinish={onFinish}
         // style={{ maxWidth: 800, justify: "center" }}
       >
-        {mode === "create" && (
+        {!projectId && (
           <Row gutter={12}>
             <Col flex="1 0 25%" className="column">
               <Form.Item
@@ -129,7 +129,7 @@ const IntegratedStep1 = ({ ...other }) => {
             </Col>
           </Row>
         )}
-        {mode === "edit" && (
+        {projectId > 0 && (
           <Row gutter={12} style={{ marginBottom: "10px" }}>
             <Col flex="1 0 25%" className="column">
               <Descriptions bordered size="small" column={1}>

@@ -17,6 +17,15 @@ const ReportStep1View = ({ report, ...other }) => {
 
   return (
     <>
+      <Row gutter={12} style={{ marginBottom: "10px" }}>
+        <Col flex="1 0 25%" className="column">
+          <Descriptions bordered size="small" column={1}>
+            <Descriptions.Item label="Төслийн нэр:">
+              {report?.projectName}
+            </Descriptions.Item>
+          </Descriptions>
+        </Col>
+      </Row>
       <Collapse size="small">
         {data.map((goal, index) => {
           return (
