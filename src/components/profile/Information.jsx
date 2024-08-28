@@ -205,6 +205,7 @@ const Information = () => {
               rules={validator().required().build()}
             >
               <OSelect
+                showSearch
                 placeholder="Аймаг"
                 selectAPI={CONST_CITY}
                 selectName="name"

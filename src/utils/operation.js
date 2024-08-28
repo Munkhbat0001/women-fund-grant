@@ -19,6 +19,7 @@ export const CUSTOMER_PROJECT_BY_GRANT = "/project/by";
 export const CUSTOMER_PROJECT_MEMBER = "/project/member/by-project";
 export const CUSTOMER_PROJECT_GRANT_GET = "/customer/project/grant/{0}";
 export const CUSTOMER_PROJECT_GET = "/customer/project/{0}";
+export const CUSTOMER_PROJECT_GOAL_PLAN = "/project/{0}";
 
 export const CUSTOMER_PROJECT_POST = "/project";
 export const CUSTOMER_PROJECT_PUT = "/project";
