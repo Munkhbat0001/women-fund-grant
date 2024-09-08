@@ -19,6 +19,7 @@ import { CUSTOMER_PROJECT_SEND } from "../../utils/operation";
 import Success from "../modals/Success";
 import { useNavigate } from "react-router-dom";
 import { MEASURE_UNIT } from "../../utils/constants";
+import BudgetTable from "./components/BudgetTable";
 
 const Confirm = () => {
   const { project, next, prev } = useContext(ProjectContext);
@@ -267,7 +268,16 @@ const Confirm = () => {
                                               </Descriptions.Item>
                                             </Descriptions>
                                             <br />
-                                            <Card
+                                            <Divider
+                                              orientation="left"
+                                              orientationMargin="0"
+                                            >
+                                              Төсөв төлөвлөгөө
+                                            </Divider>
+                                            <BudgetTable
+                                              dataSource={item.budgetList}
+                                            />
+                                            {/* <Card
                                               size="small"
                                               bordered
                                               title="Төсвийн санал"
@@ -305,7 +315,7 @@ const Confirm = () => {
                                                   {formatMoney(item?.other)}
                                                 </Descriptions.Item>
                                               </Descriptions>
-                                            </Card>
+                                            </Card> */}
                                           </>
                                         </Collapse.Panel>
                                       </Collapse>

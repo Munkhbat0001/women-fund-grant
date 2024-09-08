@@ -119,9 +119,10 @@ const ProjectRequest = () => {
               <Col xs={24} sm={20} md={18} lg={16} xl={16}>
                 {currentStep === 0 && <StepOne />}
                 {currentStep === 1 && <StepTwo />}
-                {currentStep === 2 && <StepThree />}
+
                 {/* {currentStep === 3 && <StepFour />} */}
               </Col>
+              <Col span={24}>{currentStep === 2 && <StepThree />}</Col>
               {currentStep === 3 && <StepFive />}
               {currentStep === 4 && <Confirm />}
             </Row>

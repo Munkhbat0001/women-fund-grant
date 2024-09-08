@@ -1,4 +1,4 @@
-import { Card, Collapse, Descriptions } from "antd";
+import { Card, Collapse, Descriptions, Divider } from "antd";
 import React, { useEffect, useState } from "react";
 import { isEmpty } from "lodash";
 import { useAxios } from "../../../hooks";
@@ -8,6 +8,7 @@ import {
 } from "../../../utils/operation";
 import { formatMoney } from "../../../utils";
 import { MEASURE_UNIT } from "../../../utils/constants";
+import BudgetTable from "../../project/components/BudgetTable";
 
 const ProjectPlan = ({ data = {}, ...other }) => {
   const [plan, setPlan] = useState([]);
@@ -117,7 +118,16 @@ const ProjectPlan = ({ data = {}, ...other }) => {
                                       </Descriptions.Item>
                                     </Descriptions>
                                     <br />
-                                    <Card
+                                    <Divider
+                                      orientation="left"
+                                      orientationMargin="0"
+                                    >
+                                      Төсөв төлөвлөгөө
+                                    </Divider>
+                                    <BudgetTable
+                                      dataSource={child?.budgetList}
+                                    />
+                                    {/* <Card
                                       size="small"
                                       bordered
                                       title="Төсвийн санал"
@@ -149,7 +159,7 @@ const ProjectPlan = ({ data = {}, ...other }) => {
                                           {formatMoney(child?.other)}
                                         </Descriptions.Item>
                                       </Descriptions>
-                                    </Card>
+                                    </Card> */}
                                   </Card>
                                   <br />
                                 </>

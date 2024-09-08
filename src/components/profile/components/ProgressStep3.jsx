@@ -26,6 +26,8 @@ import OInputNumber from "../../../screens/form/OInputNumber";
 import { ProgressContext } from "../ProgressAdd";
 import { resetComponent } from "@ant-design/pro-components";
 import { MEASURE_UNIT } from "../../../utils/constants";
+import BudgetFormList from "../../project/components/BudgetFormList";
+import ReportBudgetFormList from "./ReportBudgetFormList";
 
 const ProgressStep3 = () => {
   const [data, setData] = useState([]);
@@ -35,18 +37,20 @@ const ProgressStep3 = () => {
     useContext(ProgressContext);
 
   const onFinish = (values) => {
-    const planList = [];
+    const budgetList = [];
     values.items.map((item) =>
       item?.goalObjects.map((goal) => {
         goal?.planList.map((plan) => {
-          planList.push({
-            planId: plan.planId,
-            reportAmount: plan.reportAmount,
+          plan.budgetList.map((budget) => {
+            budgetList.push({
+              budgetId: budget.budgetId,
+              reportAmount: budget.reportAmount,
+            });
           });
         });
       })
     );
-    useAxios(REPORT_BUDGET_POST.format(projectId, 150), planList, {
+    useAxios(REPORT_BUDGET_POST.format(projectId, 150), budgetList, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
@@ -167,6 +171,7 @@ const ProgressStep3 = () => {
                                           {(subFields2, subOpt) => {
                                             return (
                                               <>
+                                                <br />
                                                 <Row gutter={12}>
                                                   {subFields2.map(
                                                     (field3, subIndex2) => {
@@ -177,100 +182,69 @@ const ProgressStep3 = () => {
                                                           field2.name
                                                         ].planList[field3.name];
                                                       return (
-                                                        <Col span={12}>
-                                                          <Card
-                                                            type="inner"
-                                                            title={`Үйл ажиллагаа ${
-                                                              subIndex2 + 1
-                                                            }`}
-                                                            size="small"
-                                                            style={{
-                                                              marginTop: "10px",
-                                                            }}
-                                                            headStyle={{
-                                                              backgroundColor:
-                                                                "#935dde",
-                                                              color: "white",
-                                                            }}
-                                                          >
-                                                            <Descriptions
-                                                              bordered
+                                                        <>
+                                                          <Col span={24}>
+                                                            <Card
+                                                              type="inner"
+                                                              title={`Үйл ажиллагаа ${
+                                                                subIndex2 + 1
+                                                              }`}
                                                               size="small"
-                                                              layout="vertical"
-                                                              column={4}
+                                                              style={{
+                                                                marginTop:
+                                                                  "10px",
+                                                              }}
+                                                              headStyle={{
+                                                                backgroundColor:
+                                                                  "#935dde",
+                                                                color: "white",
+                                                              }}
                                                             >
-                                                              <Descriptions.Item
-                                                                label="Тоо, ширхэг:"
-                                                                span={2}
+                                                              <Descriptions
+                                                                bordered
+                                                                size="small"
+                                                                column={1}
                                                               >
-                                                                {plan?.quantity}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  MEASURE_UNIT[
-                                                                    plan
-                                                                      ?.measureUnit
-                                                                  ]
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нэгж үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  plan?.unitPrice
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нийт үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {
-                                                                  plan?.totalPrice
-                                                                }
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Төсөл хэрэгжүүлэгч байгууллагаас:"
-                                                                span={2}
-                                                              >
-                                                                {plan?.provider}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Бусад эх үүсвэрээс:"
-                                                                span={2}
-                                                              >
-                                                                {plan?.other}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="МОНЭС-аас:"
-                                                                span={2}
-                                                              >
-                                                                {plan?.mnFund}
-                                                              </Descriptions.Item>
-                                                            </Descriptions>
-                                                            <br />
-                                                            <Form.Item
-                                                              label="Хэрэгжүүлсэн дүн"
-                                                              name={[
-                                                                field3.name,
-                                                                "reportAmount",
-                                                              ]}
-                                                              // rules={validator()
-                                                              //   .required()
-                                                              //   .build()}
-                                                            >
-                                                              <OInputNumber
-                                                                placeholder="Хэрэгжүүлсэн дүн"
-                                                                style={{
-                                                                  width: "100%",
-                                                                }}
-                                                              />
-                                                            </Form.Item>
-                                                          </Card>
-                                                        </Col>
+                                                                <Descriptions.Item label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:">
+                                                                  {
+                                                                    plan?.requirement
+                                                                  }
+                                                                </Descriptions.Item>
+                                                                <Descriptions.Item label="Эхлэх огноо:">
+                                                                  {
+                                                                    plan?.beginDate
+                                                                  }
+                                                                </Descriptions.Item>
+                                                                <Descriptions.Item label="Дуусах огноо:">
+                                                                  {
+                                                                    plan?.endDate
+                                                                  }
+                                                                </Descriptions.Item>
+                                                                <Descriptions.Item label="Хариуцах эзэн:">
+                                                                  {
+                                                                    plan?.ownerName
+                                                                  }
+                                                                </Descriptions.Item>
+                                                              </Descriptions>
+                                                              <br />
+                                                              <Form.Item>
+                                                                <ReportBudgetFormList
+                                                                  form={form}
+                                                                  name={
+                                                                    field.name
+                                                                  }
+                                                                  goalName={
+                                                                    field2.name
+                                                                  }
+                                                                  planName={
+                                                                    field3.name
+                                                                  }
+                                                                  nameValue="reportAmount"
+                                                                />
+                                                              </Form.Item>
+                                                            </Card>
+                                                          </Col>
+                                                        </>
                                                       );
                                                     }
                                                   )}
@@ -311,7 +285,7 @@ const ProgressStep3 = () => {
               type="primary"
               onClick={() => form.submit()}
             >
-              Илгээх
+              Үргэлжлүүлэх
             </Button>
           </Space>
         </Row>

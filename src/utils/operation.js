@@ -98,5 +98,8 @@ export const REPORT_INTEGRATED_SEND = "/report/customer/send-integrated";
 export const SURVEY_BEFORE_POST = "/survey/before";
 export const SURVEY_BEFORE_PUT = "/survey/before/{id}";
 
+// Survey
 export const SURVEY_AFTER_POST = "/survey/after";
 export const SURVEY_AFTER_PUT = "/survey/after/{id}";
+export const SURVEY_AFTER = "/survey/after";
+export const SURVEY_BEFORE = "/survey/before";

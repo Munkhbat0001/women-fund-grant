@@ -9,7 +9,7 @@ import logoEn from "../assets/logoEn.png";
 
 const Footer = () => {
   return (
-    <footer className="py-[20px] bg-gray-10">
+    <footer className="py-[20px] bg-gray-10 z-40">
       <div className="container">
         <div>
           <div className="flex flex-col">

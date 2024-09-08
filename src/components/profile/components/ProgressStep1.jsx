@@ -265,8 +265,7 @@ const ProgressStep1 = ({ ...other }) => {
                                                             <Descriptions
                                                               bordered
                                                               size="small"
-                                                              layout="vertical"
-                                                              column={4}
+                                                              column={1}
                                                             >
                                                               <Descriptions.Item
                                                                 label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:"
@@ -277,10 +276,18 @@ const ProgressStep1 = ({ ...other }) => {
                                                                 }
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
-                                                                label="Хэрэгжүүлэх хугацаа:"
+                                                                label="Эхлэх огноо:"
                                                                 span={2}
                                                               >
-                                                                {plan?.termUnit}
+                                                                {
+                                                                  plan?.beginDate
+                                                                }
+                                                              </Descriptions.Item>
+                                                              <Descriptions.Item
+                                                                label="Дуусах огноо:"
+                                                                span={2}
+                                                              >
+                                                                {plan?.endDate}
                                                               </Descriptions.Item>
                                                               <Descriptions.Item
                                                                 label="Хариуцах эзэн:"

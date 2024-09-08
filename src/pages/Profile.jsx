@@ -14,6 +14,8 @@ import ActiveGrantList from "../components/profile/ActiveGrantList";
 import ChangePassword from "../components/profile/ChangePassword";
 import ProgressList from "../components/profile/ProgressList";
 import IntegratedList from "../components/profile/IntegratedList";
+import SurveyBeforeList from "../components/profile/SurveyBeforeList";
+import SurveyAfterList from "../components/profile/SurveyAfterList";
 const { Header, Content, Footer, Sider } = Layout;
 
 const items = [
@@ -44,6 +46,16 @@ const items = [
   },
   {
     key: "6",
+    icon: <ProfileOutlined />,
+    label: "Тэтгэлгийн өмнөх судалгаа",
+  },
+  {
+    key: "7",
+    icon: <ProfileOutlined />,
+    label: "Тэтгэлгийн дараах судалгаа",
+  },
+  {
+    key: "8",
     icon: <LockOutlined />,
     label: "Нууц үг",
   },
@@ -69,13 +81,14 @@ const Profile = () => {
         >
           <Sider
             style={{
-              // background: token.colorBgContainer,
+              background: token.colorBgContainer,
               // overflow: "auto",
               // height: "100vh",
-              position: "fixed",
+              // position: "fixed",
               // left: 256,
               // top: 75,
               // bottom: 0,
+              zIndex: 0,
             }}
             width={256}
           >
@@ -89,9 +102,9 @@ const Profile = () => {
             />
           </Sider>
           <Layout
-            style={{
-              marginLeft: 256,
-            }}
+          // style={{
+          //   marginLeft: 256,
+          // }}
           >
             <Content
               style={{
@@ -108,7 +121,9 @@ const Profile = () => {
               {current == "3" && <ActiveGrantList />}
               {current == "4" && <ProgressList />}
               {current == "5" && <IntegratedList />}
-              {current == "6" && <ChangePassword />}
+              {current == "6" && <SurveyBeforeList />}
+              {current == "7" && <SurveyAfterList />}
+              {current == "8" && <ChangePassword />}
             </Content>
           </Layout>
         </Layout>

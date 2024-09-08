@@ -26,6 +26,7 @@ import OInputNumber from "../../../screens/form/OInputNumber";
 import { IntegratedContext } from "../IntegratedAdd";
 import { MEASURE_UNIT } from "../../../utils/constants";
 import { formatMoney } from "../../../utils";
+import ReportBudgetFormList from "./ReportBudgetFormList";
 
 const IntegratedStep3 = () => {
   const [data, setData] = useState([]);
@@ -35,18 +36,20 @@ const IntegratedStep3 = () => {
     useContext(IntegratedContext);
 
   const onFinish = (values) => {
-    const planList = [];
+    const budgetList = [];
     values.items.map((item) =>
       item?.goalObjects.map((goal) => {
         goal?.planList.map((plan) => {
-          planList.push({
-            planId: plan.planId,
-            reportAmountLast: plan.reportAmountLast,
+          plan.budgetList.map((budget) => {
+            budgetList.push({
+              budgetId: budget.budgetId,
+              reportAmountLast: budget.reportAmountLast,
+            });
           });
         });
       })
     );
-    useAxios(REPORT_BUDGET_POST.format(report.projectId, 151), planList, {
+    useAxios(REPORT_BUDGET_POST.format(report.projectId, 151), budgetList, {
       showSuccess: true,
       method: "POST",
     }).then((res) => {
@@ -177,7 +180,7 @@ const IntegratedStep3 = () => {
                                                           field2.name
                                                         ].planList[field3.name];
                                                       return (
-                                                        <Col span={12}>
+                                                        <Col span={24}>
                                                           <Card
                                                             type="inner"
                                                             title={`Үйл ажиллагаа ${
@@ -196,83 +199,41 @@ const IntegratedStep3 = () => {
                                                             <Descriptions
                                                               bordered
                                                               size="small"
-                                                              layout="vertical"
-                                                              column={4}
+                                                              column={1}
                                                             >
-                                                              <Descriptions.Item
-                                                                label="Тоо, ширхэг:"
-                                                                span={2}
-                                                              >
-                                                                {plan?.quantity}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Хэмжих нэгж (хүн, өдөр, хуудас гэх мэт):"
-                                                                span={2}
-                                                              >
+                                                              <Descriptions.Item label="Үйл ажиллагааг хэрэгжүүлэхэд шаардагдах орц:">
                                                                 {
-                                                                  MEASURE_UNIT[
-                                                                    plan
-                                                                      ?.measureUnit
-                                                                  ]
+                                                                  plan?.requirement
                                                                 }
                                                               </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нэгж үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {formatMoney(
-                                                                  plan?.unitPrice
-                                                                )}
+                                                              <Descriptions.Item label="Эхлэх огноо:">
+                                                                {
+                                                                  plan?.beginDate
+                                                                }
                                                               </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Нийт үнэ:"
-                                                                span={2}
-                                                              >
-                                                                {formatMoney(
-                                                                  plan?.totalPrice
-                                                                )}
+                                                              <Descriptions.Item label="Дуусах огноо:">
+                                                                {plan?.endDate}
                                                               </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Төсөл хэрэгжүүлэгч байгууллагаас:"
-                                                                span={2}
-                                                              >
-                                                                {formatMoney(
-                                                                  plan?.provider
-                                                                )}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="Бусад эх үүсвэрээс:"
-                                                                span={2}
-                                                              >
-                                                                {formatMoney(
-                                                                  plan?.other
-                                                                )}
-                                                              </Descriptions.Item>
-                                                              <Descriptions.Item
-                                                                label="МОНЭС-аас:"
-                                                                span={2}
-                                                              >
-                                                                {formatMoney(
-                                                                  plan?.mnFund
-                                                                )}
+                                                              <Descriptions.Item label="Хариуцах эзэн:">
+                                                                {
+                                                                  plan?.ownerName
+                                                                }
                                                               </Descriptions.Item>
                                                             </Descriptions>
                                                             <br />
-                                                            <Form.Item
-                                                              label="Хэрэгжүүлсэн дүн"
-                                                              name={[
-                                                                field3.name,
-                                                                "reportAmountLast",
-                                                              ]}
-                                                              // rules={validator()
-                                                              //   .required()
-                                                              //   .build()}
-                                                            >
-                                                              <OInputNumber
-                                                                placeholder="Хэрэгжүүлсэн дүн"
-                                                                style={{
-                                                                  width: "100%",
-                                                                }}
+                                                            <Form.Item>
+                                                              <ReportBudgetFormList
+                                                                form={form}
+                                                                name={
+                                                                  field.name
+                                                                }
+                                                                goalName={
+                                                                  field2.name
+                                                                }
+                                                                planName={
+                                                                  field3.name
+                                                                }
+                                                                nameValue="reportAmountLast"
                                                               />
                                                             </Form.Item>
                                                           </Card>
