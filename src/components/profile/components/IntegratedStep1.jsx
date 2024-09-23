@@ -59,6 +59,7 @@ const IntegratedStep1 = ({ ...other }) => {
 
     const payload = {
       projectId: values.projectId || projectId,
+      stepId: 1,
       implementDtoList: impl,
     };
 
@@ -109,7 +110,7 @@ const IntegratedStep1 = ({ ...other }) => {
         onFinish={onFinish}
         // style={{ maxWidth: 800, justify: "center" }}
       >
-        {!projectId && (
+        {!project?.projectName && (
           <Row gutter={12}>
             <Col flex="1 0 25%" className="column">
               <Form.Item
@@ -129,7 +130,7 @@ const IntegratedStep1 = ({ ...other }) => {
             </Col>
           </Row>
         )}
-        {projectId > 0 && (
+        {project?.projectName && (
           <Row gutter={12} style={{ marginBottom: "10px" }}>
             <Col flex="1 0 25%" className="column">
               <Descriptions bordered size="small" column={1}>

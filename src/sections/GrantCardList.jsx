@@ -134,12 +134,12 @@ const GrantCardList = () => {
                     />
                     <div className="w-full px-4 py-6 flex flex-grow flex-col justify-between">
                       <div>
-                        <a
+                        {/* <a
                           href="#"
                           className="inline-block mb-4 text-xs font-bold capitalize border-b-2 border-primary-60 hover:text-primary-60"
                         >
                           Global Fund for Women
-                        </a>
+                        </a> */}
                         <a
                           href="#"
                           className="block mb-4 text-xm font-black leading-tight hover:underline hover:text-primary-60"

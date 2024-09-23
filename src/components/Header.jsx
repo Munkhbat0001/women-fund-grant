@@ -8,6 +8,7 @@ import { Avatar, Dropdown } from "antd";
 import { LoginOutlined, SafetyCertificateOutlined } from "@ant-design/icons";
 import { useNavigate } from "react-router-dom";
 import { showConfirm } from "./modals/Confirmation";
+import { CUSTOMER_TYPE } from "../utils/constants";
 
 const menulist = [
   {
@@ -97,7 +98,7 @@ const Header = ({ user, loggedIn, logout }) => {
                     navigate("/profile");
                   }}
                 >
-                  Хувийн мэдээлэл
+                  {CUSTOMER_TYPE[user.typeId]}
                 </a>
               </li>
             )}

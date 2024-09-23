@@ -6,6 +6,7 @@ const ReportStatusView = ({ ...other }, ref) => {
   const [data, setData] = useState({});
   const props = {
     title: "Шалтгаан",
+    footer: null,
     clearScreen: (row) => {
       setData(row);
     },
@@ -21,6 +22,12 @@ const ReportStatusView = ({ ...other }, ref) => {
           <Descriptions.Item label="Төлөвийн шалтгаан:">
             {data?.statusDescription}
           </Descriptions.Item>
+          {/* <Descriptions.Item label="Санхүүгийн төлөв:">
+            {data?.financeStatusName}
+          </Descriptions.Item>
+          <Descriptions.Item label="Санхүүгийн төлөвийн шалтгаан:">
+            {data?.financeStatusDescription}
+          </Descriptions.Item> */}
         </Descriptions>
       </Screen>
     </>

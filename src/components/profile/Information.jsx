@@ -1,4 +1,13 @@
-import { Button, Col, DatePicker, Form, Input, Row, Upload } from "antd";
+import {
+  Button,
+  Col,
+  DatePicker,
+  Divider,
+  Form,
+  Input,
+  Row,
+  Upload,
+} from "antd";
 import React, { useEffect, useState } from "react";
 import { validator } from "../../utils/validator";
 import { SaveOutlined, UploadOutlined } from "@ant-design/icons";
@@ -6,6 +15,7 @@ import OInputNumber from "../../screens/form/OInputNumber";
 import { useAxios } from "../../hooks";
 import {
   CONST_CITY,
+  CONST_CUSTOMER_GENDER,
   CONST_CUSTOMER_ROAD,
   CONST_CUSTOMER_TARGET,
   CONST_DISTRICT,
@@ -35,7 +45,7 @@ const Information = () => {
 
   useEffect(() => {
     useAxios(CUSTOMER_GET.format(customer.customerId)).then((res) => {
-      let filePath;
+      let filePath, frontPassportLink, backPassportLink;
       if (res.certificatePath || res.rulePath) {
         filePath = [
           {
@@ -51,12 +61,35 @@ const Information = () => {
         ];
       }
 
+      if (res.frontPassportLink) {
+        frontPassportLink = [
+          {
+            uid: `${customer.customerId}`,
+            name: `${res.frontPassportLink}`,
+            status: "done",
+            url: `http://206.189.82.44:8021/file/${res.frontPassportLink}`,
+          },
+        ];
+      }
+      if (res.backPassportLink) {
+        backPassportLink = [
+          {
+            uid: `${customer.customerId}`,
+            name: `${res.backPassportLink}`,
+            status: "done",
+            url: `http://206.189.82.44:8021/file/${res.backPassportLink}`,
+          },
+        ];
+      }
+
       form.setFieldsValue({
         ...res,
         dateOfEstablishment: res.dateOfEstablishment
           ? dayjs(res.dateOfEstablishment, "YYYY-MM-DD")
           : null,
         filePath,
+        frontPassportLink,
+        backPassportLink,
       });
     });
   }, []);
@@ -73,6 +106,12 @@ const Information = () => {
       rulePath: Array.isArray(values.filePath)
         ? values.filePath[0].response
         : null,
+      frontPassportLink: Array.isArray(values.frontPassportLink)
+        ? values.frontPassportLink[0].response
+        : null,
+      backPassportLink: Array.isArray(values.backPassportLink)
+        ? values.backPassportLink[0].response
+        : null,
     };
 
     useAxios(CUSTOMER_PUT.format(customer.customerId), payload, {
@@ -88,10 +127,16 @@ const Information = () => {
           <Col flex="1" className="column">
             <Form.Item
               name="name"
-              label="Байгууллагын нэр"
+              label={
+                customer?.typeId === 100 ? "Байгууллагын нэр" : "Бүлгийн нэр"
+              }
               rules={validator().required().build()}
             >
-              <Input placeholder="Байгууллагын нэр" />
+              <Input
+                placeholder={
+                  customer?.typeId === 100 ? "Байгууллагын нэр" : "Бүлгийн нэр"
+                }
+              />
             </Form.Item>
           </Col>
           {customer?.typeId === 100 && (
@@ -107,7 +152,7 @@ const Information = () => {
           )}
         </Row>
         <Row gutter={12}>
-          {customer?.typeId === 100 && (
+          {/* {customer?.typeId === 100 && (
             <Col flex="1" className="column">
               <Form.Item
                 name="directorName"
@@ -117,7 +162,7 @@ const Information = () => {
                 <Input placeholder="Гүйцэтгэх захиралын нэр" />
               </Form.Item>
             </Col>
-          )}
+          )} */}
           <Col flex="1" className="column">
             <Form.Item
               name="employerCount"
@@ -130,9 +175,7 @@ const Information = () => {
               />
             </Form.Item>
           </Col>
-        </Row>
-        <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
+          <Col flex="1" className="column">
             <Form.Item
               name="dateOfEstablishment"
               label="Байгуулагдсан огноо"
@@ -152,7 +195,11 @@ const Information = () => {
               label="Үйл ажиллагааны чиглэл"
               rules={validator().required().build()}
             >
-              <Input placeholder="Үйл ажиллагааны чиглэл" />
+              <Input.TextArea
+                placeholder="Үйл ажиллагааны чиглэл"
+                showCount
+                maxLength={300}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -178,7 +225,11 @@ const Information = () => {
               label="Зорилтот бүлэг"
               rules={validator().required().build()}
             >
-              <Input placeholder="Зорилтот бүлэг" />
+              <Input.TextArea
+                placeholder="Зорилтот бүлэг"
+                showCount
+                maxLength={300}
+              />
             </Form.Item>
           </Col>
         </Row>
@@ -201,7 +252,7 @@ const Information = () => {
           <Col flex="1 0 25%" className="column">
             <Form.Item
               name="areaCityId"
-              label="Аймаг"
+              label="Аймаг/Дүүрэг"
               rules={validator().required().build()}
             >
               <OSelect
@@ -221,10 +272,11 @@ const Information = () => {
           <Col flex="1 0 25%" className="column">
             <Form.Item
               name="areaDistrictId"
-              label="Дүүрэг"
+              label="Сум/Хороо"
               rules={validator().required().build()}
             >
               <OSelect
+                showSearch
                 placeholder="Дүүрэг"
                 selectAPI={CONST_DISTRICT}
                 selectName="name"
@@ -239,10 +291,10 @@ const Information = () => {
           <Col flex="1 0 25%" className="column">
             <Form.Item
               name="contactAddress"
-              label="Холбоо барих хаяг"
+              label="Дэлгэрэнгүй хаяг"
               rules={validator().required().build()}
             >
-              <Input placeholder="Холбоо барих хаяг" />
+              <Input placeholder="Дэлгэрэнгүй хаяг" />
             </Form.Item>
           </Col>
           <Col flex="1 0 25%" className="column">
@@ -315,13 +367,95 @@ const Information = () => {
             </Form.Item>
           </Col>
         </Row>
+        {customer?.typeId === 100 && (
+          <>
+            <Divider orientation="left">
+              Байгууллагын удирдлагын мэдээлэл
+            </Divider>
+            <Row gutter={12}>
+              <Col flex="1">
+                <Form.Item
+                  name="directorLastName"
+                  label="Овог"
+                  rules={validator().required().build()}
+                >
+                  <Input placeholder="Овог" />
+                </Form.Item>
+              </Col>
+              <Col flex="1">
+                <Form.Item
+                  name="directorName"
+                  label="Нэр"
+                  rules={validator().required().build()}
+                >
+                  <Input placeholder="Нэр" />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row gutter={12}>
+              <Col flex="1">
+                <Form.Item
+                  name="directorPosition"
+                  label="Албан тушаал"
+                  rules={validator().required().build()}
+                >
+                  <Input placeholder="Албан тушаал" />
+                </Form.Item>
+              </Col>
+              <Col flex="1">
+                <Form.Item
+                  name="directorGender"
+                  label="Хүйс"
+                  rules={validator().required().build()}
+                >
+                  <OSelect
+                    placeholder="Хүйс"
+                    selectAPI={CONST_CUSTOMER_GENDER}
+                    style={{ width: "100%" }}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+            <Divider orientation="left">Дансны мэдээлэл</Divider>
+            <Row gutter={12}>
+              <Col flex="1">
+                <Form.Item
+                  name="bankCode"
+                  label="Банк"
+                  rules={validator().required().build()}
+                >
+                  <Input placeholder="Банк" />
+                </Form.Item>
+              </Col>
+              <Col flex="1">
+                <Form.Item
+                  name="bankAccount"
+                  label="Банкны дугаар"
+                  rules={validator().required().build()}
+                >
+                  <OInputNumber
+                    placeholder="Банкны дугаар"
+                    style={{ width: "100%" }}
+                    formatter={true}
+                  />
+                </Form.Item>
+              </Col>
+            </Row>
+          </>
+        )}
+
         <Row gutter={24}>
           <Col>
             <Form.Item
               name="filePath"
-              label="Гэрчилгээ хавсаргах"
+              label={
+                customer.typeId === 100
+                  ? "Гэрчилгээ хавсаргах"
+                  : "Хурлын тэмдэглэл"
+              }
               valuePropName="fileList"
               getValueFromEvent={normFile}
+              rules={validator().required().build()}
             >
               <Upload
                 action={`/api/upload/file/certificate`}
@@ -332,11 +466,64 @@ const Information = () => {
                 // onRemove={onRemove}
                 showUploadList={{ showRemoveIcon: false }}
               >
-                <Button icon={<UploadOutlined />}> CV хавсаргах</Button>
+                <Button icon={<UploadOutlined />}>
+                  {customer.typeId === 100
+                    ? "Гэрчилгээ хавсаргах"
+                    : "Хурлын тэмдэглэл"}
+                </Button>
               </Upload>
             </Form.Item>
           </Col>
         </Row>
+        {customer.typeId === 100 && (
+          <Row gutter={12}>
+            <Col>
+              <Form.Item
+                name="frontPassportLink"
+                label="Иргэний үнэмлэх урд"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                rules={validator().required().build()}
+              >
+                <Upload
+                  action={`/api/upload/file/identitycard`}
+                  headers={{ Authorization: `Bearer ${token}` }}
+                  name="file"
+                  listType="picture"
+                  maxCount={1}
+                  // onRemove={onRemove}
+                  showUploadList={{ showRemoveIcon: false }}
+                >
+                  <Button icon={<UploadOutlined />}>
+                    {" "}
+                    Иргэний үнэмлэх урд
+                  </Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+            <Col>
+              <Form.Item
+                name="backPassportLink"
+                label="Иргэний үнэмлэх ард"
+                valuePropName="fileList"
+                getValueFromEvent={normFile}
+                rules={validator().required().build()}
+              >
+                <Upload
+                  action={`/api/upload/file/identitycard`}
+                  headers={{ Authorization: `Bearer ${token}` }}
+                  name="file"
+                  listType="picture"
+                  maxCount={1}
+                  // onRemove={onRemove}
+                  showUploadList={{ showRemoveIcon: false }}
+                >
+                  <Button icon={<UploadOutlined />}>Иргэний үнэмлэх ард</Button>
+                </Upload>
+              </Form.Item>
+            </Col>
+          </Row>
+        )}
         <Row justify="end">
           <Col>
             <Button

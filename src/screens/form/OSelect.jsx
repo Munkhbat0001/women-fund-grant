@@ -19,7 +19,7 @@ const OSelect = ({
 
   useEffect(() => {
     if (!isOnlyParent)
-      if (!options && !parentId) {
+      if (!options && !parentId && selectAPI) {
         useAxios(selectAPI).then((res) => {
           setLocalOptions(
             res.map((item) => ({
@@ -43,7 +43,7 @@ const OSelect = ({
 
   useEffect(() => {
     console.log("parentId", parentId);
-    if (!options && parentId) {
+    if (!options && parentId && selectAPI) {
       selectAPI += `/${parentId}`;
 
       useAxios(selectAPI).then((res) => {

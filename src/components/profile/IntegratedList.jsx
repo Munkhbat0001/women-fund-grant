@@ -96,7 +96,11 @@ const IntegratedList = () => {
       fixed: "right",
       render: (_, row) => {
         const list = [];
-        if (row.statusId === 122 || row.statusId === 123) {
+        if (
+          row.statusId === 122 ||
+          row.statusId === 123 ||
+          row.statusId === 125
+        ) {
           list.push(
             {
               key: "againView",

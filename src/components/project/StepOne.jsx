@@ -234,7 +234,7 @@ const StepOne = ({}, ref) => {
         </Row>
 
         <Row gutter={12}>
-          <Col flex="1 0 25%" className="column">
+          {/* <Col flex="1 0 25%" className="column">
             <Form.Item
               name="requestAmount"
               label="МОНЭС-ээс хүсч буй тэтгэлгийн нийт дүн (төгрөгөөр)"
@@ -245,8 +245,17 @@ const StepOne = ({}, ref) => {
                 style={{ width: "100%" }}
               />
             </Form.Item>
+          </Col> */}
+          <Col flex="1 0 25%" className="column">
+            <Form.Item
+              name="address"
+              label="Төсөл хэрэгжих байршил"
+              rules={validator().required().build()}
+            >
+              <Input.TextArea placeholder="Төсөл хэрэгжих байршил" />
+            </Form.Item>
           </Col>
-          <Col flex="1 0 25%" className="column"></Col>
+          {/* <Col flex="1 0 25%" className="column"></Col> */}
         </Row>
         <Row justify="center">
           <Row gutter={12} justify="end" style={{ width: 800 }}>

@@ -5,6 +5,7 @@ import { validator } from "../../../utils/validator";
 import {
   CONST_CITY,
   CONST_DISTRICT,
+  CONST_PROJECT_BUDGET_MEASURE,
   CONST_REPORT_INTEGRATED_RESULT,
   REPORT_INTEGRATED_SEND,
   REPORT_PROGRESS,
@@ -29,6 +30,9 @@ const IntegratedStep5 = () => {
   const scrollRef = useRef(null);
   const successRef = useRef(null);
   const [cityId, setCityId] = useState(0);
+  const [cityList, setCityList] = useState([]);
+  const [districtList, setDistrictList] = useState([]);
+  const [allDist, setAllDist] = useState([]);
 
   const { prev, next, loading, projectId, report, afterSave } =
     useContext(IntegratedContext);
@@ -45,15 +49,39 @@ const IntegratedStep5 = () => {
         },
       ];
     }
+
     form.setFieldsValue({
       ...report,
+      addressDtoList: report?.addressList,
       projectEndDate:
         report.projectEndDate && dayjs(report.projectEndDate, "YYYY-MM-DD"),
       attachmentPath: filePath,
     });
+
+    useAxios(CONST_CITY).then((res) => {
+      setCityList(res.map((x) => ({ label: x.name, value: x.id })));
+    });
+
+    useAxios(CONST_DISTRICT).then((res) => {
+      setDistrictList(res);
+      const newArray = [];
+      report?.addressList.map((item) => {
+        newArray.push(
+          res
+            .filter((x) => x.cityId === item.cityId)
+            .map((x) => ({
+              label: x.name,
+              value: x.id,
+            }))
+        );
+      });
+      setAllDist(newArray);
+    });
   }, []);
 
   const onFinish = (values) => {
+    console.log("values: ", values);
+
     const attachmentPath = Array.isArray(values.attachmentPath)
       ? values.attachmentPath[0].response
       : null;
@@ -117,7 +145,7 @@ const IntegratedStep5 = () => {
                 </Form.Item>
               </Col>
             </Row>
-            <Row gutter={12}>
+            {/* <Row gutter={12}>
               <Col flex="1 0 25%" className="column">
                 <Form.Item
                   name="projectCityId"
@@ -152,7 +180,7 @@ const IntegratedStep5 = () => {
                   />
                 </Form.Item>
               </Col>
-            </Row>
+            </Row> */}
             <Row gutter={12}>
               <Col flex="1 0 25%" className="column">
                 <Form.Item
@@ -241,6 +269,84 @@ const IntegratedStep5 = () => {
                   >
                     <Button icon={<UploadOutlined />}> Хавсаргах</Button>
                   </Upload>
+                </Form.Item>
+              </Col>
+            </Row>
+            <Row>
+              <Col span={24}>
+                <Form.Item label="Төсөл хэрэгжсэн хаяг">
+                  <Form.List name="addressDtoList">
+                    {(fields, opt) => (
+                      <>
+                        {fields.map((field, index) => {
+                          return (
+                            <>
+                              <Row gutter={24}>
+                                <Col span={12}>
+                                  <Form.Item
+                                    name={[field.name, "cityId"]}
+                                    rules={validator()
+                                      .required("Сонгоно уу")
+                                      .build()}
+                                    label="Аймаг/Дүүрэг"
+                                  >
+                                    <OSelect
+                                      showSearch
+                                      placeholder="сонгох"
+                                      style={{ width: "100%" }}
+                                      options={cityList}
+                                      onChange={(city) => {
+                                        const addressDtoList =
+                                          form.getFieldsValue().addressDtoList;
+                                        addressDtoList[index].districtId = null;
+                                        const newArray = [...allDist];
+                                        newArray[index] = districtList
+                                          .filter((x) => x.cityId === city)
+                                          .map((x) => ({
+                                            label: x.name,
+                                            value: x.id,
+                                          }));
+                                        setAllDist(newArray);
+                                        form.setFieldsValue({ addressDtoList });
+                                      }}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                                <Col span={12}>
+                                  <Form.Item
+                                    name={[field.name, "districtId"]}
+                                    rules={validator()
+                                      .required("Сонгоно уу")
+                                      .build()}
+                                    label="Сум/Хороо"
+                                  >
+                                    <OSelect
+                                      showSearch
+                                      placeholder="сонгох"
+                                      style={{ width: "100%" }}
+                                      options={allDist[index]}
+                                    />
+                                  </Form.Item>
+                                </Col>
+                              </Row>
+                            </>
+                          );
+                        })}
+                        <Button
+                          type="dashed"
+                          onClick={() => {
+                            const newArray = [...allDist];
+                            newArray.push([]);
+                            setAllDist(newArray);
+                            opt.add();
+                          }}
+                          block
+                        >
+                          + Төсөл хэрэгжсэн хаяг нэмэх
+                        </Button>
+                      </>
+                    )}
+                  </Form.List>
                 </Form.Item>
               </Col>
             </Row>

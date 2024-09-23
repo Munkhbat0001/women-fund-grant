@@ -64,6 +64,7 @@ export const CONST_DISTRICT = "/address/district";
 export const CONST_CUSTOMER_ROAD = "/v2/const?begin=811&end=816";
 export const CONST_CUSTOMER_TARGET = "/v2/const?begin=851&end=858";
 export const CONST_SURVEY_PROPERTY = "/v2/const?begin=520&end=522";
+export const CONST_CUSTOMER_GENDER = "/v2/const?begin=550&end=552";
 
 export const FILE_UPLOAD = "/api/upload/file/{0}";
 export const FILE_DOWNLOAD = "/file";
