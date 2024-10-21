@@ -11,6 +11,7 @@ import {
   Descriptions,
   DatePicker,
   notification,
+  Typography,
 } from "antd";
 import { validator } from "../../utils/validator";
 import {
@@ -26,6 +27,8 @@ import { isEmpty } from "lodash";
 import OInputNumber from "../../screens/form/OInputNumber";
 import OSelect from "../../screens/form/OSelect";
 import BudgetFormList from "./components/BudgetFormList";
+import { formatMoney } from "../../utils";
+const { Title } = Typography;
 
 const StepThree = ({}) => {
   const [form] = Form.useForm();
@@ -86,7 +89,6 @@ const StepThree = ({}) => {
   const onFinish = (values) => {
     try {
       const goalObjects = [];
-      console.log("values.items :", values.items);
 
       values.items.map((goal, index) => {
         goal.goalObjects.map((obj, objIndex) => {
@@ -161,6 +163,21 @@ const StepThree = ({}) => {
 
       form.setFieldsValue({ items });
     }
+  };
+
+  const getTotal = () => {
+    const items = form.getFieldsValue().items;
+    let total = 0;
+    items.map((goal, index) => {
+      goal?.goalObjects.map((obj, objIndex) => {
+        obj?.planList.map((plan) => {
+          plan?.budgetList?.map((budget) => {
+            total += budget?.totalPrice;
+          });
+        });
+      });
+    });
+    return total;
   };
 
   return (
@@ -386,222 +403,6 @@ const StepThree = ({}) => {
                                                         goalName={field2.name}
                                                         planName={subField.name}
                                                       />
-
-                                                      {/* <Form.List
-                                                        name={[
-                                                          field2.name,
-                                                          "budgetList",
-                                                        ]}
-                                                      >
-                                                        {(
-                                                          subFields3,
-                                                          subOpt3
-                                                        ) => {
-                                                          return (
-                                                            <>
-                                                              <Card
-                                                                size="small"
-                                                                bordered
-                                                                title={`Төсвийн санал`}
-                                                                headStyle={{
-                                                                  backgroundColor:
-                                                                    "#ddf247",
-                                                                }}
-                                                              >
-                                                                {subFields3.map(
-                                                                  (
-                                                                    subField
-                                                                  ) => (
-                                                                    <Row
-                                                                      key={`${field2.key}_${subFields3.key}121`}
-                                                                      gutter="6"
-                                                                    >
-                                                                      <Col span="3">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "quantity",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Тоо, ширхэг оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="Тоо, ширхэг"
-                                                                            formatter={
-                                                                              true
-                                                                            }
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                            onChange={() => {
-                                                                              onCalculateAmount(
-                                                                                field,
-                                                                                field2,
-                                                                                subField
-                                                                              );
-                                                                            }}
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="3">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "measureUnit",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Хэмжих нэгж оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OSelect
-                                                                            placeholder="Хэмжих нэгж"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                            selectAPI={
-                                                                              CONST_PROJECT_BUDGET_MEASURE
-                                                                            }
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="3">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "unitPrice",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Нэгж үнэ оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="Нэгж үнэ"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                            onChange={() => {
-                                                                              onCalculateAmount(
-                                                                                field,
-                                                                                field2,
-                                                                                subField
-                                                                              );
-                                                                            }}
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="3">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "totalPrice",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Нийт үнэ оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="Нийт үнэ"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                            disabled
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="4">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "provider",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Төсөл хэрэгжүүлэгч байгууллагаас оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="Төсөл хэрэгжүүлэгч байгууллагаас"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="4">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "mnFund",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "Бусад эх үүсвэрээс оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="Бусад эх үүсвэрээс"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                      <Col span="4">
-                                                                        <Form.Item
-                                                                          name={[
-                                                                            subFields3.name,
-                                                                            "other",
-                                                                          ]}
-                                                                          rules={validator()
-                                                                            .required(
-                                                                              "МОНЭС-аас оруулна уу"
-                                                                            )
-                                                                            .build()}
-                                                                        >
-                                                                          <OInputNumber
-                                                                            placeholder="МОНЭС-аас"
-                                                                            style={{
-                                                                              width:
-                                                                                "100%",
-                                                                            }}
-                                                                          />
-                                                                        </Form.Item>
-                                                                      </Col>
-                                                                    </Row>
-                                                                  )
-                                                                )}
-                                                              </Card>
-                                                              <Button
-                                                                type="dashed"
-                                                                onClick={() =>
-                                                                  subOpt3.add()
-                                                                }
-                                                                block
-                                                              >
-                                                                + Төсвийн санал
-                                                                нэмэх
-                                                              </Button>
-                                                            </>
-                                                          );
-                                                        }}
-                                                      </Form.List> */}
                                                     </Form.Item>
                                                   </div>
                                                 ))}
@@ -626,6 +427,9 @@ const StepThree = ({}) => {
                         </Form.List>
                       </Form.Item>
                     </Col>
+                    <Row justify="end" style={{ marginRight: "30px" }}>
+                      <Title level={5}>Нийт /{formatMoney(getTotal())}/</Title>
+                    </Row>
                   </Card>
                 );
               })}
