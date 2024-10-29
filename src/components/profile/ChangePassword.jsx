@@ -12,7 +12,6 @@ const ChangePassword = () => {
       method: "PUT",
       showSuccess: true,
     }).then((res) => {
-      console.log("res: ", res);
       form.resetFields();
     });
   };

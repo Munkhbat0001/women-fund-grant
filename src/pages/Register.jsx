@@ -71,7 +71,9 @@ const Register = () => {
               onFinishFailed={onFinishFailed}
             >
               <Form.Item
-                label={`${typeId === 1 ? "Байгууллагын нэр" : "Бүлгийн нэр"} `}
+                label={`${
+                  typeId === 100 ? "Байгууллагын нэр" : "Бүлгийн нэр"
+                } `}
                 name="name"
                 rules={[
                   {

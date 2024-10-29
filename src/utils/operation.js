@@ -5,6 +5,11 @@ export const CUSTOMER_REGISTER = "/auth/customer/register";
 export const CUSTOMER_GET = "/customer/{0}";
 export const CUSTOMER_PUT = "/customer/{0}";
 export const CUSTOMER_CHANGE_PASSWORD = "/customer/password";
+export const CUSTOMER_RESET_PASSWORD =
+  "/auth/customer/reset-password?otpCode={0}";
+export const CUSTOMER_FORGET_PASSWORD =
+  "/auth/customer/forget-password?email={0}";
+export const CUSTOMER_VALIDATE_OTP = "/auth/customer/validate-opt?otpCode={0}";
 
 export const CUSTOMER_GRANT = "/grant";
 

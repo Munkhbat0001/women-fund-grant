@@ -11,6 +11,9 @@ import GrantList from "../pages/admin/GrantList";
 import Profile from "../pages/Profile";
 import SurveyBefore from "../pages/SurveyBefore";
 import SurveyAfter from "../pages/SurveyAfter";
+import ForgetPassword from "../pages/ForgetPassword";
+import ForgetOtp from "../pages/ForgetOtp";
+import ResetPassword from "../pages/ResetPassword";
 
 export default () => {
   return (
@@ -19,6 +22,9 @@ export default () => {
         <Route element={<LoginLayout />}>
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
+          <Route path="/forget-password" element={<ForgetPassword />} />
+          <Route path="/forget-otp" element={<ForgetOtp />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
         </Route>
         <Route element={<HomeLayout />}>
           <Route path="/" element={<Home />} />

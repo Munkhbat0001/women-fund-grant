@@ -13,26 +13,31 @@ import {
 import { UserOutlined, MailOutlined, LockOutlined } from "@ant-design/icons";
 import { useAxios } from "../hooks";
 import { validator } from "../utils/validator";
-import { ADMIN_LOGIN, CUSTOMER_LOGIN } from "../utils/operation";
+import {
+  ADMIN_LOGIN,
+  CUSTOMER_FORGET_PASSWORD,
+  CUSTOMER_LOGIN,
+} from "../utils/operation";
 import { SystemContext } from "../context/SystemContext";
 import { useNavigate } from "react-router-dom";
 const { Text, Link } = Typography;
 
-const Login = () => {
+const ForgetPassword = () => {
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-
-  const { loginUser } = useContext(SystemContext);
 
   const onFinish = (values) => {
     setMessage("");
 
     setLoading(true);
-    useAxios(CUSTOMER_LOGIN, values, { method: "POST" })
+    useAxios(
+      CUSTOMER_FORGET_PASSWORD.format(values.email),
+      {},
+      { method: "POST" }
+    )
       .then((res) => {
-        loginUser(res);
-        localStorage.setItem("customer", JSON.stringify(res));
+        navigate(`/forget-otp`);
       })
       .catch((err) => {
         setMessage(err);
@@ -49,14 +54,8 @@ const Login = () => {
       <div className="bg-gray-100 flex h-screen items-center justify-center px-4 sm:px-6 lg:px-8">
         <div className="w-full max-w-md space-y-8">
           <div className="bg-white shadow-md rounded-2xl p-6">
-            {/* <img
-              className="mx-auto h-12 w-auto"
-              src="https://www.svgrepo.com/show/499664/user-happy.svg"
-              alt=""
-            /> */}
-
             <h2 className="my-3 text-center text-3xl font-bold tracking-tight text-gray-900">
-              Нэвтрэх
+              Нууц үг сэргээх
             </h2>
             <Form
               layout="vertical"
@@ -65,43 +64,11 @@ const Login = () => {
             >
               <Form.Item
                 label="И-мэйл"
-                name="loginName"
+                name="email"
                 rules={validator().required().build()}
               >
                 <Input prefix={<MailOutlined />} size="large" />
               </Form.Item>
-              <Form.Item
-                label="Нууц үг"
-                name="password"
-                rules={validator().required("Нууц үгээ оруулна уу").build()}
-              >
-                <Input.Password prefix={<LockOutlined />} size="large" />
-              </Form.Item>
-              <Row justify="space-between">
-                <Col>
-                  <Link
-                    // href="https://ant.design"
-                    // target="_blank"
-                    onClick={() => {
-                      navigate(`/forget-password`);
-                    }}
-                  >
-                    Нууц үг мартсан
-                  </Link>
-                </Col>
-                <Col>
-                  <Link
-                    // href="https://ant.design"
-                    // target="_blank"
-                    onClick={() => {
-                      navigate(`/register`);
-                    }}
-                  >
-                    Бүртгүүлэх
-                  </Link>
-                </Col>
-              </Row>
-              <br />
 
               <Form.Item>
                 <Button
@@ -111,7 +78,7 @@ const Login = () => {
                   style={{ width: "100%" }}
                   loading={loading}
                 >
-                  Нэвтрэх
+                  Сэргээх
                 </Button>
               </Form.Item>
             </Form>
@@ -122,4 +89,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default ForgetPassword;
