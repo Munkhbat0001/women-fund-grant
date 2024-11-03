@@ -54,7 +54,7 @@ const Information = () => {
               customer.typeId === 1 ? res.certificatePath : res.rulePath
             }`,
             status: "done",
-            url: `http://206.189.82.44:8021/file/${
+            url: `http://167.71.221.137:8021/file/${
               customer.typeId === 1 ? res.certificatePath : res.rulePath
             }`,
           },
@@ -67,7 +67,7 @@ const Information = () => {
             uid: `${customer.customerId}`,
             name: `${res.frontPassportLink}`,
             status: "done",
-            url: `http://206.189.82.44:8021/file/${res.frontPassportLink}`,
+            url: `http://167.71.221.137:8021/file/${res.frontPassportLink}`,
           },
         ];
       }
@@ -77,7 +77,7 @@ const Information = () => {
             uid: `${customer.customerId}`,
             name: `${res.backPassportLink}`,
             status: "done",
-            url: `http://206.189.82.44:8021/file/${res.backPassportLink}`,
+            url: `http://167.71.221.137:8021/file/${res.backPassportLink}`,
           },
         ];
       }

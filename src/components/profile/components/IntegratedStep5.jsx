@@ -45,7 +45,7 @@ const IntegratedStep5 = () => {
           uid: `${report.reportId}`,
           name: `${report.attachmentPath}`,
           status: "done",
-          url: `http://206.189.82.44:8021/file/${report.attachmentPath}`,
+          url: `http://167.71.221.137:8021/file/${report.attachmentPath}`,
         },
       ];
     }
