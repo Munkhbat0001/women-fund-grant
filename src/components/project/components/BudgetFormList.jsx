@@ -132,14 +132,14 @@ const BudgetFormList = ({ form, name, goalName, planName }) => {
       render: (value) => formatMoney(value),
     },
     {
-      title: "Бусад эх үүсвэрээс",
+      title: "МОНЭС-аас",
       dataIndex: "mnFund",
       key: "mnFund",
       align: "center",
       render: (value) => formatMoney(value),
     },
     {
-      title: "МОНЭС-аас",
+      title: "Бусад эх үүсвэрээс",
       dataIndex: "other",
       key: "other",
       align: "center",

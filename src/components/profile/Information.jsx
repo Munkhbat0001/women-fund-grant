@@ -51,11 +51,11 @@ const Information = () => {
           {
             uid: `${customer.customerId}`,
             name: `${
-              customer.typeId === 1 ? res.certificatePath : res.rulePath
+              customer.typeId === 100 ? res.certificatePath : res.rulePath
             }`,
             status: "done",
             url: `http://167.71.221.137:8021/file/${
-              customer.typeId === 1 ? res.certificatePath : res.rulePath
+              customer.typeId === 100 ? res.certificatePath : res.rulePath
             }`,
           },
         ];

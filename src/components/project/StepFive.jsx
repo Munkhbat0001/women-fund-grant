@@ -112,10 +112,12 @@ const StepFive = () => {
     {
       title: "Төсөлд гүйцэтгэх үүрэг",
       dataIndex: "role",
+      width: "150px",
     },
     {
       title: "И-мэйл",
       dataIndex: "email",
+      width: "50px",
     },
     {
       title: "Утас",
@@ -124,7 +126,7 @@ const StepFive = () => {
     {
       title: "Удирдах ажилтан",
       dataIndex: "leader",
-      width: "100px",
+      // width: "100px",
       align: "center",
       render: (leader) => {
         return <Checkbox checked={leader} />;
@@ -133,7 +135,7 @@ const StepFive = () => {
     {
       title: "Төсөл хариуцах ажилтан",
       dataIndex: "owner",
-      width: "100px",
+      // width: "100px",
       align: "center",
       render: (owner) => {
         return <Checkbox checked={owner} />;
@@ -142,7 +144,6 @@ const StepFive = () => {
     {
       title: "Файл",
       dataIndex: "workExperiencePath",
-      width: "100px",
       align: "center",
       render: (text, row) => {
         return (

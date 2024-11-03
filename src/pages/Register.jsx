@@ -12,7 +12,7 @@ const boxStyle = {
 };
 const Register = () => {
   const navigate = useNavigate();
-  const [typeId, setTypeId] = useState(1);
+  const [typeId, setTypeId] = useState(100);
 
   const onFinish = (values) => {
     const customer = {
@@ -97,7 +97,7 @@ const Register = () => {
                 <Input prefix={<MailOutlined />} size="large" />
               </Form.Item>
               <Form.Item
-                label="Password"
+                label="Нууц үг"
                 name="password"
                 rules={[
                   {

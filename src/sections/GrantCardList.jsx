@@ -128,9 +128,10 @@ const GrantCardList = () => {
                       </h4>
                     </div> */}
                     <img
-                      src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg"
+                      // src="https://tailwindcss.com/_next/static/media/headlessui@75.c1d50bc1.jpg"
+                      src={`http://167.71.221.137:8021/file/` + item.imageUrl}
                       alt="Headless UI"
-                      className="w-full h-32 object-cover"
+                      className="w-full h-32 object-contain "
                     />
                     <div className="w-full px-4 py-6 flex flex-grow flex-col justify-between">
                       <div>

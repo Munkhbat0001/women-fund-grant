@@ -119,12 +119,10 @@ const BudgetFormModal = ({
             <Col span={12}>
               <Form.Item
                 name={"mnFund"}
-                rules={validator()
-                  .required("Бусад эх үүсвэрээс оруулна уу")
-                  .build()}
+                rules={validator().required("МОНЭС-аас оруулна уу").build()}
               >
                 <OInputNumber
-                  placeholder="Бусад эх үүсвэрээс"
+                  placeholder="МОНЭС-аас"
                   style={{ width: "100%" }}
                 />
               </Form.Item>
@@ -132,10 +130,12 @@ const BudgetFormModal = ({
             <Col span={12}>
               <Form.Item
                 name={"other"}
-                rules={validator().required("МОНЭС-аас оруулна уу").build()}
+                rules={validator()
+                  .required("Бусад эх үүсвэрээс оруулна уу")
+                  .build()}
               >
                 <OInputNumber
-                  placeholder="МОНЭС-аас"
+                  placeholder="Бусад эх үүсвэрээс"
                   style={{ width: "100%" }}
                 />
               </Form.Item>

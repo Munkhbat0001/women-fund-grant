@@ -172,7 +172,7 @@ const StepThree = ({}) => {
       goal?.goalObjects.map((obj, objIndex) => {
         obj?.planList.map((plan) => {
           plan?.budgetList?.map((budget) => {
-            total += budget?.totalPrice;
+            total += budget?.mnFund;
           });
         });
       });
