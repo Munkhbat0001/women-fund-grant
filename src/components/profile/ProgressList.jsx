@@ -153,7 +153,7 @@ const ProgressList = () => {
     const queryParam = serverQueryParams(current, pageSize, search, true);
 
     useAxios(
-      REPORT_PROGRESS_LIST + queryParam + "&statusIds=119,120,122,123",
+      REPORT_PROGRESS_LIST + queryParam + "&statusIds=119,120,122,123,125",
       {},
       { showLoader: false }
     )
