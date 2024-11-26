@@ -58,6 +58,7 @@ const ActiveGrantList = () => {
     {
       title: "Санхүүжилтийн хэмжээ",
       dataIndex: "requestAmount",
+      width: "150px",
       render: (text) => text && formatMoney(text),
     },
     // {

@@ -312,7 +312,7 @@ const Information = () => {
             <Form.Item
               name="contactEmail"
               label="Холбоо барих мэйл хаяг"
-              // rules={validator().required().build()}
+              rules={validator().required().build()}
             >
               <Input placeholder="Холбоо барих мэйл хаяг" />
             </Form.Item>

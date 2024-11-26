@@ -240,11 +240,11 @@ const StepTwo = ({}) => {
                                   name={[subField.name, "problem"]}
                                   rules={validator()
                                     .required(
-                                      "Учирч болзошгүйсаад бэрхшээл оруулна уу"
+                                      "Учирч болзошгүй саад бэрхшээл оруулна уу"
                                     )
                                     .build()}
                                 >
-                                  <Input.TextArea placeholder="Учирч болзошгүйсаад бэрхшээл" />
+                                  <Input.TextArea placeholder="Учирч болзошгүй саад бэрхшээл" />
                                 </Form.Item>
                               </Card>
                             </div>

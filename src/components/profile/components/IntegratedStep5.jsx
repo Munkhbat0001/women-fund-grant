@@ -288,7 +288,7 @@ const IntegratedStep5 = () => {
                                     rules={validator()
                                       .required("Сонгоно уу")
                                       .build()}
-                                    label="Аймаг/Дүүрэг"
+                                    label="Хэрэгжсэн аймаг/дүүрэг"
                                   >
                                     <OSelect
                                       showSearch
@@ -318,7 +318,7 @@ const IntegratedStep5 = () => {
                                     rules={validator()
                                       .required("Сонгоно уу")
                                       .build()}
-                                    label="Сум/Хороо"
+                                    label="Хэрэгжсэн сум/хороо"
                                   >
                                     <OSelect
                                       showSearch

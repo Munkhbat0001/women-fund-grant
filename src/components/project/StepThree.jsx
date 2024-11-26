@@ -180,6 +180,21 @@ const StepThree = ({}) => {
     return total;
   };
 
+  const disabledToDate = (
+    current,
+    field,
+    field2,
+    subFields2,
+    subField,
+    subOpt
+  ) => {
+    const plan =
+      form.getFieldsValue().items[field.name].goalObjects[field2.name].planList[
+        subField.name
+      ];
+    return current && current < plan.beginDate;
+  };
+
   return (
     <>
       <Form
@@ -377,6 +392,18 @@ const StepThree = ({}) => {
                                                               style={{
                                                                 width: "100%",
                                                               }}
+                                                              disabledDate={(
+                                                                value
+                                                              ) =>
+                                                                disabledToDate(
+                                                                  value,
+                                                                  field,
+                                                                  field2,
+                                                                  subFields2,
+                                                                  subField,
+                                                                  subOpt
+                                                                )
+                                                              }
                                                             />
                                                           </Form.Item>
                                                         </Col>

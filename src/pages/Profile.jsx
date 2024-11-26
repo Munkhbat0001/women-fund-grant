@@ -27,7 +27,7 @@ const items = [
   {
     key: "2",
     icon: <AppstoreOutlined />,
-    label: "Тэтгэлэгийн түүх",
+    label: "Тэтгэлгийн түүх",
   },
   {
     key: "3",

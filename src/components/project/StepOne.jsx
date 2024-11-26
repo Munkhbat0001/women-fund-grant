@@ -18,6 +18,7 @@ import dayjs from "dayjs";
 import customParseFormat from "dayjs/plugin/customParseFormat";
 import weekday from "dayjs/plugin/weekday";
 import localeData from "dayjs/plugin/localeData";
+import { DATE_FORMAT } from "../../utils/regex";
 dayjs.extend(customParseFormat);
 dayjs.extend(weekday);
 dayjs.extend(localeData);
@@ -64,6 +65,14 @@ const StepOne = ({}, ref) => {
     }).then((res) => {
       next && next();
     });
+  };
+
+  // const disabledFromDate = (current) => {
+  //   return current && current < form.getFieldValue("endDate");
+  // };
+
+  const disabledToDate = (current) => {
+    return current && current < form.getFieldValue("beginDate");
   };
 
   return (
@@ -216,6 +225,8 @@ const StepOne = ({}, ref) => {
               <DatePicker
                 placeholder="Төсөл хэрэгжиж эхлэх огноо"
                 style={{ width: "100%" }}
+                // disabledDate={disabledFromDate}
+                format={DATE_FORMAT}
               ></DatePicker>
             </Form.Item>
           </Col>
@@ -228,6 +239,8 @@ const StepOne = ({}, ref) => {
               <DatePicker
                 placeholder="Төсөл хэрэгжиж дуусах огноо"
                 style={{ width: "100%" }}
+                disabledDate={disabledToDate}
+                format={DATE_FORMAT}
               ></DatePicker>
             </Form.Item>
           </Col>

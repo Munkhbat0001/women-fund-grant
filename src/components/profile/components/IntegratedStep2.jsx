@@ -75,7 +75,7 @@ const groups = [
   {
     group: "company",
     targetGroup: "a",
-    text: "Кампанит ажил",
+    text: "Компанит ажил",
     underTen: 0,
     tenSeventeen: 0,
     eighteenThirtyFive: 0,

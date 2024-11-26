@@ -84,6 +84,17 @@ const Validator = function () {
     return this;
   };
 
+  this.betweenMinAndMax = function (max, min, message) {
+    this.add({
+      type: "number",
+      min: min,
+      max: max,
+      transform: (value) => (value ? Number(value) : 0), // Converts input to number
+      message: message || `${max} хэтрүүлэхгүй оруулна уу`,
+    });
+    return this;
+  };
+
   this.regNum = function (message) {
     this.add(regexRule(REGEX_REGNUMBER, message ?? "РД зөв оруулна уу"));
     return this;

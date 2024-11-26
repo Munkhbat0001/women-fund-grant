@@ -25,6 +25,7 @@ const ProjectDonor = ({ data = {}, ...other }) => {
         title: "Санхүүжилтийн хэмжээ",
         dataIndex: "advanceAmount",
         align: "right",
+        width: "150px",
         render: (text) => formatMoney(text),
       },
     ],

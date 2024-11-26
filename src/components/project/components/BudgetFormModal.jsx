@@ -1,5 +1,5 @@
-import { Col, Form, Input, Modal, Row } from "antd";
-import React from "react";
+import { Col, Form, Input, Modal, notification, Row } from "antd";
+import React, { useState } from "react";
 import OInputNumber from "../../../screens/form/OInputNumber";
 import OSelect from "../../../screens/form/OSelect";
 import { CONST_PROJECT_BUDGET_MEASURE } from "../../../utils/operation";
@@ -12,12 +12,31 @@ const BudgetFormModal = ({
   form,
   initialValues,
 }) => {
+  const [max, setMax] = useState(0);
+  const [min, setMin] = useState(0);
+
   const onCalculateAmount = () => {
     const budget = form.getFieldsValue();
     if (budget) {
       const totalPrice = (budget.quantity || 0) * (budget.unitPrice || 0);
       budget.totalPrice = totalPrice;
+      setMax(totalPrice);
       form.setFieldsValue(budget);
+    }
+  };
+
+  const onMaxAmount = (val) => {
+    const budget = form.getFieldsValue();
+    const totalPrice =
+      budget.totalPrice -
+      ((budget.provider || 0) + (budget.other || 0) + (budget.mnFund || 0));
+
+    if (budget.totalPrice < totalPrice) {
+      setMax(budget.totalPrice);
+    } else if (totalPrice < 0) {
+      setMax(Math.abs(totalPrice));
+    } else {
+      setMax(budget.totalPrice);
     }
   };
 
@@ -30,6 +49,16 @@ const BudgetFormModal = ({
         okText="Хадгалах"
         cancelText="Буцах"
         onOk={() => {
+          const budget = form.getFieldsValue();
+          const totalPrice =
+            (budget.provider || 0) + (budget.other || 0) + (budget.mnFund || 0);
+          if (totalPrice < budget.totalPrice) {
+            notification.warning({
+              message: "Анхааруулга",
+              description: "Нийт дүнгээс зөрүүтэй байна",
+            });
+            return;
+          }
           form.validateFields().then((values) => {
             handleOk(values);
           });
@@ -104,12 +133,14 @@ const BudgetFormModal = ({
               <Form.Item
                 name={"provider"}
                 rules={validator()
-                  .required("Төсөл хэрэгжүүлэгч байгууллагаас оруулна уу")
+                  // .required("Төсөл хэрэгжүүлэгч байгууллагаас оруулна уу")
+                  .betweenMinAndMax(max, 0)
                   .build()}
               >
                 <OInputNumber
                   placeholder="Төсөл хэрэгжүүлэгч байгууллагаас"
                   style={{ width: "100%" }}
+                  onChange={onMaxAmount}
                 />
               </Form.Item>
             </Col>
@@ -119,11 +150,15 @@ const BudgetFormModal = ({
             <Col span={12}>
               <Form.Item
                 name={"mnFund"}
-                rules={validator().required("МОНЭС-аас оруулна уу").build()}
+                rules={validator()
+                  // .required("МОНЭС-аас оруулна уу")
+                  .betweenMinAndMax(max, 0)
+                  .build()}
               >
                 <OInputNumber
                   placeholder="МОНЭС-аас"
                   style={{ width: "100%" }}
+                  onChange={onMaxAmount}
                 />
               </Form.Item>
             </Col>
@@ -131,12 +166,14 @@ const BudgetFormModal = ({
               <Form.Item
                 name={"other"}
                 rules={validator()
-                  .required("Бусад эх үүсвэрээс оруулна уу")
+                  // .required("Бусад эх үүсвэрээс оруулна уу")
+                  .betweenMinAndMax(max, 0)
                   .build()}
               >
                 <OInputNumber
                   placeholder="Бусад эх үүсвэрээс"
                   style={{ width: "100%" }}
+                  onChange={onMaxAmount}
                 />
               </Form.Item>
             </Col>

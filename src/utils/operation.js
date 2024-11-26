@@ -61,7 +61,7 @@ export const ADMIN_MENU = "/menu";
 // Core
 export const CONST_PROJECT_RESULT = "/v2/const?begin=300&end=310";
 export const CONST_PROJECT_GROUP = "/v2/const?begin=350&end=380";
-export const CONST_PROJECT_BUDGET_MEASURE = "/v2/const?begin=500&end=502";
+export const CONST_PROJECT_BUDGET_MEASURE = "/v2/const?begin=500&end=511";
 export const CONST_REPORT_DONE = "/v2/const?begin=110&end=112";
 export const CONST_REPORT_INTEGRATED_RESULT = "/v2/const?begin=750&end=757";
 export const CONST_CITY = "/address/city";
