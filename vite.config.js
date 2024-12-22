@@ -27,11 +27,11 @@ export default ({ mode }) => {
       },
       proxy: {
         // "/api": "http://localhost:8021",
-        "/api": "http://167.71.221.137:8021",
+        "/api": "http://34.64.160.193:8021",
         "/upload": process.env.API_URL,
         "/download": process.env.API_URL,
         "^/request/.*": {
-          target: "http://167.71.221.137:8021",
+          target: "http://34.64.160.193:8021",
           // target: "http://localhost:8021",
           rewrite: (path) => path.replace(/^\/request/, ""),
         },
