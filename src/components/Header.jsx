@@ -87,7 +87,7 @@ const Header = ({ user, loggedIn, logout }) => {
                   navigate("/");
                 }}
               >
-                Тэтгэлэг
+                Тэтгэлэгт хөтөлбөр
               </a>
             </li>
             {loggedIn === 1 && (
