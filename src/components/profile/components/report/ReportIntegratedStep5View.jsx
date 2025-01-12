@@ -54,7 +54,7 @@ const ReportIntegratedStep5View = ({ report }) => {
           label="Боломжтой бол, төслийн хүрээнд боловсруулсан мэдлэгийн бүтээгдэхүүнийг энд хавсаргана уу."
           span={2}
         >
-          <Button
+          {report?.attachmentPath && <Button
             type="link"
             onClick={() => {
               window.open(
@@ -64,7 +64,7 @@ const ReportIntegratedStep5View = ({ report }) => {
             }}
           >
             Татах
-          </Button>
+          </Button>}
         </Descriptions.Item>
       </Descriptions>
     </>

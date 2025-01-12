@@ -231,11 +231,11 @@ const groups = [
   },
 ];
 
-const ReportStep2View = ({ report }) => {
+const ReportStep2View = ({ report, integrated }) => {
   const [dataSource, setDataSource] = useState([]);
 
   useEffect(() => {
-    useAxios(REPORT_DATA.format(report?.projectId, 150)).then((res) => {
+    useAxios(REPORT_DATA.format(report?.projectId, integrated === true ? 151 : 150)).then((res) => {
       const list = [...groups];
       if (isEmpty(res)) {
         setDataSource(groups);

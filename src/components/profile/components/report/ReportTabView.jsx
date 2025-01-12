@@ -29,7 +29,7 @@ const ReportTabView = ({ integrated = false, ...other }, ref) => {
     {
       key: "2",
       label: `Тоон мэдээлэл`,
-      children: <ReportStep2View report={data} {...other} />,
+      children: <ReportStep2View integrated={integrated} report={data} {...other} />,
     },
     {
       key: "3",
