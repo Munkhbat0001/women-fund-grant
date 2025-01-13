@@ -79,7 +79,7 @@ const StepFive = () => {
         break;
       case "download":
         window.open(
-          `http://34.64.160.193:8021/file/${row.workExperiencePath}`,
+          `${import.meta.env.API_URL}/file/${row.workExperiencePath}`,
           "_blank"
         );
         // useAxios(

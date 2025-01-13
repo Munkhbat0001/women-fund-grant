@@ -48,7 +48,7 @@ const OForm = (
                 uid: `${id}`,
                 name: `${selectedData[key]}`,
                 status: "done",
-                url: `http://34.64.160.193:8021/file/${selectedData[key]}`,
+                url: `${import.meta.env.API_URL}/file/${selectedData[key]}`,
               },
             ];
           }

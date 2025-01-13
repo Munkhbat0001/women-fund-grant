@@ -54,7 +54,7 @@ const Information = () => {
               customer.typeId === 100 ? res.certificatePath : res.rulePath
             }`,
             status: "done",
-            url: `http://34.64.160.193:8021/file/${
+            url: `${import.meta.env.API_URL}/file/${
               customer.typeId === 100 ? res.certificatePath : res.rulePath
             }`,
           },
@@ -67,7 +67,7 @@ const Information = () => {
             uid: `${customer.customerId}`,
             name: `${res.frontPassportLink}`,
             status: "done",
-            url: `http://34.64.160.193:8021/file/${res.frontPassportLink}`,
+            url: `${import.meta.env.API_URL}/file/${res.frontPassportLink}`,
           },
         ];
       }
@@ -77,7 +77,7 @@ const Information = () => {
             uid: `${customer.customerId}`,
             name: `${res.backPassportLink}`,
             status: "done",
-            url: `http://34.64.160.193:8021/file/${res.backPassportLink}`,
+            url: `${import.meta.env.API_URL}/file/${res.backPassportLink}`,
           },
         ];
       }

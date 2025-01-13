@@ -26,13 +26,11 @@ export default ({ mode }) => {
         "referrer-policy": "strict-origin",
       },
       proxy: {
-        // "/api": "http://localhost:8021",
-        "/api": "http://34.64.160.193:8021",
-        "/upload": process.env.API_URL,
-        "/download": process.env.API_URL,
+        "/api": env.API_URL,
+        "/upload": env.API_URL,
+        "/download": env.API_URL,
         "^/request/.*": {
-          target: "http://34.64.160.193:8021",
-          // target: "http://localhost:8021",
+          target: env.API_URL,
           rewrite: (path) => path.replace(/^\/request/, ""),
         },
       },
